@@ -6,6 +6,7 @@ credentials.json
 
 # Saídas de prospecção (contêm dados de leads)
 prospeccao/**/*.csv
+!prospeccao/escolas/leads-sumare.csv
 prospeccao/**/*.xlsx
 
 # Python

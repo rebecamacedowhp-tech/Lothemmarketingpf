@@ -120,6 +120,25 @@ TIPO_PROIBIDO = (
 )
 
 
+# Escola que cadastrou o Instagram no campo do site nao tem site — e e a melhor lead
+# da lista: ja quis presenca na web, tentou, e se contentou com o que dava. Tratar esse
+# link como "tem site" descarta justamente quem esta mais perto de comprar.
+SOCIAL = (
+    "instagram.com", "facebook.com", "fb.com", "fb.me", "linktr.ee", "wa.me",
+    "linkedin.com", "tiktok.com", "beacons.ai", "bio.link", "youtube.com",
+)
+
+
+def status_do_site(url):
+    """Devolve 'sem_nada', 'social' ou 'site'."""
+    url = (url or "").strip().lower()
+    if not url:
+        return "sem_nada"
+    if any(s in url for s in SOCIAL):
+        return "social"
+    return "site"
+
+
 def parece_escola(lugar):
     """Descarta o que o termo de busca pegou por engano."""
     nome = (lugar.get("displayName", {}).get("text") or "").lower()
@@ -203,7 +222,7 @@ def main():
             regioes = [l.strip() for l in f if l.strip() and not l.startswith("#")]
 
     vistos, leads = set(), []
-    total_bruto = com_site = descartados = 0
+    total_bruto = com_site = descartados = so_social = 0
 
     for regiao in regioes:
         print(f"\n== {regiao}")
@@ -242,8 +261,10 @@ def main():
                     descartados += 1
                     continue
 
-                tem_site = bool(lugar.get("websiteUri"))
-                if tem_site:
+                status = status_do_site(lugar.get("websiteUri"))
+                if status == "social":
+                    so_social += 1
+                elif status == "site":
                     com_site += 1
                     if not args.incluir_com_site:
                         continue
@@ -261,6 +282,7 @@ def main():
                     "telefone": lugar.get("nationalPhoneNumber", ""),
                     "endereco": lugar.get("formattedAddress", ""),
                     "tipo": lugar.get("primaryTypeDisplayName", {}).get("text", ""),
+                    "status": status,
                     "site": lugar.get("websiteUri", ""),
                     "maps": lugar.get("googleMapsUri", ""),
                     "regiao": regiao,
@@ -273,6 +295,7 @@ def main():
     print(f"\n--- Resultado")
     print(f"Locais unicos varridos : {total_bruto}")
     print(f"Ja possuem site        : {com_site}")
+    print(f"So rede social (LEAD QUENTE): {so_social}")
     print(f"Fora do ramo (pet/saude)  : {descartados}")
     print(f"LEADS NO ICP           : {len(leads)}")
     print(f"  sem telefone         : {sem_telefone} (precisam de enriquecimento)")
