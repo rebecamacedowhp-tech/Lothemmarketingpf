@@ -27,6 +27,14 @@ import time
 import urllib.error
 import urllib.request
 
+class CotaEsgotada(Exception):
+    """A API recusou por limite diario.
+
+    Precisa interromper a varredura inteira: continuar so gera arquivo vazio, e um
+    CSV vazio no meio de uma campanha e lido como "a regiao nao tem escolas".
+    """
+
+
 ENDPOINT = "https://places.googleapis.com/v1/places:searchText"
 
 CAMPOS = ",".join(
@@ -81,8 +89,10 @@ def buscar(termo, regiao, chave, max_paginas=3):
             with urllib.request.urlopen(req, timeout=30) as r:
                 dados = json.load(r)
         except urllib.error.HTTPError as e:
-            detalhe = e.read().decode(errors="replace")[:300]
-            print(f"  ! erro HTTP {e.code} em '{termo} / {regiao}': {detalhe}", file=sys.stderr)
+            detalhe = e.read().decode(errors="replace")
+            if e.code == 429:
+                raise CotaEsgotada(detalhe[:400])
+            print(f"  ! erro HTTP {e.code} em '{termo} / {regiao}': {detalhe[:300]}", file=sys.stderr)
             break
         except Exception as e:
             print(f"  ! falha em '{termo} / {regiao}': {e}", file=sys.stderr)
@@ -129,6 +139,16 @@ def prioridade(nota, avaliacoes):
     escola com 800 avaliacoes esmague todo o resto do ranking.
     """
     return round(nota * math.log10(avaliacoes + 1), 2)
+
+
+def gravar(leads, caminho):
+    if not leads:
+        return
+    leads.sort(key=lambda x: x["prioridade"], reverse=True)
+    with open(caminho, "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.DictWriter(f, fieldnames=list(leads[0].keys()))
+        w.writeheader()
+        w.writerows(leads)
 
 
 def carregar_chave():
@@ -188,7 +208,24 @@ def main():
     for regiao in regioes:
         print(f"\n== {regiao}")
         for termo in args.termos:
-            achados = buscar(termo, regiao, chave)
+            try:
+                achados = buscar(termo, regiao, chave)
+            except CotaEsgotada as e:
+                print(
+                    "\n" + "=" * 70
+                    + "\nVARREDURA INTERROMPIDA — cota diaria da Places API esgotada."
+                    + f"\n\n{len(leads)} leads coletados ate aqui foram salvos em {args.saida}."
+                    + "\nA lista esta INCOMPLETA: as regioes seguintes nao foram varridas."
+                    + "\n\nPara resolver, no Google Cloud:"
+                    + "\n  APIs e servicos > Places API (New) > Cotas"
+                    + "\n  aumente 'Text Search requests per day'"
+                    + "\nOu aguarde a virada do dia (meia-noite no horario do Pacifico)."
+                    + f"\n\nDetalhe da API: {e}"
+                    + "\n" + "=" * 70,
+                    file=sys.stderr,
+                )
+                gravar(leads, args.saida)
+                sys.exit(2)
             print(f"   {termo}: {len(achados)}")
 
             for lugar in achados:
@@ -230,13 +267,7 @@ def main():
                     "termo": termo,
                 })
 
-    leads.sort(key=lambda x: x["prioridade"], reverse=True)
-
-    if leads:
-        with open(args.saida, "w", newline="", encoding="utf-8-sig") as f:
-            w = csv.DictWriter(f, fieldnames=list(leads[0].keys()))
-            w.writeheader()
-            w.writerows(leads)
+    gravar(leads, args.saida)
 
     sem_telefone = sum(1 for l in leads if not l["telefone"])
     print(f"\n--- Resultado")
