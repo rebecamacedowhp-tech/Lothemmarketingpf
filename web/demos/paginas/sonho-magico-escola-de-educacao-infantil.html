@@ -1,0 +1,172 @@
+<title>Sonho Mágico Escola de Educação Infantil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700&display=swap">
+<style>
+:root {
+  --acento: #4C5B96;
+  --acento-suave: color-mix(in srgb, #4C5B96 10%, transparent);
+  --fundo: #FBFAF7;
+  --superficie: #FFFFFF;
+  --borda: #E6E2DA;
+  --tinta: #23201B;
+  --tinta-fraca: #6B6559;
+  --estrela: #D69E2E;
+  --sombra: 0 1px 2px rgba(35,32,27,.05), 0 8px 24px -12px rgba(35,32,27,.14);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --acento: #98A6E4;
+    --acento-suave: color-mix(in srgb, #98A6E4 14%, transparent);
+    --fundo: #171613;
+    --superficie: #201E1A;
+    --borda: #34312B;
+    --tinta: #F2EFE8;
+    --tinta-fraca: #A39C8E;
+    --estrela: #E8B84B;
+    --sombra: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] {
+  --acento: #98A6E4;
+  --acento-suave: color-mix(in srgb, #98A6E4 14%, transparent);
+  --fundo: #171613;
+  --superficie: #201E1A;
+  --borda: #34312B;
+  --tinta: #F2EFE8;
+  --tinta-fraca: #A39C8E;
+  --estrela: #E8B84B;
+  --sombra: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--fundo); color: var(--tinta);
+  font-family: Karla, ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.previa {
+  background: var(--acento-suave); border-bottom: 1px solid var(--borda);
+  color: var(--tinta-fraca); font-size: .78rem; letter-spacing: .05em;
+  text-transform: uppercase; text-align: center; padding: .7rem 1rem;
+}
+.previa b { color: var(--acento); font-weight: 700; }
+.wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem; }
+header { padding: 3.5rem 0 2.5rem; }
+.local {
+  font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--acento); font-weight: 700; margin: 0 0 .9rem;
+}
+h1 {
+  font-family: Fraunces, Georgia, serif; font-weight: 600;
+  font-size: clamp(2.1rem, 7vw, 3.4rem); line-height: 1.1;
+  letter-spacing: -.02em; text-wrap: balance; margin: 0 0 1.25rem;
+}
+.sub { color: var(--tinta-fraca); font-size: 1.08rem; max-width: 34rem; margin: 0; }
+.nota {
+  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  background: var(--superficie); border: 1px solid var(--borda);
+  border-radius: 14px; box-shadow: var(--sombra);
+  padding: 1.4rem 1.5rem; margin: 2rem 0;
+}
+.nota-num {
+  font-family: Fraunces, Georgia, serif; font-size: 3rem; font-weight: 700;
+  line-height: 1; font-variant-numeric: tabular-nums; color: var(--acento);
+}
+.star { color: var(--estrela); font-size: 1.1rem; letter-spacing: .1em; }
+.star.off { color: var(--borda); }
+.nota-txt { color: var(--tinta-fraca); font-size: .95rem; margin-top: .35rem; }
+section { padding: 2.25rem 0; border-top: 1px solid var(--borda); }
+h2 {
+  font-family: Fraunces, Georgia, serif; font-weight: 600;
+  font-size: 1.45rem; letter-spacing: -.01em; margin: 0 0 1.1rem;
+}
+dl { display: grid; gap: 1.1rem; margin: 0; }
+dt {
+  font-size: .74rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tinta-fraca); font-weight: 700; margin-bottom: .2rem;
+}
+dd { margin: 0; font-size: 1.05rem; }
+.cta {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--acento); color: var(--fundo); text-decoration: none;
+  font-weight: 700; font-size: 1.05rem;
+  padding: .95rem 1.7rem; border-radius: 999px;
+  transition: transform .15s ease, filter .15s ease;
+}
+.cta:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.cta:focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
+.social {
+  display: inline-block; margin-top: 1rem; color: var(--acento);
+  font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--acento-suave);
+}
+.social:hover { border-bottom-color: var(--acento); }
+.vazio {
+  border: 2px dashed var(--borda); border-radius: 14px;
+  padding: 2rem 1.5rem; text-align: center; color: var(--tinta-fraca);
+}
+.vazio strong { color: var(--tinta); display: block; margin-bottom: .4rem; font-size: 1.05rem; }
+footer {
+  border-top: 1px solid var(--borda); margin-top: 1rem;
+  padding: 2rem 0 4rem; color: var(--tinta-fraca); font-size: .88rem;
+}
+footer a { color: var(--acento); }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+
+<div class="previa">Prévia — <b>ainda não é o site oficial da escola</b></div>
+
+<div class="wrap">
+  <header>
+    <p class="local">Altos de Sumaré · Sumaré, SP</p>
+    <h1>Sonho Mágico Escola de Educação Infantil</h1>
+    <p class="sub">Educação infantil em Altos de Sumaré. Atendimento de segunda a sexta, 07:00 às 17:00.</p>
+
+    <div class="nota">
+      <div>
+        <div class="nota-num">3,9</div>
+      </div>
+      <div>
+        <div><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span></div>
+        <div class="nota-txt">14 avaliações de famílias no Google</div>
+      </div>
+    </div>
+
+    <a class="cta" href="tel:+551933962429">Ligar para 19 3396-2429</a>
+    
+  </header>
+
+  <section>
+    <h2>Visite a escola</h2>
+    <dl>
+      <div>
+        <dt>Endereço</dt>
+        <dd>R. Luís da Costa Pinto, 123 - Altos de Sumaré, Sumaré - SP, 13175-380</dd>
+      </div>
+      <div>
+        <dt>Horário</dt>
+        <dd>Segunda a sexta, 07:00 às 17:00</dd>
+      </div>
+      <div>
+        <dt>Telefone</dt>
+        <dd>19 3396-2429</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Nosso espaço</h2>
+    <div class="vazio">
+      <strong>Aqui entram as fotos da escola</strong>
+      Salas, pátio, brinquedoteca, a equipe. É o que os pais mais querem ver
+      antes de agendar a visita.
+    </div>
+  </section>
+
+  <footer>
+    Página de prévia criada a partir das informações públicas do perfil da escola no Google.
+    Não é o site oficial e não tem vínculo com a instituição.
+  </footer>
+</div>
