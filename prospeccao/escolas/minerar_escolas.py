@@ -97,6 +97,31 @@ def buscar(termo, regiao, chave, max_paginas=3):
     return resultados
 
 
+# "creche" e "escola" tambem descrevem pet shop, adestrador e clinica. Sem este
+# filtro, ~10% da lista sao creches caninas e consultorios, e o time descobre isso
+# so na hora da ligacao.
+NOME_PROIBIDO = (
+    "canin", "cão", "cães", "caes", "dog", " pet", "pet ", "animais", "animal",
+    "veterin", "adestr", "felin", "gato", "day care para",
+)
+TIPO_PROIBIDO = (
+    "animais de estimação", "veterinár", "médico", "medico", "clínica", "clinica",
+    "hospital", "dentista", "psicólog", "psicolog",
+)
+
+
+def parece_escola(lugar):
+    """Descarta o que o termo de busca pegou por engano."""
+    nome = (lugar.get("displayName", {}).get("text") or "").lower()
+    tipo = (lugar.get("primaryTypeDisplayName", {}).get("text") or "").lower()
+
+    if any(t in nome for t in NOME_PROIBIDO):
+        return False
+    if any(t in tipo for t in TIPO_PROIBIDO):
+        return False
+    return True
+
+
 def prioridade(nota, avaliacoes):
     """Reputacao ponderada pelo volume.
 
@@ -158,7 +183,7 @@ def main():
             regioes = [l.strip() for l in f if l.strip() and not l.startswith("#")]
 
     vistos, leads = set(), []
-    total_bruto = com_site = 0
+    total_bruto = com_site = descartados = 0
 
     for regiao in regioes:
         print(f"\n== {regiao}")
@@ -174,6 +199,10 @@ def main():
                 total_bruto += 1
 
                 if lugar.get("businessStatus") not in (None, "OPERATIONAL"):
+                    continue
+
+                if not parece_escola(lugar):
+                    descartados += 1
                     continue
 
                 tem_site = bool(lugar.get("websiteUri"))
@@ -213,6 +242,7 @@ def main():
     print(f"\n--- Resultado")
     print(f"Locais unicos varridos : {total_bruto}")
     print(f"Ja possuem site        : {com_site}")
+    print(f"Fora do ramo (pet/saude)  : {descartados}")
     print(f"LEADS NO ICP           : {len(leads)}")
     print(f"  sem telefone         : {sem_telefone} (precisam de enriquecimento)")
     if total_bruto:
