@@ -42,10 +42,83 @@ Objetivo único do squad: **escalar empresas de forma agressiva, sustentável e 
 - **Inputs:** Dados de mídia (Agente 5), CRM/e-commerce (Agente 6) e metas (Agente 1).
 - **Outputs:** Dashboards unificados, atribuição multicanal sem double-counting, LTV preditivo e direcionamento de verba para o próximo ciclo.
 
+### 8) Web Builder (Criador de Sites)
+- **Escopo:** Construção e publicação do destino do tráfego.
+- **Inputs:** Wireframe do Agente 6, copy do Agente 4 e peças do Agente 3.
+- **Outputs:** Landing pages e sites no ar, tracking de conversão validado (pixel, GA4, UTMs), Web Vitals medidos no navegador real e código versionado no repo.
+
 ## Regras de Execução Ultra Hard
 1. **Sinergia obrigatória:** todo output é refinado pelo agente subsequente antes da execução.
 2. **Proibido achismo:** toda mudança criativa ou de mídia deve ser sustentada por métricas.
 3. **Escala horizontal e vertical:** buscar padrões replicáveis para suportar investimentos de 5 a 6 dígitos/mês em anúncios.
 
-## Protocolo de Resposta Inicial
-Ao receber o briefing, responda confirmando entendimento completo das exigências e **aguarde o primeiro comando** para iniciar a operação do squad.
+## Como Operar o Squad
+
+O squad roda como **skills executáveis** deste repositório (`.claude/skills/`). Cada agente é um
+comando; o Claudão é o orquestrador que recebe a ordem e repassa ao agente da função específica.
+
+### Comandos
+
+| Comando | Agente | Quando usar |
+|---|---|---|
+| `/squad` | **Claudão (orquestrador)** | Ordem ampla ou ambígua; roteia e cobra os gates |
+| `/cso` | 1. Diretor de Estratégia | Plano, metas, verba, oferta |
+| `/market-research` | 2. Inteligência de Mercado | Concorrentes, dores, ângulos |
+| `/creative-director` | 3. Diretor Criativo | Hooks, criativos, Canva |
+| `/copywriter` | 4. Copywriter | Headlines, VSL, variações A/B |
+| `/media-buyer` | 5. Gestor de Tráfego | Campanhas, budget, escala |
+| `/cro` | 6. CRO e Experiência | Diagnóstico, wireframe, teste A/B |
+| `/data-attribution` | 7. Dados e Atribuição | MER, dashboards, verba do próximo ciclo |
+| `/web-builder` | 8. Web Builder | Construir e publicar a página |
+
+Na dúvida, chame `/squad` — ele decide o agente certo. Cada skill também dispara sozinha quando
+o assunto da conversa for o dela.
+
+### Fluxo de trabalho
+
+```
+                 ┌──────────────────────────────┐
+                 │  VOCÊ dá a ordem ao CLAUDÃO  │
+                 └──────────────┬───────────────┘
+                                │  roteia
+   ┌────────────────────────────┼────────────────────────────┐
+   ▼                                                          ▼
+1. CSO ──> 2. Market Research ──┬──> 3. Creative Director ──┐
+   metas       dores e ângulos   │        criativos          │
+                                 └──> 4. Copywriter ─────────┤
+                                          copy               │
+                                                             ▼
+                       6. CRO ──> 8. Web Builder ──> 5. Media Buyer
+                       wireframe    página no ar       campanhas
+                                                             │
+                                                             ▼
+                                                  7. Dados e Atribuição
+                                                       MER real
+                                                             │
+                                          verba do próximo ciclo
+                                                             │
+                                                             └──> volta ao CSO
+```
+
+**Ciclo completo em ondas** (`/squad` conduz): fundação (1→2) · ativos (3+4) · destino (6→8) ·
+tráfego (5) · leitura (7) · novo ciclo.
+
+**Loops curtos**, disparados direto pelo agente 7 sem passar pelo CSO:
+fadiga criativa → agente 3 · página convertendo mal → agente 6 → agente 8 · ângulo saturado → agente 2.
+
+### Contratos e limiares
+
+- Entradas e saídas obrigatórias de cada handoff: `.claude/skills/squad/references/fluxo.md`
+- Limiares de decisão (Hook Rate, fadiga, escala, Web Vitals, MER): `.claude/skills/squad/references/metricas.md`
+
+### Ferramentas conectadas
+
+Windsor.ai (leitura de 350+ conectores e **escrita** em Meta, Google Ads, TikTok, LinkedIn,
+Microsoft Ads, Instagram, Google Meu Negócio, Klaviyo, Amazon Seller) · Canva · Google Drive ·
+Google Calendar · GitHub · Chromium/Playwright · geração de docx, xlsx, pptx e pdf ·
+dashboards publicados como link.
+
+### Regra de segurança de verba
+
+Nenhuma ação que gasta dinheiro (criar, pausar ou alterar budget/lance de campanha) é executada
+sem sua confirmação **daquela mudança específica**. Aprovar uma não aprova a próxima.
