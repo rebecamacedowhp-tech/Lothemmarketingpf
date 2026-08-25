@@ -1,0 +1,18 @@
+# Segredos — nunca versionar
+.env
+.env.local
+*.key
+credentials.json
+
+# Saídas de prospecção (contêm dados de leads)
+prospeccao/**/*.csv
+prospeccao/**/*.xlsx
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Sistema
+.DS_Store

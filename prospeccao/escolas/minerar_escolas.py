@@ -106,6 +106,31 @@ def prioridade(nota, avaliacoes):
     return round(nota * math.log10(avaliacoes + 1), 2)
 
 
+def carregar_chave():
+    """Procura a chave na variavel de ambiente e, se nao achar, no .env da pasta do script.
+
+    O .env evita ter que exportar a chave a cada nova janela de terminal, que e onde
+    normalmente ela acaba parando no historico do shell ou num commit.
+    """
+    chave = os.environ.get("GOOGLE_MAPS_API_KEY")
+    if chave:
+        return chave.strip()
+
+    env = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if not os.path.isfile(env):
+        return None
+
+    with open(env, encoding="utf-8") as f:
+        for linha in f:
+            linha = linha.strip()
+            if linha.startswith("#") or "=" not in linha:
+                continue
+            nome, _, valor = linha.partition("=")
+            if nome.strip() == "GOOGLE_MAPS_API_KEY":
+                return valor.strip().strip('"').strip("'")
+    return None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--regioes", nargs="+", required=True,
@@ -118,9 +143,14 @@ def main():
                    help="Mantem tambem quem ja tem site (util para dimensionar o mercado total)")
     args = p.parse_args()
 
-    chave = os.environ.get("GOOGLE_MAPS_API_KEY")
+    chave = carregar_chave()
     if not chave:
-        sys.exit("Defina GOOGLE_MAPS_API_KEY (Places API New habilitada no Google Cloud).")
+        sys.exit(
+            "Chave nao encontrada.\n"
+            "  Opcao 1: crie um arquivo .env nesta pasta com  GOOGLE_MAPS_API_KEY=sua-chave\n"
+            "  Opcao 2: rode  export GOOGLE_MAPS_API_KEY='sua-chave'  antes do script\n"
+            "A chave precisa da 'Places API (New)' habilitada no Google Cloud."
+        )
 
     regioes = args.regioes
     if len(regioes) == 1 and os.path.isfile(regioes[0]):
