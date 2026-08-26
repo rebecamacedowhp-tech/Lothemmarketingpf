@@ -139,6 +139,39 @@ def status_do_site(url):
     return "site"
 
 
+# Sem lista de tipos permitidos, os termos de busca arrastam junto buffet infantil,
+# brecho kids, loja de brinquedo e academia — tudo que o Google associa a crianca.
+# Numa varredura real de Sumare, 2 em cada 3 leads eram desse tipo.
+TIPO_PERMITIDO = (
+    "escola", "pré-escola", "pre-escola", "creche", "instituição educacional",
+    "instituicao educacional", "berçário", "bercario", "jardim de infância",
+)
+
+# "Escola" tambem e auto-escola, escola de natacao, de danca e de idiomas. Sao
+# negocios legitimos, mas nao sao o ICP: o argumento das estrelas e da matricula
+# nao funciona com eles.
+RAMO_FORA = (
+    "auto escola", "autoescola", "auto-escola", "moto escola", "motoescola",
+    "cfc ", "natação", "natacao", "dança", "danca", "ballet", "judô", "judo",
+    "jiu jitsu", "jiu-jitsu", "karate", "karatê", "muay", "crossfit", "academia",
+    "idiomas", "english", "inglês", "ingles", "espanhol", "wizard", "microlins",
+    "ccaa", "fisk", "kumon", "informática", "informatica", "profissionalizante",
+    "música", "musica", "violão", "teatro", "buffet", "festa", "brechó", "brecho",
+    "loja", "outlet", "shopping", "confeitaria", "doceria", "papelaria",
+    "supletivo", "eja ", "faculdade", "universidade", "técnico", "tecnico",
+    "reforço escolar", "reforco escolar", "escolinha de futebol", "futebol",
+)
+
+# Escola publica nao compra site: nao ha dona que decide, nao ha mensalidade, e a
+# comunicacao e da prefeitura. Numa varredura real de Sumare eram 7 das 30
+# primeiras — um quarto da lista de ligacao desperdicado.
+PUBLICA = (
+    "escola municipal", "emei", "e.m.e.i", "emeb", "emef", "escola estadual",
+    "e.e. ", "creche municipal", "cras", "creas", "cemei", "prefeitura",
+    "municipal de educação", "municipal de educacao",
+)
+
+
 def parece_escola(lugar):
     """Descarta o que o termo de busca pegou por engano."""
     nome = (lugar.get("displayName", {}).get("text") or "").lower()
@@ -147,6 +180,15 @@ def parece_escola(lugar):
     if any(t in nome for t in NOME_PROIBIDO):
         return False
     if any(t in tipo for t in TIPO_PROIBIDO):
+        return False
+    if any(t in nome for t in RAMO_FORA):
+        return False
+    if any(t in nome for t in PUBLICA):
+        return False
+    # O tipo do Google e o sinal mais confiavel; sem ele, so o nome decide.
+    if tipo and not any(t in tipo for t in TIPO_PERMITIDO):
+        return False
+    if not tipo and not any(t in nome for t in ("escola", "creche", "berçário", "bercario", "cei ", "e.e.i", "eei ")):
         return False
     return True
 
