@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Nunito Sans', 'Trebuchet MS', system-ui, sans-serif; }
+    a { color: #1B57B0; } a:hover { color: #123A7A; }
+    .mono-ball path { stroke: currentColor; stroke-width: 4; stroke-linejoin: round; }
+  </style>
+</helmet>
+
+<div style="width: 1240px; height: 760px; box-sizing: border-box; background: #FBF7F0; padding: 56px; display: flex; flex-direction: column; gap: 30px;">
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.28em; color: #F58220; text-transform: uppercase;">Versões restritas</div>
+    <div style="font-family: 'Fredoka', 'Trebuchet MS', sans-serif; font-size: 34px; font-weight: 600; color: #123A7A;">Monocromática, negativa e uma cor</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; flex-grow: 1;">
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="flex-grow: 1; border-radius: 24px; background: #FFFFFF; box-shadow: 0 18px 40px -26px rgba(18,58,122,0.4); display: flex; align-items: center; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; color: #1A1A1A;">
+          <svg viewBox="0 0 100 100" width="96" height="96" class="mono-ball" fill="none">
+            <circle cx="50" cy="50" r="46" fill="#1A1A1A"></circle>
+            <g stroke="#FFFFFF" stroke-width="4">
+              <line x1="50" y1="6" x2="50" y2="94"></line>
+              <line x1="12" y1="28" x2="88" y2="72"></line>
+              <line x1="12" y1="72" x2="88" y2="28"></line>
+            </g>
+            <circle cx="50" cy="50" r="13" fill="#FFFFFF"></circle>
+          </svg>
+          <div style="font-family: 'Fredoka', 'Trebuchet MS', sans-serif; font-size: 46px; font-weight: 600; color: #1A1A1A;">Tindolelê</div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.3em; color: #1A1A1A; text-transform: uppercase; text-indent: 0.3em;">Construindo Caminhos</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: #123A7A; text-transform: uppercase;">Preto — 1 cor</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="flex-grow: 1; border-radius: 24px; background: #1A1A1A; display: flex; align-items: center; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+          <svg viewBox="0 0 100 100" width="96" height="96" fill="none">
+            <circle cx="50" cy="50" r="46" fill="#FFFFFF"></circle>
+            <g stroke="#1A1A1A" stroke-width="4">
+              <line x1="50" y1="6" x2="50" y2="94"></line>
+              <line x1="12" y1="28" x2="88" y2="72"></line>
+              <line x1="12" y1="72" x2="88" y2="28"></line>
+            </g>
+            <circle cx="50" cy="50" r="13" fill="#1A1A1A"></circle>
+          </svg>
+          <div style="font-family: 'Fredoka', 'Trebuchet MS', sans-serif; font-size: 46px; font-weight: 600; color: #FFFFFF;">Tindolelê</div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.3em; color: rgba(255,255,255,0.85); text-transform: uppercase; text-indent: 0.3em;">Construindo Caminhos</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: #123A7A; text-transform: uppercase;">Negativa</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="flex-grow: 1; border-radius: 24px; background: #FFC220; display: flex; align-items: center; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+          <svg viewBox="0 0 100 100" width="96" height="96" fill="none">
+            <circle cx="50" cy="50" r="46" fill="#123A7A"></circle>
+            <g stroke="#FFC220" stroke-width="4">
+              <line x1="50" y1="6" x2="50" y2="94"></line>
+              <line x1="12" y1="28" x2="88" y2="72"></line>
+              <line x1="12" y1="72" x2="88" y2="28"></line>
+            </g>
+            <circle cx="50" cy="50" r="13" fill="#FFC220"></circle>
+          </svg>
+          <div style="font-family: 'Fredoka', 'Trebuchet MS', sans-serif; font-size: 46px; font-weight: 600; color: #123A7A;">Tindolelê</div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.3em; color: #123A7A; text-transform: uppercase; text-indent: 0.3em;">Construindo Caminhos</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: #123A7A; text-transform: uppercase;">Azul sobre amarelo</div>
+    </div>
+
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 18px; padding: 20px 26px; background: #FFFFFF; border-radius: 20px;">
+    <div style="width: 8px; height: 34px; border-radius: 4px; background: #E8402A;"></div>
+    <div style="font-size: 15px; font-weight: 600; color: rgba(18,58,122,0.8); line-height: 1.5;">Use a monocromática em bordado, carimbo, gravação e fax/xerox. A bola vira 3 linhas cruzadas — mantém a leitura da roda mesmo sem cor.</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
