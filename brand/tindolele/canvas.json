@@ -1,11 +1,56 @@
 {
   "artboards": [
-    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1240, "h": 820, "title": "Logo principal" },
-    { "file": "Vertical.dc.html", "x": 1360, "y": 0, "w": 820, "h": 900, "title": "Versão vertical" },
-    { "file": "Icone.dc.html", "x": 0, "y": 1020, "w": 900, "h": 720, "title": "Ícone e avatar" },
-    { "file": "Mono.dc.html", "x": 1000, "y": 1020, "w": 1240, "h": 760, "title": "Monocromática" },
-    { "file": "Paleta.dc.html", "x": 0, "y": 1900, "w": 1240, "h": 880, "title": "Cores e tipografia" },
-    { "file": "Aplicacoes.dc.html", "x": 1360, "y": 1900, "w": 1440, "h": 940, "title": "Aplicações" }
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1240,
+      "h": 820,
+      "title": "Logo principal"
+    },
+    {
+      "file": "Vertical.dc.html",
+      "x": 1360,
+      "y": 0,
+      "w": 820,
+      "h": 900,
+      "title": "Versão vertical"
+    },
+    {
+      "file": "Icone.dc.html",
+      "x": 0,
+      "y": 1020,
+      "w": 900,
+      "h": 720,
+      "title": "Ícone e avatar"
+    },
+    {
+      "file": "Mono.dc.html",
+      "x": 1000,
+      "y": 1020,
+      "w": 1240,
+      "h": 760,
+      "title": "Monocromática"
+    },
+    {
+      "file": "Paleta.dc.html",
+      "x": 0,
+      "y": 1900,
+      "w": 1240,
+      "h": 900,
+      "title": "Cores e tipografia"
+    },
+    {
+      "file": "Aplicacoes.dc.html",
+      "x": 1360,
+      "y": 1900,
+      "w": 1440,
+      "h": 940,
+      "title": "Aplicações"
+    }
   ],
-  "launch": { "view": "focused", "file": "Main.dc.html" }
+  "launch": {
+    "view": "focused",
+    "file": "Main.dc.html"
+  }
 }
