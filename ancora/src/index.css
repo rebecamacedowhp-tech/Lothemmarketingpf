@@ -74,6 +74,10 @@ a {
   z-index: 0;
 }
 
+.atmosphere * {
+  pointer-events: none;
+}
+
 .atmosphere__orb {
   position: absolute;
   border-radius: 50%;
@@ -232,6 +236,7 @@ a {
   background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.18), transparent 70%);
   transform: translateX(-120%);
   animation: sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes sheen {
