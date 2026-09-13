@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion'
 import { exercises, type ExerciseId } from '../data/exercises'
+import type { TabId } from './TabBar'
 
 type HomeProps = {
+  entryCount: number
+  triggerCount: number
   onCrisis: () => void
   onOpenExercise: (id: ExerciseId) => void
+  onOpenTab: (tab: TabId) => void
 }
 
 const initials: Record<ExerciseId, string> = {
@@ -15,7 +19,13 @@ const initials: Record<ExerciseId, string> = {
   distract: 'D',
 }
 
-export function Home({ onCrisis, onOpenExercise }: HomeProps) {
+export function Home({
+  entryCount,
+  triggerCount,
+  onCrisis,
+  onOpenExercise,
+  onOpenTab,
+}: HomeProps) {
   return (
     <div>
       <header className="topbar">
@@ -55,6 +65,21 @@ export function Home({ onCrisis, onOpenExercise }: HomeProps) {
         >
           <span>Estou em crise — me ajude agora</span>
         </motion.button>
+      </section>
+
+      <section className="shortcut-row" aria-label="Atalhos">
+        <button type="button" className="shortcut" onClick={() => onOpenTab('gatilhos')}>
+          <span className="shortcut__value">{triggerCount}</span>
+          <span className="shortcut__label">gatilhos mapeados</span>
+        </button>
+        <button type="button" className="shortcut" onClick={() => onOpenTab('diario')}>
+          <span className="shortcut__value">{entryCount}</span>
+          <span className="shortcut__label">registros no diário</span>
+        </button>
+        <button type="button" className="shortcut shortcut--accent" onClick={() => onOpenTab('terapia')}>
+          <span className="shortcut__value" aria-hidden="true">↗</span>
+          <span className="shortcut__label">levar para a terapia</span>
+        </button>
       </section>
 
       <section className="section" aria-labelledby="tools-title">
