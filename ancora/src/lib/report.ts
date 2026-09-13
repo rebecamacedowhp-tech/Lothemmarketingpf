@@ -108,8 +108,9 @@ export function buildReportText(
   const stats = buildStats(selected, triggers)
   const lines: string[] = []
 
-  lines.push('RELATÓRIO ÂNCORA — REGISTRO DE CRISES E GATILHOS')
-  lines.push('='.repeat(52))
+  lines.push('RELATÓRIO ÂNCORA')
+  lines.push('Registro de crises e gatilhos')
+  lines.push('='.repeat(40))
   if (options.patientName.trim()) {
     lines.push(`Paciente: ${options.patientName.trim()}`)
   }
@@ -118,7 +119,7 @@ export function buildReportText(
   lines.push('')
 
   lines.push('RESUMO')
-  lines.push('-'.repeat(52))
+  lines.push('-'.repeat(40))
   lines.push(`Episódios registrados: ${stats.total}`)
   if (stats.averageBefore !== null) {
     lines.push(`Intensidade média no início: ${stats.averageBefore}/10`)
@@ -137,7 +138,7 @@ export function buildReportText(
   const section = (title: string, items: { label: string; count: number }[]) => {
     if (items.length === 0) return
     lines.push(title)
-    lines.push('-'.repeat(52))
+    lines.push('-'.repeat(40))
     for (const item of items) {
       lines.push(`• ${item.label} — ${item.count}x`)
     }
@@ -150,7 +151,7 @@ export function buildReportText(
   section('HABILIDADES MAIS USADAS', stats.topExercises)
 
   lines.push('EPISÓDIOS')
-  lines.push('-'.repeat(52))
+  lines.push('-'.repeat(40))
   if (selected.length === 0) {
     lines.push('Nenhum episódio registrado neste período.')
   }
@@ -182,7 +183,7 @@ export function buildReportText(
     lines.push('')
   }
 
-  lines.push('-'.repeat(52))
+  lines.push('-'.repeat(40))
   lines.push(
     'Gerado pelo app Âncora. Material de apoio ao acompanhamento clínico; não substitui avaliação profissional.',
   )

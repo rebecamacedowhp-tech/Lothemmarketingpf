@@ -615,7 +615,7 @@ a {
 
 @media (max-width: 480px) {
   .app-shell {
-    padding: 1rem 0.9rem 2rem;
+    padding: 1rem 0.9rem calc(6rem + env(safe-area-inset-bottom, 0px));
   }
 
   .panel {
