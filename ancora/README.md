@@ -1,15 +1,26 @@
 # Âncora
 
-App de autorregulação emocional para momentos de crise — com exercícios guiados inspirados em habilidades de DBT (Terapia Comportamental Dialética), úteis para pessoas com transtorno borderline e para qualquer pessoa em intensa ativação emocional.
+App de autorregulação emocional para pessoas com transtorno de personalidade borderline (e qualquer pessoa em intensa ativação emocional). Reúne exercícios guiados inspirados em habilidades de DBT, mapeamento de gatilhos e um relatório pronto para levar à terapia.
 
 ## O que tem
 
-- **Modo crise** com escala de intensidade e sugestões prioritárias
-- **TIPP** — temperatura, exercício, respiração, relaxamento
-- **Aterramento 5-4-3-2-1**
-- **Respiração guiada** (inspire 4 / segure 2 / expire 6)
-- **STOP** — pausar antes do impulso
-- **Autocuidado sensorial** e **distração ACCEPTS**
+**Na crise**
+- Botão de acesso imediato: “Estou em crise — me ajude agora”
+- Escala de intensidade 0–10 que prioriza as habilidades certas para o momento
+- Exercícios guiados: **TIPP**, **aterramento 5-4-3-2-1**, **respiração ritmada**, **STOP**, **autocuidado sensorial** e **distração ACCEPTS**
+
+**Entre as crises**
+- **Gatilhos**: catálogo pessoal por categoria (relacional, interno, corpo, ambiente, rotina), com sugestões prontas e contagem de quantas crises cada gatilho apareceu
+- **Diário**: registro de episódio com intensidade antes/depois, gatilhos, emoções, impulsos (contidos ou executados), habilidades usadas e texto livre
+
+**Para a terapia**
+- Relatório com resumo do período (7/30/90 dias ou histórico completo): média de intensidade, redução após os exercícios, gatilhos/emoções/impulsos mais frequentes e lista de episódios
+- Exportar por: copiar, baixar `.txt`, compartilhar, imprimir/PDF ou enviar por e-mail
+- Opção de ocultar os textos pessoais do relatório
+
+## Privacidade
+
+Todos os dados ficam em `localStorage`, apenas no aparelho. O app não envia nada para servidores — a pessoa decide quando e para quem compartilhar.
 
 > Âncora **não substitui** terapia, psiquiatria ou emergência. Em risco à vida, procure ajuda imediata. No Brasil: **CVV 188**.
 
@@ -32,4 +43,4 @@ npm run preview
 
 - React + TypeScript + Vite
 - Framer Motion
-- CSS próprio (sem framework)
+- CSS próprio (sem framework), instalável como PWA
