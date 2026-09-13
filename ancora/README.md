@@ -39,6 +39,20 @@ npm run build
 npm run preview
 ```
 
+## Deploy
+
+O `vercel.json` na raiz do repositório já aponta para este app, então o projeto Vercel ligado à
+raiz publica o Âncora sem configuração adicional:
+
+| Campo | Valor |
+| --- | --- |
+| Install | `npm install --prefix ancora` |
+| Build | `cd ancora && npm run build` |
+| Output | `ancora/dist` |
+
+Se preferir um projeto Vercel dedicado, crie um novo projeto com **Root Directory** = `ancora`; o
+`ancora/vercel.json` cuida do resto.
+
 ## Stack
 
 - React + TypeScript + Vite
