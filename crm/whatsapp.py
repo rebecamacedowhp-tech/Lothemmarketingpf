@@ -42,6 +42,8 @@ def _texto_da_mensagem(m: dict) -> str:
         return escolha.get("title", "")
     legenda = (m.get(tipo) or {}).get("caption") if isinstance(m.get(tipo), dict) else None
     base = DESCRICAO_MIDIA.get(tipo, f"[mensagem do tipo {tipo}]")
+    if tipo == "document" and m["document"].get("filename"):
+        base = f'[cliente enviou o documento "{m["document"]["filename"]}" — anexado ao card]'
     return f"{base} {legenda}" if legenda else base
 
 
@@ -59,13 +61,21 @@ def extrair_eventos(payload: dict) -> list[dict]:
             valor = change.get("value", {})
             nomes = {c.get("wa_id"): c.get("profile", {}).get("name", "") for c in valor.get("contacts", [])}
             for m in valor.get("messages", []):
-                eventos.append({
+                ev = {
                     "telefone": m["from"],
                     "nome_whatsapp": nomes.get(m["from"], ""),
                     "texto": _texto_da_mensagem(m),
                     "wa_msg_id": m.get("id"),
                     "autor": "cliente",
-                })
+                }
+                if m.get("type") in ("document", "image"):
+                    midia = m[m["type"]]
+                    ev["midia"] = {
+                        "id": midia.get("id"),
+                        "mime": midia.get("mime_type", ""),
+                        "nome": midia.get("filename") or f'{m["type"]}-{m.get("id", "")[-8:]}',
+                    }
+                eventos.append(ev)
             for m in valor.get("message_echoes", []):
                 eventos.append({
                     "telefone": m.get("to", ""),
@@ -96,3 +106,15 @@ async def enviar_texto(telefone: str, texto: str) -> str | None:
         log.error("Falha ao enviar WhatsApp para %s (%s): %s", telefone, r.status_code, r.text)
         raise RuntimeError(f"WhatsApp recusou o envio ({r.status_code}): {r.text[:300]}")
     return (r.json().get("messages") or [{}])[0].get("id")
+
+
+async def baixar_midia(media_id: str) -> tuple[bytes, str]:
+    """Baixa um documento/imagem enviado pelo cliente. Devolve (conteúdo, mime)."""
+    cab = {"Authorization": f"Bearer {config.WHATSAPP_TOKEN}"}
+    async with httpx.AsyncClient(timeout=60) as http:
+        info = await http.get(f"https://graph.facebook.com/{config.GRAPH_API_VERSION}/{media_id}", headers=cab)
+        info.raise_for_status()
+        dados = info.json()
+        arquivo = await http.get(dados["url"], headers=cab)
+        arquivo.raise_for_status()
+    return arquivo.content, dados.get("mime_type", "")

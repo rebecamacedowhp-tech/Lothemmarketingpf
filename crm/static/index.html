@@ -49,6 +49,7 @@ button.sec{background:transparent;color:var(--txt);border:1px solid var(--borda)
 .msg.vendedor{background:#ede9fe;color:#3b0764;align-self:flex-end}
 .enviar{display:flex;gap:8px}
 .hist{font-size:12px;color:var(--sub);margin:0;padding-left:16px}
+.hist a{color:var(--prim)}
 #simulador{display:none;position:fixed;bottom:16px;left:16px;width:min(340px,calc(100% - 32px));background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:9;gap:8px;flex-direction:column}
 #simulador.aberto{display:flex}
 @media (max-width:640px){.grade{grid-template-columns:1fr}#busca{max-width:none}}
@@ -94,6 +95,10 @@ button.sec{background:transparent;color:var(--txt);border:1px solid var(--borda)
       </div>
     </div>
     <div class="bloco">
+      <h3>Documentos</h3>
+      <ul class="hist" id="p-anexos" style="list-style:none;padding:0"></ul>
+    </div>
+    <div class="bloco">
       <h3>Histórico</h3>
       <ul class="hist" id="p-hist"></ul>
     </div>
@@ -110,12 +115,8 @@ button.sec{background:transparent;color:var(--txt);border:1px solid var(--borda)
 </div>
 
 <script>
-const CAMPOS = [
-  ["nome","Nome"],["telefone","Telefone WhatsApp"],["dor","Dor do cliente",true],
-  ["empresa","Empresa"],["segmento","Segmento"],["orcamento","Investimento em anúncios"],
-  ["faturamento","Faturamento"],["decisor","É decisor?"],["urgencia","Urgência"],
-  ["vendedor","Vendedor responsável"],["lista","Lista"]
-];
+const FIXOS = [["nome","Nome"],["telefone","Telefone WhatsApp"],["dor","Dor do cliente",true]];
+const FINAIS = [["vendedor","Vendedor responsável"],["lista","Lista"]];
 let cfg = null, leads = [], aberto = null, arrastando = null;
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -156,7 +157,7 @@ function desenhar() {
       c.ondragstart = () => arrastando = x.id;
       c.onclick = () => abrir(x.id);
       c.innerHTML = `<b>${esc(x.nome || x.nome_whatsapp || "Sem nome")}</b>
-        <span class="tel">${esc(x.telefone)}${x.empresa ? " · " + esc(x.empresa) : ""}</span>
+        <span class="tel">${esc(x.telefone)}${x.ficha.empresa ? " · " + esc(x.ficha.empresa) : ""}</span>
         <div class="dor">${x.dor ? "🎯 " + esc(x.dor) : "<i style='color:var(--sub)'>Dor ainda não identificada</i>"}</div>
         <div class="rodape">
           ${x.temperatura ? `<span class="pill ${x.temperatura}">${x.temperatura}</span>` : ""}
@@ -179,13 +180,18 @@ async function abrir(id) {
   $("p-proximo").textContent = d.proximo_passo || "—";
   $("p-ia").textContent = d.ia_ativa ? "🤖 IA ligada" : "👤 IA pausada";
   $("p-ia").onclick = async () => { await api(`/api/leads/${id}`, {method:"PATCH", body: JSON.stringify({ia_ativa: !d.ia_ativa})}); abrir(id); carregar(); };
-  $("p-campos").innerHTML = CAMPOS.map(([k, rot, inteira]) => {
-    let campo;
-    if (k === "lista") campo = `<select data-k="lista">${cfg.listas.map(l => `<option value="${l.id}" ${l.id === d.lista ? "selected" : ""}>${esc(l.nome)}</option>`).join("")}</select>`;
-    else if (k === "dor") campo = `<textarea data-k="dor" rows="3">${esc(d.dor)}</textarea>`;
-    else campo = `<input data-k="${k}" value="${esc(d[k])}" ${k === "telefone" ? "readonly" : ""}>`;
-    return `<label class="${inteira ? "inteira" : ""}">${rot}${campo}</label>`;
-  }).join("");
+  const html = [];
+  for (const [k, rot, inteira] of FIXOS) {
+    const campo = k === "dor"
+      ? `<textarea data-k="dor" rows="3">${esc(d.dor)}</textarea>`
+      : `<input data-k="${k}" value="${esc(d[k])}" ${k === "telefone" ? "readonly" : ""}>`;
+    html.push(`<label class="${inteira ? "inteira" : ""}">${rot}${campo}</label>`);
+  }
+  for (const c of cfg.campos) html.push(`<label title="${esc(c.instrucao)}">${esc(c.rotulo)}<input data-f="${c.id}" value="${esc(d.ficha[c.id])}"></label>`);
+  html.push(`<label>Vendedor responsável<input data-k="vendedor" value="${esc(d.vendedor)}"></label>`);
+  html.push(`<label>Lista<select data-k="lista">${cfg.listas.map(l => `<option value="${l.id}" ${l.id === d.lista ? "selected" : ""}>${esc(l.nome)}</option>`).join("")}</select></label>`);
+  $("p-campos").innerHTML = html.join("");
+  $("p-anexos").innerHTML = d.anexos.map(a => `<li><a href="/api/anexos/${a.id}" target="_blank">📎 ${esc(a.nome_arquivo)}</a> <span class="status">${hora(a.criado_em)}</span></li>`).join("") || "<li class='status'>Nenhum arquivo recebido ainda (ex.: Contrato Social)</li>";
   $("p-chat").innerHTML = d.mensagens.map(m => `<div class="msg ${m.autor}"><small>${{cliente:"Cliente",ia:cfg.nome_sdr + " (IA)",vendedor:"Vendedor"}[m.autor]} · ${hora(m.criado_em)}</small>${esc(m.texto)}</div>`).join("") || "<span class='status'>Sem mensagens</span>";
   $("p-chat").scrollTop = 1e9;
   $("p-hist").innerHTML = d.historico.map(h => `<li>${hora(h.criado_em)} — ${esc(h.descricao)}</li>`).join("");
@@ -194,8 +200,9 @@ async function abrir(id) {
 function fechar() { aberto = null; $("painel").classList.remove("aberto"); }
 
 $("p-salvar").onclick = async () => {
-  const dados = {};
+  const dados = {ficha: {}};
   $("p-campos").querySelectorAll("[data-k]").forEach(el => { if (el.dataset.k !== "telefone") dados[el.dataset.k] = el.value; });
+  $("p-campos").querySelectorAll("[data-f]").forEach(el => { dados.ficha[el.dataset.f] = el.value; });
   await api(`/api/leads/${aberto}`, {method:"PATCH", body: JSON.stringify(dados)});
   abrir(aberto); carregar();
 };

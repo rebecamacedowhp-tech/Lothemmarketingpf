@@ -13,13 +13,14 @@ import app as crm  # noqa: E402
 import config  # noqa: E402
 import db  # noqa: E402
 
+FICHA_VAZIA = {c: "" for c in config.CAMPOS_IDS}
 RESULTADO_BASE = {
-    "resposta": "Oi Ana! Me conta, hoje vocês já investem em anúncios?",
-    "nome": "Ana", "dor": "Gasta no Meta Ads e não vende", "empresa": "Loja da Ana",
-    "segmento": "moda", "orcamento": "", "faturamento": "", "decisor": "", "urgencia": "",
+    "resposta": "Oi Ana! Quanto tempo seu CNPJ está ativo?",
+    "nome": "Ana", "dor": "Limite do banco acabou; precisa de capital de giro para estoque",
+    "ficha": {**FICHA_VAZIA, "empresa": "Loja da Ana", "faturamento": "R$ 80 mil/mês bruto"},
     "lista": "qualificando", "temperatura": "morno", "score": 40,
-    "resumo": "Ana, dona da Loja da Ana (moda). Dor: anúncios sem venda.",
-    "proximo_passo": "Descobrir orçamento", "transferir_para_humano": False,
+    "resumo": "Ana, dona da Loja da Ana. Limite acabou, busca capital de giro.",
+    "proximo_passo": "Descobrir tempo de CNPJ", "transferir_para_humano": False,
 }
 
 
@@ -82,7 +83,8 @@ def test_mensagem_do_cliente_gera_lead_resposta_e_ficha(cli):
     asyncio.run(crm.processar_lead(lead["id"]))
     d = cli.get(f"/api/leads/{lead['id']}").json()
     assert d["telefone"] == "5511988887777"
-    assert d["nome"] == "Ana" and d["dor"] == "Gasta no Meta Ads e não vende"
+    assert d["nome"] == "Ana" and d["dor"].startswith("Limite do banco")
+    assert d["ficha"]["empresa"] == "Loja da Ana" and d["ficha"]["faturamento"] == "R$ 80 mil/mês bruto"
     assert d["lista"] == "qualificando"
     assert "Loja da Ana" in d["resumo"]
     assert [m["autor"] for m in d["mensagens"]] == ["cliente", "ia"]
@@ -96,11 +98,25 @@ def test_webhook_duplicado_nao_duplica_mensagem(cli):
     assert [m["autor"] for m in db.listar_mensagens(lead["id"])].count("cliente") == 1
 
 
-def test_lead_quente_vai_para_vendedor_e_ia_pausa(cli):
-    cli.resultado.update(lista="quente", temperatura="quente", score=90, transferir_para_humano=True,
-                         resposta="Perfeito! Um especialista vai te chamar aqui em instantes.")
-    d = cli.post("/api/simular", json={"telefone": "5511", "texto": "Quero começar semana que vem"}).json()
-    assert d["lista"] == "quente"
+def test_campo_vazio_da_ia_nao_apaga_ficha(cli):
+    cli.post("/api/simular", json={"telefone": "5599", "texto": "oi"})
+    cli.resultado["ficha"] = dict(FICHA_VAZIA)
+    d = cli.post("/api/simular", json={"telefone": "5599", "texto": "ok"}).json()
+    assert d["ficha"]["empresa"] == "Loja da Ana"
+
+
+def test_qualificado_ia_continua_atendendo(cli):
+    cli.resultado.update(lista="qualificado", temperatura="quente", score=85,
+                         resposta="Vou deixar aqui o link pra você escolher o horário.")
+    d = cli.post("/api/simular", json={"telefone": "5566", "texto": "Faturo 80 mil, CNPJ de 3 anos"}).json()
+    assert d["lista"] == "qualificado" and d["ia_ativa"] == 1
+
+
+def test_transferir_para_humano_pausa_ia(cli):
+    cli.resultado.update(transferir_para_humano=True,
+                         resposta="Vou chamar alguém do time pra falar com você por aqui.")
+    d = cli.post("/api/simular", json={"telefone": "5511", "texto": "Quero falar com uma pessoa"}).json()
+    assert d["lista"] == "humano"
     assert d["ia_ativa"] == 0
     assert d["mensagens"][-1]["autor"] == "ia"  # o aviso de passagem foi enviado
     # Nova mensagem do cliente: IA não responde mais, só atualiza o resumo
@@ -111,9 +127,9 @@ def test_lead_quente_vai_para_vendedor_e_ia_pausa(cli):
 
 def test_ia_nao_tira_lead_de_lista_humana(cli):
     lead = cli.post("/api/simular", json={"telefone": "5522", "texto": "oi"}).json()
-    cli.patch(f"/api/leads/{lead['id']}", json={"lista": "atendimento"})
+    cli.patch(f"/api/leads/{lead['id']}", json={"lista": "fechado"})
     d = cli.post("/api/simular", json={"telefone": "5522", "texto": "e aí?"}).json()
-    assert d["lista"] == "atendimento" and d["ia_ativa"] == 0
+    assert d["lista"] == "fechado" and d["ia_ativa"] == 0
 
 
 def test_vendedor_envia_pelo_crm_pausa_ia(cli):
@@ -138,6 +154,36 @@ def test_mensagem_do_celular_do_vendedor_pausa_ia(cli):
 def test_prompt_inclui_treinamento_e_listas():
     import sdr
     p = sdr.montar_system_prompt()
-    assert "<treinamento>" in p and "qualificando" in p and "atendimento" not in [l for l in config.LISTAS_DA_IA]
+    assert "<treinamento>" in p and "ICP" in p and "qualificando" in p
+    assert "humano" not in config.LISTAS_DA_IA
     s = sdr._schema()
     assert s["properties"]["lista"]["enum"] == config.LISTAS_DA_IA
+    assert s["properties"]["ficha"]["required"] == config.CAMPOS_IDS
+
+
+def test_contrato_social_vira_anexo(cli, monkeypatch, tmp_path):
+    monkeypatch.setattr(config, "ANEXOS_DIR", tmp_path / "anexos")
+
+    async def fake_baixar(media_id):
+        return b"%PDF-1.4 contrato", "application/pdf"
+
+    monkeypatch.setattr(crm.whatsapp, "baixar_midia", fake_baixar)
+    doc = {"entry": [{"changes": [{"field": "messages", "value": {
+        "contacts": [{"wa_id": "5577", "profile": {"name": "Bia"}}],
+        "messages": [{"from": "5577", "id": "wamid.DOC", "type": "document",
+                      "document": {"id": "m1", "filename": "Contrato Social.pdf", "mime_type": "application/pdf"}}],
+    }}]}]}
+    cli.post("/webhook", json=doc)
+    lead = [l for l in db.listar_leads() if l["telefone"] == "5577"][0]
+    d = cli.get(f"/api/leads/{lead['id']}").json()
+    assert d["anexos"][0]["nome_arquivo"] == "Contrato Social.pdf"
+    assert "Contrato Social.pdf" in d["mensagens"][0]["texto"]
+    r = cli.get(f"/api/anexos/{d['anexos'][0]['id']}")
+    assert r.content == b"%PDF-1.4 contrato"
+
+
+def test_editar_ficha_pelo_painel(cli):
+    lead = cli.post("/api/simular", json={"telefone": "5588", "texto": "oi"}).json()
+    d = cli.patch(f"/api/leads/{lead['id']}", json={"ficha": {"tempo_cnpj": "3 anos", "inexistente": "x"}}).json()
+    assert d["ficha"]["tempo_cnpj"] == "3 anos" and d["ficha"]["empresa"] == "Loja da Ana"
+    assert "inexistente" not in d["ficha"]

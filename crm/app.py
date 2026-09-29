@@ -62,7 +62,12 @@ async def processar_lead(lead_id: int) -> dict | None:
             return None
 
         # 1) Campos preenchidos pela IA (só sobrescreve quando ela trouxe algo)
-        campos = {c: resultado[c].strip() for c in db.CAMPOS_IA if (resultado.get(c) or "").strip()}
+        campos = {c: resultado[c].strip() for c in ("nome", "dor") if (resultado.get(c) or "").strip()}
+        ficha = dict(lead["ficha"])
+        for c, v in (resultado.get("ficha") or {}).items():
+            if c in config.CAMPOS_IDS and (v or "").strip():
+                ficha[c] = v.strip()
+        campos["ficha"] = ficha
         campos["resumo"] = resultado.get("resumo", lead["resumo"])
         campos["proximo_passo"] = resultado.get("proximo_passo", lead["proximo_passo"])
         campos["temperatura"] = resultado.get("temperatura", lead["temperatura"])
@@ -124,6 +129,23 @@ def registrar_evento(ev: dict) -> tuple[dict, bool]:
     return lead, nova
 
 
+async def guardar_midia(lead_id: int, midia: dict, wa_msg_id: str | None) -> None:
+    """Baixa o documento/imagem do cliente (ex.: Contrato Social) e anexa ao card do lead."""
+    try:
+        conteudo, mime = await whatsapp.baixar_midia(midia["id"])
+    except Exception as e:  # noqa: BLE001 - qualquer falha de download só vira registro no histórico
+        log.warning("Não consegui baixar a mídia %s: %s", midia.get("id"), e)
+        db.registrar(lead_id, f'Não foi possível baixar o arquivo "{midia["nome"]}" do WhatsApp')
+        return
+    pasta = config.ANEXOS_DIR / str(lead_id)
+    pasta.mkdir(parents=True, exist_ok=True)
+    nome = "".join(ch for ch in midia["nome"] if ch.isalnum() or ch in "._- ") or "arquivo"
+    caminho = pasta / f"{(wa_msg_id or 'x')[-10:]}-{nome}"
+    caminho.write_bytes(conteudo)
+    db.salvar_anexo(lead_id, midia["nome"], str(caminho), mime or midia.get("mime", ""))
+    db.registrar(lead_id, f'Arquivo recebido e anexado: {midia["nome"]}')
+
+
 # ---------------------------------------------------------------------------
 # Webhook do WhatsApp
 # ---------------------------------------------------------------------------
@@ -145,6 +167,8 @@ async def receber_webhook(request: Request):
         lead, nova = registrar_evento(ev)
         if not nova:
             continue
+        if ev.get("midia"):
+            await guardar_midia(lead["id"], ev["midia"], ev.get("wa_msg_id"))
         if ev["autor"] == "vendedor" and lead["ia_ativa"]:
             # Alguém respondeu pelo celular: o humano assumiu.
             db.atualizar_lead(lead["id"], {"ia_ativa": 0})
@@ -159,12 +183,7 @@ async def receber_webhook(request: Request):
 class AtualizacaoLead(BaseModel):
     nome: str | None = None
     dor: str | None = None
-    empresa: str | None = None
-    segmento: str | None = None
-    orcamento: str | None = None
-    faturamento: str | None = None
-    decisor: str | None = None
-    urgencia: str | None = None
+    ficha: dict[str, str] | None = None
     lista: str | None = None
     ia_ativa: bool | None = None
     vendedor: str | None = None
@@ -185,7 +204,8 @@ class Simulacao(BaseModel):
 
 @app.get("/api/config", dependencies=[Depends(autenticado)])
 async def ver_config():
-    return {"listas": config.LISTAS, "empresa": config.SDR["empresa"], "nome_sdr": config.SDR["nome_sdr"],
+    return {"listas": config.LISTAS, "campos": config.CAMPOS,
+            "empresa": config.SDR["empresa"], "nome_sdr": config.SDR["nome_sdr"],
             "whatsapp_conectado": bool(config.WHATSAPP_TOKEN and config.WHATSAPP_PHONE_NUMBER_ID)}
 
 
@@ -199,7 +219,16 @@ async def detalhe(lead_id: int):
     lead = db.obter_lead(lead_id)
     if not lead:
         raise HTTPException(404, "Lead não encontrado")
-    return {**lead, "mensagens": db.listar_mensagens(lead_id), "historico": db.listar_historico(lead_id)}
+    return {**lead, "mensagens": db.listar_mensagens(lead_id), "historico": db.listar_historico(lead_id),
+            "anexos": db.listar_anexos(lead_id)}
+
+
+@app.get("/api/anexos/{anexo_id}", dependencies=[Depends(autenticado)])
+async def baixar_anexo(anexo_id: int):
+    a = db.obter_anexo(anexo_id)
+    if not a:
+        raise HTTPException(404, "Anexo não encontrado")
+    return FileResponse(a["caminho"], filename=a["nome_arquivo"], media_type=a["mime"] or None)
 
 
 @app.patch("/api/leads/{lead_id}", dependencies=[Depends(autenticado)])
@@ -208,6 +237,8 @@ async def atualizar(lead_id: int, dados: AtualizacaoLead):
     if not lead:
         raise HTTPException(404, "Lead não encontrado")
     campos = dados.model_dump(exclude_none=True)
+    if "ficha" in campos:
+        campos["ficha"] = {**lead["ficha"], **{k: v for k, v in campos["ficha"].items() if k in config.CAMPOS_IDS}}
     if "lista" in campos:
         if campos["lista"] not in config.LISTAS_POR_ID:
             raise HTTPException(400, "Lista inexistente")

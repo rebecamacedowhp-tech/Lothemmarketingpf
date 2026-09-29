@@ -1,26 +1,32 @@
-# CRM Lothem + SDR IA no WhatsApp Business
+# CRM Lothem Inteligência em Crédito + SDR IA no WhatsApp Business
 
-CRM em que uma **SDR com IA (Claude)** atende todo lead que chega no WhatsApp Business:
+CRM em que uma **SDR com IA (Claude)** atende todo lead que chega no WhatsApp Business, seguindo o
+treinamento oficial da Lothem (Formação de SDR, POP 01 e Manual do SDR PJ):
 
-1. **Responde na hora** e conduz a qualificação seguindo o seu treinamento de SDR (`treinamento_sdr.md`).
-2. **Preenche a ficha sozinha**: nome, telefone WhatsApp, **dor do cliente**, empresa, segmento,
-   investimento em anúncios, faturamento, se é decisor e urgência.
-3. **Move o lead para a lista certa** do funil: Novo → Em qualificação → Quente / Morno / Frio.
-4. **Escreve um resumo para o vendedor** (quem é, dor, o que já foi falado, objeções, o que foi prometido)
-   e o **próximo passo** — quem assumir o atendimento continua a conversa sem ler o histórico.
-5. Quando o lead fica **quente** (ou pede para falar com uma pessoa), avisa o cliente que um especialista
-   vai continuar, **pausa a IA** e deixa o lead na coluna "Qualificado – quente" para o vendedor.
-6. O resumo continua sendo atualizado depois, mesmo com o vendedor conversando.
+1. **Responde na hora** e qualifica com **SPIN Selling**, uma pergunta por vez, validando o **ICP**
+   (não MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês,
+   endividamento saudável).
+2. **Preenche a ficha sozinha**: nome, telefone WhatsApp, **dor do cliente**, empresa, segmento, natureza
+   jurídica, tempo de CNPJ, estrutura, faturamento, endividamento, objetivo e valor do crédito, bancos,
+   garantias, decisor, caminho provável, Contrato Social e agendamento.
+3. **Move o lead para a lista certa**: Novo → Em qualificação → Qualificado (agendar) → Agendado,
+   ou Outras soluções (MEI/fora do ICP) / Nutrir / Desqualificado.
+4. Com o lead qualificado, **envia o link de agendamento** da consultoria + diagnóstico e **pede o
+   Contrato Social**; o documento que o cliente manda é **anexado ao card** automaticamente.
+5. **Escreve as observações para o Closer** (quem é, se está no ICP, dor, o que foi falado, objeções)
+   e o **próximo passo**, para qualquer vendedor continuar sem ler o histórico.
+6. Contorna as objeções do manual. Se o cliente pedir uma pessoa ou o caso for sensível, **passa para
+   o time humano** (lista "Precisa de humano") e para de responder.
 
-O painel é um quadro Kanban (arrastar e soltar entre listas). Clicando no lead você vê o resumo,
-a ficha, a conversa completa, e pode responder o cliente direto pelo CRM.
+O painel é um quadro Kanban (arrastar e soltar entre listas). Clicando no lead você vê as observações,
+a ficha, os documentos, a conversa completa, e pode responder o cliente direto pelo CRM.
 
 ## Arquivos que você edita
 
 | Arquivo | O que é |
 |---|---|
-| `treinamento_sdr.md` | **Treinamento da SDR**: roteiro, perguntas, contorno de objeções, exemplos. Cole aqui o treinamento do seu SDR top. |
-| `sdr_config.json` | Nome da SDR, descrição da empresa, tom de voz, regras, perguntas de qualificação e as **listas do funil** (com a regra de quando o lead vai para cada uma). |
+| `treinamento_sdr.md` | **Treinamento da SDR** (já com o conteúdo da Formação, POP e Manual). |
+| `sdr_config.json` | Nome da SDR, **link de agendamento**, descrição da empresa, tom de voz, **campos da ficha** e **listas do funil**. |
 | `.env` | Chaves do Claude e do WhatsApp, senha do painel. |
 
 Depois de editar, reinicie o servidor.

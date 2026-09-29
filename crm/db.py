@@ -1,4 +1,5 @@
 """Banco SQLite do CRM: leads, mensagens e histórico de movimentações."""
+import json
 import sqlite3
 import threading
 from datetime import datetime, timezone
@@ -8,8 +9,8 @@ import config
 _lock = threading.Lock()
 _conn: sqlite3.Connection | None = None
 
-CAMPOS_IA = ["nome", "dor", "empresa", "segmento", "orcamento", "faturamento", "decisor", "urgencia"]
-CAMPOS_EDITAVEIS = CAMPOS_IA + ["lista", "ia_ativa", "vendedor", "resumo", "proximo_passo", "temperatura"]
+CAMPOS_EDITAVEIS = ["nome", "dor", "ficha", "lista", "ia_ativa", "vendedor", "resumo", "proximo_passo",
+                    "temperatura", "score"]
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS leads (
@@ -18,12 +19,7 @@ CREATE TABLE IF NOT EXISTS leads (
     nome_whatsapp TEXT DEFAULT '',
     nome TEXT DEFAULT '',
     dor TEXT DEFAULT '',
-    empresa TEXT DEFAULT '',
-    segmento TEXT DEFAULT '',
-    orcamento TEXT DEFAULT '',
-    faturamento TEXT DEFAULT '',
-    decisor TEXT DEFAULT '',
-    urgencia TEXT DEFAULT '',
+    ficha TEXT DEFAULT '{}',       -- campos de qualificação definidos em sdr_config.json
     lista TEXT NOT NULL,
     temperatura TEXT DEFAULT '',
     score INTEGER DEFAULT 0,
@@ -44,6 +40,14 @@ CREATE TABLE IF NOT EXISTS mensagens (
     criado_em TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_msg_lead ON mensagens(lead_id, id);
+CREATE TABLE IF NOT EXISTS anexos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    lead_id INTEGER NOT NULL REFERENCES leads(id),
+    nome_arquivo TEXT NOT NULL,
+    caminho TEXT NOT NULL,
+    mime TEXT DEFAULT '',
+    criado_em TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS historico (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     lead_id INTEGER NOT NULL REFERENCES leads(id),
@@ -77,7 +81,14 @@ def reset(caminho: str) -> None:
 
 
 def _row(r):
-    return dict(r) if r else None
+    if not r:
+        return None
+    d = dict(r)
+    try:
+        d["ficha"] = json.loads(d.get("ficha") or "{}")
+    except json.JSONDecodeError:
+        d["ficha"] = {}
+    return d
 
 
 def obter_ou_criar_lead(telefone: str, nome_whatsapp: str = "") -> dict:
@@ -112,16 +123,18 @@ def listar_leads(busca: str = "") -> list[dict]:
         sql = "SELECT * FROM leads"
         args: tuple = ()
         if busca:
-            sql += " WHERE nome LIKE ? OR nome_whatsapp LIKE ? OR telefone LIKE ? OR dor LIKE ? OR empresa LIKE ?"
+            sql += " WHERE nome LIKE ? OR nome_whatsapp LIKE ? OR telefone LIKE ? OR dor LIKE ? OR ficha LIKE ?"
             args = (f"%{busca}%",) * 5
         sql += " ORDER BY COALESCE(ultima_msg_em, criado_em) DESC"
-        return [dict(r) for r in conn().execute(sql, args).fetchall()]
+        return [_row(r) for r in conn().execute(sql, args).fetchall()]
 
 
 def atualizar_lead(lead_id: int, campos: dict) -> None:
-    campos = {k: v for k, v in campos.items() if k in CAMPOS_EDITAVEIS + ["score"]}
+    campos = {k: v for k, v in campos.items() if k in CAMPOS_EDITAVEIS}
     if not campos:
         return
+    if "ficha" in campos:
+        campos["ficha"] = json.dumps(campos["ficha"], ensure_ascii=False)
     with _lock:
         c = conn()
         sets = ", ".join(f"{k}=?" for k in campos)
@@ -174,3 +187,29 @@ def listar_historico(lead_id: int) -> list[dict]:
             "SELECT * FROM historico WHERE lead_id=? ORDER BY id DESC", (lead_id,)
         ).fetchall()
         return [dict(r) for r in rows]
+
+
+def salvar_anexo(lead_id: int, nome_arquivo: str, caminho: str, mime: str = "") -> int:
+    with _lock:
+        c = conn()
+        cur = c.execute(
+            "INSERT INTO anexos (lead_id, nome_arquivo, caminho, mime, criado_em) VALUES (?,?,?,?,?)",
+            (lead_id, nome_arquivo, caminho, mime, agora()),
+        )
+        c.commit()
+        return cur.lastrowid
+
+
+def listar_anexos(lead_id: int) -> list[dict]:
+    with _lock:
+        rows = conn().execute(
+            "SELECT id, lead_id, nome_arquivo, mime, criado_em FROM anexos WHERE lead_id=? ORDER BY id DESC",
+            (lead_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def obter_anexo(anexo_id: int) -> dict | None:
+    with _lock:
+        r = conn().execute("SELECT * FROM anexos WHERE id=?", (anexo_id,)).fetchone()
+        return dict(r) if r else None

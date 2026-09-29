@@ -28,8 +28,13 @@ def _texto_listas() -> str:
 
 def montar_system_prompt() -> str:
     s = config.SDR
-    perguntas = "\n".join(f"- {p}" for p in s["perguntas_de_qualificacao"])
-    regras = "\n".join(f"- {r}" for r in s["regras"])
+    campos = "\n".join(f'- {c["id"]} ({c["rotulo"]}): {c["instrucao"]}' for c in config.CAMPOS)
+    if s.get("link_agendamento"):
+        agendamento = f'Link de agendamento para enviar ao lead qualificado: {s["link_agendamento"]}'
+    else:
+        agendamento = ("Ainda não há link de agendamento configurado. Quando o lead estiver qualificado, diga que vai "
+                       f'verificar o melhor horário com o {s["cargo_especialista"]} e retorna em seguida, e marque '
+                       "transferir_para_humano = true para o time agendar.")
     return f"""Você é {s["nome_sdr"]}, SDR (pré-vendas) da {s["empresa"]}, atendendo leads pelo WhatsApp.
 
 ## Sobre a empresa
@@ -41,13 +46,10 @@ def montar_system_prompt() -> str:
 ## Tom de voz
 {s["tom_de_voz"]}
 
-## O que você precisa descobrir (aos poucos, sem parecer um formulário)
-{perguntas}
+## Agendamento
+{agendamento}
 
-## Regras
-{regras}
-
-## Treinamento de SDR (siga este método; ele tem prioridade sobre o estilo padrão)
+## Treinamento de SDR (siga este método)
 <treinamento>
 {config.TREINAMENTO or "(sem treinamento extra)"}
 </treinamento>
@@ -55,41 +57,42 @@ def montar_system_prompt() -> str:
 ## Listas (etapas do funil) que você pode escolher para o lead
 {_texto_listas()}
 
-Quando o lead ficar qualificado como quente, ou pedir para falar com uma pessoa, marque
-transferir_para_humano = true e, na resposta, diga que um especialista da {s["empresa"]}
-vai continuar o atendimento por aqui em breve.
-
 ## Como preencher o retorno
 Você recebe a ficha atual do lead e a conversa inteira. Devolva SEMPRE o JSON pedido:
-- resposta: a próxima mensagem para o cliente no WhatsApp (texto puro, sem markdown). Se a instrução
-  disser para não responder, devolva "".
-- nome, dor, empresa, segmento, orcamento, faturamento, decisor, urgencia: o que o cliente já disse.
-  Use "" para o que ainda não se sabe. Nunca invente. A "dor" deve ser escrita com as palavras e o
-  contexto do cliente (ex.: "gasta R$ 5 mil/mês no Meta Ads e não consegue vender; leads desqualificados").
+- resposta: a próxima mensagem para o cliente no WhatsApp (texto puro, sem markdown, curta). Se a
+  instrução disser para não responder, devolva "".
+- nome: nome da pessoa ("" se não souber).
+- dor: a dor/necessidade principal do cliente com as palavras e o contexto dele, incluindo o impacto
+  (ex.: "limite do banco acabou e precisa de ~R$ 200 mil de capital de giro para comprar estoque do fim
+  de ano; banco aprovou só R$ 50 mil"). "" se ainda não souber.
+- ficha: um objeto com os campos abaixo. Use "" para o que ainda não se sabe. Nunca invente nem
+  altere o que o cliente disse.
+{campos}
 - lista: o id da lista em que o lead deve ficar agora.
 - temperatura: quente, morno ou frio.
-- score: nota de 0 a 100 de quão pronto o lead está para comprar.
-- resumo: resumo para o VENDEDOR que vai assumir a conversa, em 4 a 8 linhas curtas, cobrindo:
-  quem é e a empresa; a dor principal; o que já foi perguntado e respondido; objeções ou dúvidas;
-  o que já foi prometido ao cliente. Escreva de forma que o vendedor consiga continuar a conversa
-  sem ler o histórico.
-- proximo_passo: uma frase dizendo o que o vendedor (ou a IA) deve fazer a seguir.
+- score: nota de 0 a 100 de aderência ao ICP + interesse real.
+- resumo: observações para o Closer/Gerente de Crédito, em 4 a 8 linhas curtas, respondendo: quem é
+  esse cliente e a empresa; se está no ICP (e por quê); a dor e o objetivo; o que já foi falado,
+  objeções e o que foi prometido. Escreva para que qualquer vendedor continue o atendimento sem ler o
+  histórico.
+- proximo_passo: uma frase com o que deve acontecer a seguir (e quem faz: IA ou time humano).
 - transferir_para_humano: true ou false.
 """
 
 
 def _schema() -> dict:
     texto = {"type": "string"}
+    ficha = {
+        "type": "object",
+        "properties": {c: texto for c in config.CAMPOS_IDS},
+        "required": list(config.CAMPOS_IDS),
+        "additionalProperties": False,
+    }
     campos = {
         "resposta": texto,
         "nome": texto,
         "dor": texto,
-        "empresa": texto,
-        "segmento": texto,
-        "orcamento": texto,
-        "faturamento": texto,
-        "decisor": texto,
-        "urgencia": texto,
+        "ficha": ficha,
         "lista": {"type": "string", "enum": config.LISTAS_DA_IA},
         "temperatura": {"type": "string", "enum": ["quente", "morno", "frio"]},
         "score": {"type": "integer"},
@@ -111,9 +114,11 @@ def _formatar_conversa(mensagens: list[dict]) -> str:
 
 
 def _formatar_ficha(lead: dict) -> str:
-    campos = ["telefone", "nome_whatsapp", "nome", "dor", "empresa", "segmento", "orcamento",
-              "faturamento", "decisor", "urgencia", "lista", "temperatura", "score", "resumo"]
-    return "\n".join(f"{c}: {lead.get(c) or ''}" for c in campos)
+    linhas = [f"{c}: {lead.get(c) or ''}" for c in
+              ["telefone", "nome_whatsapp", "nome", "dor", "lista", "temperatura", "score", "resumo"]]
+    ficha = lead.get("ficha") or {}
+    linhas += [f"ficha.{c}: {ficha.get(c, '')}" for c in config.CAMPOS_IDS]
+    return "\n".join(linhas)
 
 
 async def analisar(lead: dict, mensagens: list[dict], responder: bool) -> dict | None:
