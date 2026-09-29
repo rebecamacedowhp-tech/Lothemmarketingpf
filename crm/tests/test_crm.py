@@ -30,6 +30,7 @@ def cli(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "CRM_SENHA", "")
     monkeypatch.setattr(config, "WHATSAPP_APP_SECRET", "")
     monkeypatch.setattr(config, "DEBOUNCE_SEGUNDOS", 0)
+    monkeypatch.setattr(config, "PAUSA_MAX_SEGUNDOS", 0)
     enviados = []
 
     async def fake_enviar(tel, texto):
@@ -187,3 +188,15 @@ def test_editar_ficha_pelo_painel(cli):
     d = cli.patch(f"/api/leads/{lead['id']}", json={"ficha": {"tempo_cnpj": "3 anos", "inexistente": "x"}}).json()
     assert d["ficha"]["tempo_cnpj"] == "3 anos" and d["ficha"]["empresa"] == "Loja da Ana"
     assert "inexistente" not in d["ficha"]
+
+
+def test_resposta_dividida_em_varias_mensagens(cli):
+    cli.resultado["resposta"] = "Que bacana, 12 anos de empresa!\n\nE hoje, de quanto de crédito você tá precisando?"
+    d = cli.post("/api/simular", json={"telefone": "5512", "texto": "tenho empresa há 12 anos"}).json()
+    assert [m["texto"] for m in d["mensagens"] if m["autor"] == "ia"] == [
+        "Que bacana, 12 anos de empresa!", "E hoje, de quanto de crédito você tá precisando?"]
+    assert len(cli.enviados) == 2
+
+
+def test_dividir_mensagens_limita_a_tres():
+    assert crm.dividir_mensagens("a\n\nb\n\nc\n\nd") == ["a", "b", "c\n\nd"]

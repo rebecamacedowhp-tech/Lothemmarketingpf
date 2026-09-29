@@ -21,6 +21,8 @@ GRAPH_API_VERSION = os.getenv("GRAPH_API_VERSION", "v23.0")
 CRM_SENHA = os.getenv("CRM_SENHA", "")
 CRM_DB = os.getenv("CRM_DB", str(BASE_DIR / "crm.db"))
 DEBOUNCE_SEGUNDOS = float(os.getenv("DEBOUNCE_SEGUNDOS", "8"))
+# Pausa máxima entre as mensagens da SDR quando ela divide a resposta em vários balões
+PAUSA_MAX_SEGUNDOS = float(os.getenv("PAUSA_MAX_SEGUNDOS", "4"))
 
 SDR_CONFIG_PATH = Path(os.getenv("SDR_CONFIG", BASE_DIR / "sdr_config.json"))
 TREINAMENTO_PATH = Path(os.getenv("SDR_TREINAMENTO", BASE_DIR / "treinamento_sdr.md"))

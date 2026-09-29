@@ -63,8 +63,10 @@ def montar_system_prompt() -> str:
 
 ## Como preencher o retorno
 Você recebe a ficha atual do lead e a conversa inteira. Devolva SEMPRE o JSON pedido:
-- resposta: a próxima mensagem para o cliente no WhatsApp (texto puro, sem markdown, curta). Se a
-  instrução disser para não responder, devolva "".
+- resposta: o que a Ingrid vai mandar agora no WhatsApp, escrito como uma pessoa real (seção de escrita
+  humanizada do treinamento): texto puro, sem markdown, sem listas. Para mandar mais de uma mensagem
+  (no máximo 3), separe cada uma com uma linha em branco. Se a instrução disser para não responder,
+  devolva "".
 - nome: nome da pessoa ("" se não souber).
 - dor: a dor/necessidade principal do cliente com as palavras e o contexto dele, incluindo o impacto
   (ex.: "limite do banco acabou e precisa de ~R$ 200 mil de capital de giro para comprar estoque do fim

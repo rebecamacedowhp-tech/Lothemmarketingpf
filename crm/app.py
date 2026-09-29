@@ -41,6 +41,14 @@ def _lock(lead_id: int) -> asyncio.Lock:
     return _locks.setdefault(lead_id, asyncio.Lock())
 
 
+def dividir_mensagens(texto: str, maximo: int = 3) -> list[str]:
+    """A IA separa as mensagens com linha em branco; manda no máximo `maximo` balões."""
+    partes = [p.strip() for p in texto.split("\n\n") if p.strip()]
+    if len(partes) > maximo:
+        partes = partes[: maximo - 1] + ["\n\n".join(partes[maximo - 1:])]
+    return partes
+
+
 def ia_deve_responder(lead: dict) -> bool:
     lista = config.LISTAS_POR_ID.get(lead["lista"], {})
     return bool(lead["ia_ativa"]) and lista.get("ia_responde", True)
@@ -89,11 +97,16 @@ async def processar_lead(lead_id: int) -> dict | None:
         # 3) Resposta ao cliente
         texto = (resultado.get("resposta") or "").strip()
         if responder and texto:
-            try:
-                wa_id = await whatsapp.enviar_texto(lead["telefone"], texto)
-                db.salvar_mensagem(lead_id, "ia", texto, wa_id)
-            except RuntimeError as e:
-                db.registrar(lead_id, f"Falha ao enviar resposta da IA: {e}")
+            for i, parte in enumerate(dividir_mensagens(texto)):
+                if i:
+                    # pausa curta entre as mensagens, como alguém digitando
+                    await asyncio.sleep(min(config.PAUSA_MAX_SEGUNDOS, 1 + len(parte) / 40))
+                try:
+                    wa_id = await whatsapp.enviar_texto(lead["telefone"], parte)
+                    db.salvar_mensagem(lead_id, "ia", parte, wa_id)
+                except RuntimeError as e:
+                    db.registrar(lead_id, f"Falha ao enviar resposta da IA: {e}")
+                    break
 
         # 4) Passagem de bastão para o vendedor
         if lead["ia_ativa"] and (resultado.get("transferir_para_humano")
