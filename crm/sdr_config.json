@@ -5,35 +5,163 @@
   "link_agendamento": "",
   "sobre_empresa": "Consultoria de crédito empresarial (PJ). Uma das maiores originadoras de crédito empresarial do Brasil. A Lothem NÃO vende dinheiro: estrutura empresas para que tenham acesso às melhores oportunidades de crédito do mercado (bancos privados e públicos, cooperativas, fintechs e também recursos próprios). Atuação: diagnóstico financeiro e empresarial, melhoria do posicionamento bancário (rating), estruturação financeira para acesso ao crédito, identificação das melhores linhas e acompanhamento durante a captação. Produtos: Home Equity (garantia de imóvel), Auto Equity (garantia de veículo), capital de giro, antecipação de maquininha e de recebíveis, linhas subsidiadas (Pronampe, BNDES, Plano Safra, Pronaf, Pronamp), crédito imobiliário, financiamento veicular, CRI para o setor imobiliário e serviço de rating bancário. O próximo passo do lead qualificado é uma reunião de consultoria + diagnóstico de crédito (cerca de 40 minutos, online) com o Gerente de Crédito, que faz a leitura ao vivo de como os bancos enxergam a empresa e apresenta o caminho para conseguir o crédito.",
   "tom_de_voz": "Português do Brasil, WhatsApp: mensagens curtas, simpáticas e profissionais, com autoridade de quem entende de crédito. No máximo 1 emoji por mensagem. Honesto e generoso; simpatia sem servilismo; nunca insistente a ponto de irritar.",
-  "objetivo": "Qualificar o lead dentro do ICP usando SPIN Selling, registrar tudo na ficha para o Closer e levar o lead qualificado a agendar a reunião de consultoria + diagnóstico com o Gerente de Crédito, pedindo o Contrato Social da empresa após a qualificação.",
+  "objetivo": "Seguir o script de SDR na ordem: rapport, descobrir se o diagnóstico é PF ou PJ, qualificar o lead PJ dentro do ICP usando SPIN Selling e registrar tudo na ficha para o Closer. SOMENTE depois de qualificado, levar o lead a agendar a reunião de consultoria + diagnóstico com o Gerente de Crédito e pedir o Contrato Social. Leads PF vão para o time de PF.",
   "campos": [
-    {"id": "empresa", "rotulo": "Empresa", "instrucao": "Nome da empresa (razão social ou fantasia)."},
-    {"id": "segmento", "rotulo": "Segmento", "instrucao": "O que a empresa faz / ramo de atuação."},
-    {"id": "natureza_juridica", "rotulo": "Natureza jurídica", "instrucao": "MEI, ME, EPP, LTDA, SLU etc. Se começou como MEI e virou ME/LTDA, anotar."},
-    {"id": "tempo_cnpj", "rotulo": "Tempo de CNPJ", "instrucao": "Há quanto tempo o CNPJ está ativo (e há quanto tempo como ME)."},
-    {"id": "estrutura", "rotulo": "Estrutura / ponto físico", "instrucao": "Tem ponto físico (escritório, galpão, comércio; próprio ou alugado)? Se não, tem contratos/notas fiscais com receita recorrente e previsível?"},
-    {"id": "faturamento", "rotulo": "Faturamento mensal", "instrucao": "Faturamento médio mensal e se é bruto ou fiscal declarado. Se consegue comprovar."},
-    {"id": "endividamento", "rotulo": "Endividamento / pendências", "instrucao": "Dívidas, restrições, impostos em atraso, uso de cheque especial. Se há interesse em renegociar."},
-    {"id": "objetivo_credito", "rotulo": "Objetivo do crédito", "instrucao": "Para que quer o crédito: capital de giro, expansão, equipamentos, estoque, reforma, reestruturação, compra de imóvel/veículo..."},
-    {"id": "valor_buscado", "rotulo": "Valor buscado", "instrucao": "Quanto busca de crédito."},
-    {"id": "historico_bancario", "rotulo": "Bancos / tentativas anteriores", "instrucao": "Com quais bancos movimenta, se já tentou crédito, se foi negado ou aprovado abaixo do necessário e por quê."},
-    {"id": "garantias", "rotulo": "Garantias", "instrucao": "Tem imóvel ou veículo quitado que poderia usar como garantia? Vende no cartão (maquininha)? Tem recebíveis?"},
-    {"id": "decisor", "rotulo": "Decisor / participantes", "instrucao": "Se é o decisor e quem mais deve participar da reunião (sócio, financeiro)."},
-    {"id": "caminho_provavel", "rotulo": "Caminho provável", "instrucao": "Pela tabela 'o que o empresário fala → caminho', qual solução parece se encaixar (ex.: capital de giro, rating bancário, Home Equity, linha subsidiada). Só indicação para o Closer; nunca prometa ao cliente."},
-    {"id": "contrato_social", "rotulo": "Contrato Social", "instrucao": "Status: 'não solicitado', 'solicitado' ou 'recebido'."},
-    {"id": "agendamento", "rotulo": "Agendamento", "instrucao": "Status da reunião: 'link enviado', 'agendado para <data/hora>', 'pediu para remarcar' etc."}
+    {
+      "id": "tipo",
+      "rotulo": "Tipo (PF/PJ)",
+      "instrucao": "Se o crédito/diagnóstico é para pessoa física (PF) ou para a empresa (PJ). Descobrir logo no início."
+    },
+    {
+      "id": "empresa",
+      "rotulo": "Empresa",
+      "instrucao": "Nome da empresa (razão social ou fantasia)."
+    },
+    {
+      "id": "segmento",
+      "rotulo": "Segmento",
+      "instrucao": "O que a empresa faz / ramo de atuação."
+    },
+    {
+      "id": "natureza_juridica",
+      "rotulo": "Natureza jurídica",
+      "instrucao": "MEI, ME, EPP, LTDA, SLU etc. Se começou como MEI e virou ME/LTDA, anotar."
+    },
+    {
+      "id": "tempo_cnpj",
+      "rotulo": "Tempo de CNPJ",
+      "instrucao": "Há quanto tempo o CNPJ está ativo (e há quanto tempo como ME)."
+    },
+    {
+      "id": "estrutura",
+      "rotulo": "Estrutura / ponto físico",
+      "instrucao": "Tem ponto físico (escritório, galpão, comércio; próprio ou alugado)? Se não, tem contratos/notas fiscais com receita recorrente e previsível?"
+    },
+    {
+      "id": "faturamento",
+      "rotulo": "Faturamento mensal",
+      "instrucao": "Faturamento médio mensal e se é bruto ou fiscal declarado. Se consegue comprovar."
+    },
+    {
+      "id": "endividamento",
+      "rotulo": "Endividamento / pendências",
+      "instrucao": "Dívidas, restrições, impostos em atraso, uso de cheque especial. Se há interesse em renegociar."
+    },
+    {
+      "id": "objetivo_credito",
+      "rotulo": "Objetivo do crédito",
+      "instrucao": "Para que quer o crédito: capital de giro, expansão, equipamentos, estoque, reforma, reestruturação, compra de imóvel/veículo..."
+    },
+    {
+      "id": "valor_buscado",
+      "rotulo": "Valor buscado",
+      "instrucao": "Quanto busca de crédito."
+    },
+    {
+      "id": "historico_bancario",
+      "rotulo": "Bancos / tentativas anteriores",
+      "instrucao": "Com quais bancos movimenta, se já tentou crédito, se foi negado ou aprovado abaixo do necessário e por quê."
+    },
+    {
+      "id": "garantias",
+      "rotulo": "Garantias",
+      "instrucao": "Tem imóvel ou veículo quitado que poderia usar como garantia? Vende no cartão (maquininha)? Tem recebíveis?"
+    },
+    {
+      "id": "decisor",
+      "rotulo": "Decisor / participantes",
+      "instrucao": "Se é o decisor e quem mais deve participar da reunião (sócio, financeiro)."
+    },
+    {
+      "id": "caminho_provavel",
+      "rotulo": "Caminho provável",
+      "instrucao": "Pela tabela 'o que o empresário fala → caminho', qual solução parece se encaixar (ex.: capital de giro, rating bancário, Home Equity, linha subsidiada). Só indicação para o Closer; nunca prometa ao cliente."
+    },
+    {
+      "id": "contrato_social",
+      "rotulo": "Contrato Social",
+      "instrucao": "Status: 'não solicitado', 'solicitado' ou 'recebido'."
+    },
+    {
+      "id": "agendamento",
+      "rotulo": "Agendamento",
+      "instrucao": "Status da reunião: 'link enviado', 'agendado para <data/hora>', 'pediu para remarcar' etc."
+    }
   ],
   "lista_quando_transferir": "humano",
   "listas": [
-    {"id": "novo", "nome": "Novo lead", "cor": "#64748b", "descricao": "Acabou de chegar e ainda não deu informações de qualificação."},
-    {"id": "qualificando", "nome": "Em qualificação (IA)", "cor": "#3b82f6", "descricao": "A SDR IA está conversando e levantando as informações do ICP."},
-    {"id": "qualificado", "nome": "Qualificado – agendar reunião", "cor": "#ef4444", "descricao": "Dentro do ICP (não é MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável ou disposto a renegociar), com dor/objetivo claro. Enviar link de agendamento e pedir o Contrato Social."},
-    {"id": "agendado", "nome": "Reunião agendada", "cor": "#10b981", "descricao": "O lead confirmou que agendou (ou já tinha reunião marcada). A partir daqui o SDR humano faz as confirmações por ligação (3C Plus)."},
-    {"id": "outras_solucoes", "nome": "Outras soluções (MEI / fora do ICP)", "cor": "#8b5cf6", "descricao": "Não se encaixa na assessoria (ex.: MEI, menos de 12 meses, faturamento abaixo de R$ 30 mil), mas pode ter valor em rating bancário ou crédito com garantia (imóvel/veículo quitado)."},
-    {"id": "nutrir", "nome": "Nutrir / sem momento", "cor": "#f59e0b", "descricao": "Tem perfil, mas não é o momento, parou de responder no meio da qualificação ou pediu para falar depois."},
-    {"id": "desqualificado", "nome": "Desqualificado", "cor": "#94a3b8", "descricao": "Sem perfil e sem solução possível agora: pessoa física buscando empréstimo pessoal, empresa sem operação/faturamento, curioso, spam, fornecedor ou candidato a vaga."},
-    {"id": "humano", "nome": "Precisa de humano", "cor": "#d946ef", "descricao": "Pediu para falar com uma pessoa, tem reclamação/cobrança, dúvida que a IA não pode responder ou caso sensível.", "ia_pode_mover": false, "ia_responde": false},
-    {"id": "fechado", "nome": "Fechado – ganho", "cor": "#059669", "descricao": "Contratou a assessoria.", "ia_pode_mover": false, "ia_responde": false},
-    {"id": "perdido", "nome": "Perdido", "cor": "#1f2937", "descricao": "Não fechou.", "ia_pode_mover": false, "ia_responde": false}
+    {
+      "id": "novo",
+      "nome": "Novo lead",
+      "cor": "#64748b",
+      "descricao": "Acabou de chegar e ainda não deu informações de qualificação."
+    },
+    {
+      "id": "qualificando",
+      "nome": "Em qualificação (IA)",
+      "cor": "#3b82f6",
+      "descricao": "A SDR IA está conversando e levantando as informações do ICP."
+    },
+    {
+      "id": "qualificado",
+      "nome": "Qualificado – agendar reunião",
+      "cor": "#ef4444",
+      "descricao": "Dentro do ICP (não é MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável ou disposto a renegociar), com dor/objetivo claro. Enviar link de agendamento e pedir o Contrato Social."
+    },
+    {
+      "id": "agendado",
+      "nome": "Reunião agendada",
+      "cor": "#10b981",
+      "descricao": "O lead confirmou que agendou (ou já tinha reunião marcada). A partir daqui o SDR humano faz as confirmações por ligação (3C Plus)."
+    },
+    {
+      "id": "pf",
+      "nome": "Diagnóstico PF",
+      "cor": "#0ea5e9",
+      "descricao": "Lead busca crédito/diagnóstico para pessoa física (PF). A IA coleta nome, objetivo, valor e dor e passa para o especialista PF.",
+      "ia_responde": false
+    },
+    {
+      "id": "outras_solucoes",
+      "nome": "Outras soluções (MEI / fora do ICP)",
+      "cor": "#8b5cf6",
+      "descricao": "Não se encaixa na assessoria (ex.: MEI, menos de 12 meses, faturamento abaixo de R$ 30 mil), mas pode ter valor em rating bancário ou crédito com garantia (imóvel/veículo quitado)."
+    },
+    {
+      "id": "nutrir",
+      "nome": "Nutrir / sem momento",
+      "cor": "#f59e0b",
+      "descricao": "Tem perfil, mas não é o momento, parou de responder no meio da qualificação ou pediu para falar depois."
+    },
+    {
+      "id": "desqualificado",
+      "nome": "Desqualificado",
+      "cor": "#94a3b8",
+      "descricao": "Sem perfil e sem solução possível agora: pessoa física buscando empréstimo pessoal, empresa sem operação/faturamento, curioso, spam, fornecedor ou candidato a vaga."
+    },
+    {
+      "id": "humano",
+      "nome": "Precisa de humano",
+      "cor": "#d946ef",
+      "descricao": "Pediu para falar com uma pessoa, tem reclamação/cobrança, dúvida que a IA não pode responder ou caso sensível.",
+      "ia_pode_mover": false,
+      "ia_responde": false
+    },
+    {
+      "id": "fechado",
+      "nome": "Fechado – ganho",
+      "cor": "#059669",
+      "descricao": "Contratou a assessoria.",
+      "ia_pode_mover": false,
+      "ia_responde": false
+    },
+    {
+      "id": "perdido",
+      "nome": "Perdido",
+      "cor": "#1f2937",
+      "descricao": "Não fechou.",
+      "ia_pode_mover": false,
+      "ia_responde": false
+    }
   ]
 }
