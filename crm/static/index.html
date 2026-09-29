@@ -160,6 +160,7 @@ function desenhar() {
         <span class="tel">${esc(x.telefone)}${x.ficha.empresa ? " · " + esc(x.ficha.empresa) : ""}</span>
         <div class="dor">${x.dor ? "🎯 " + esc(x.dor) : "<i style='color:var(--sub)'>Dor ainda não identificada</i>"}</div>
         <div class="rodape">
+          ${x.ficha.tipo ? `<span class="pill">${esc(x.ficha.tipo)}</span>` : ""}
           ${x.temperatura ? `<span class="pill ${x.temperatura}">${x.temperatura}</span>` : ""}
           ${x.score ? `<span class="pill">score ${x.score}</span>` : ""}
           <span class="pill ${x.ia_ativa ? "ia-on" : "ia-off"}">${x.ia_ativa ? "IA atendendo" : "Humano"}</span>

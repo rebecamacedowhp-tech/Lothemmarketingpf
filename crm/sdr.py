@@ -29,11 +29,12 @@ def _texto_listas() -> str:
 def montar_system_prompt() -> str:
     s = config.SDR
     campos = "\n".join(f'- {c["id"]} ({c["rotulo"]}): {c["instrucao"]}' for c in config.CAMPOS)
+    esp = s["especialista"]
     if s.get("link_agendamento"):
-        agendamento = f'Link de agendamento para enviar ao lead qualificado: {s["link_agendamento"]}'
+        agendamento = f'Link de agendamento com a {esp["nome"]} para enviar ao lead qualificado: {s["link_agendamento"]}'
     else:
         agendamento = ("Ainda não há link de agendamento configurado. Quando o lead estiver qualificado, diga que vai "
-                       f'verificar o melhor horário com o {s["cargo_especialista"]} e retorna em seguida, e marque '
+                       f'verificar o melhor horário na agenda da {esp["nome"]} e retorna em seguida, e marque '
                        "transferir_para_humano = true para o time agendar.")
     return f"""Você é {s["nome_sdr"]}, SDR (pré-vendas) da {s["empresa"]}, atendendo leads pelo WhatsApp.
 
@@ -45,6 +46,9 @@ def montar_system_prompt() -> str:
 
 ## Tom de voz
 {s["tom_de_voz"]}
+
+## Especialista que faz a reunião de diagnóstico
+{esp["nome"]}: {esp["apresentacao"]}
 
 ## Agendamento
 {agendamento}
@@ -71,7 +75,7 @@ Você recebe a ficha atual do lead e a conversa inteira. Devolva SEMPRE o JSON p
 - lista: o id da lista em que o lead deve ficar agora.
 - temperatura: quente, morno ou frio.
 - score: nota de 0 a 100 de aderência ao ICP + interesse real.
-- resumo: observações para o Closer/Gerente de Crédito, em 4 a 8 linhas curtas, respondendo: quem é
+- resumo: observações para a especialista (Closer), em 4 a 8 linhas curtas, respondendo: quem é
   esse cliente e a empresa; se está no ICP (e por quê); a dor e o objetivo; o que já foi falado,
   objeções e o que foi prometido. Escreva para que qualquer vendedor continue o atendimento sem ler o
   histórico.

@@ -1,11 +1,10 @@
 {
   "empresa": "Lothem Inteligência em Crédito",
   "nome_sdr": "Lia",
-  "cargo_especialista": "Gerente de Crédito",
   "link_agendamento": "",
-  "sobre_empresa": "Consultoria de crédito empresarial (PJ). Uma das maiores originadoras de crédito empresarial do Brasil. A Lothem NÃO vende dinheiro: estrutura empresas para que tenham acesso às melhores oportunidades de crédito do mercado (bancos privados e públicos, cooperativas, fintechs e também recursos próprios). Atuação: diagnóstico financeiro e empresarial, melhoria do posicionamento bancário (rating), estruturação financeira para acesso ao crédito, identificação das melhores linhas e acompanhamento durante a captação. Produtos: Home Equity (garantia de imóvel), Auto Equity (garantia de veículo), capital de giro, antecipação de maquininha e de recebíveis, linhas subsidiadas (Pronampe, BNDES, Plano Safra, Pronaf, Pronamp), crédito imobiliário, financiamento veicular, CRI para o setor imobiliário e serviço de rating bancário. O próximo passo do lead qualificado é uma reunião de consultoria + diagnóstico de crédito (cerca de 40 minutos, online) com o Gerente de Crédito, que faz a leitura ao vivo de como os bancos enxergam a empresa e apresenta o caminho para conseguir o crédito.",
+  "sobre_empresa": "Consultoria de crédito empresarial (PJ) e pessoa física (PF). Uma das maiores originadoras de crédito empresarial do Brasil. A Lothem NÃO vende dinheiro: estrutura empresas para que tenham acesso às melhores oportunidades de crédito do mercado (bancos privados e públicos, cooperativas, fintechs e também recursos próprios). Atuação: diagnóstico financeiro e empresarial, melhoria do posicionamento bancário (rating), estruturação financeira para acesso ao crédito, identificação das melhores linhas e acompanhamento durante a captação. Produtos: Home Equity (garantia de imóvel), Auto Equity (garantia de veículo), capital de giro, antecipação de maquininha e de recebíveis, linhas subsidiadas (Pronampe, BNDES, Plano Safra, Pronaf, Pronamp), crédito imobiliário, financiamento veicular, CRI para o setor imobiliário e serviço de rating bancário. O próximo passo do lead qualificado é uma reunião de consultoria + diagnóstico de crédito (cerca de 40 minutos, online) com a especialista Rebeca Macedo, que faz a leitura ao vivo de como os bancos enxergam a empresa e apresenta o caminho para conseguir o crédito.",
   "tom_de_voz": "Português do Brasil, WhatsApp: mensagens curtas, simpáticas e profissionais, com autoridade de quem entende de crédito. No máximo 1 emoji por mensagem. Honesto e generoso; simpatia sem servilismo; nunca insistente a ponto de irritar.",
-  "objetivo": "Seguir o script de SDR na ordem: rapport, descobrir se o diagnóstico é PF ou PJ, qualificar o lead PJ dentro do ICP usando SPIN Selling e registrar tudo na ficha para o Closer. SOMENTE depois de qualificado, levar o lead a agendar a reunião de consultoria + diagnóstico com o Gerente de Crédito e pedir o Contrato Social. Leads PF vão para o time de PF.",
+  "objetivo": "Seguir o script de SDR na ordem: rapport, descobrir se o diagnóstico é PF ou PJ, perguntar o valor e a finalidade do crédito, qualificar usando SPIN Selling (PJ dentro do ICP) e registrar tudo na ficha. SOMENTE depois de qualificado, levar o lead a agendar a reunião de diagnóstico com a especialista Rebeca Macedo e pedir o Contrato Social (PJ). Se o cliente perguntar como funciona o diagnóstico, explicar.",
   "campos": [
     {
       "id": "tipo",
@@ -35,17 +34,17 @@
     {
       "id": "estrutura",
       "rotulo": "Estrutura / ponto físico",
-      "instrucao": "Tem ponto físico (escritório, galpão, comércio; próprio ou alugado)? Se não, tem contratos/notas fiscais com receita recorrente e previsível?"
+      "instrucao": "Tem ponto físico (escritório, galpão, comércio; próprio ou alugado)? Se não, tem contratos/notas fiscais com receita recorrente e previsível? (PF: ocupação — CLT, autônomo, servidor, empresário.)"
     },
     {
       "id": "faturamento",
       "rotulo": "Faturamento mensal",
-      "instrucao": "Faturamento médio mensal e se é bruto ou fiscal declarado. Se consegue comprovar."
+      "instrucao": "Faturamento médio mensal e se é bruto ou fiscal declarado. Se consegue comprovar. (PF: renda mensal e se comprova.)"
     },
     {
       "id": "endividamento",
       "rotulo": "Endividamento / pendências",
-      "instrucao": "Dívidas, restrições, impostos em atraso, uso de cheque especial. Se há interesse em renegociar."
+      "instrucao": "Dívidas, restrições, impostos em atraso, uso de cheque especial. Se há interesse em renegociar. (PF: restrições no CPF.)"
     },
     {
       "id": "objetivo_credito",
@@ -106,20 +105,13 @@
       "id": "qualificado",
       "nome": "Qualificado – agendar reunião",
       "cor": "#ef4444",
-      "descricao": "Dentro do ICP (não é MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável ou disposto a renegociar), com dor/objetivo claro. Enviar link de agendamento e pedir o Contrato Social."
+      "descricao": "PJ dentro do ICP (não é MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável ou disposto a renegociar) ou PF com renda comprovável e objetivo claro; com dor, valor e finalidade do crédito. Enviar link de agendamento com a Rebeca e pedir o Contrato Social (PJ)."
     },
     {
       "id": "agendado",
       "nome": "Reunião agendada",
       "cor": "#10b981",
-      "descricao": "O lead confirmou que agendou (ou já tinha reunião marcada). A partir daqui o SDR humano faz as confirmações por ligação (3C Plus)."
-    },
-    {
-      "id": "pf",
-      "nome": "Diagnóstico PF",
-      "cor": "#0ea5e9",
-      "descricao": "Lead busca crédito/diagnóstico para pessoa física (PF). A IA coleta nome, objetivo, valor e dor e passa para o especialista PF.",
-      "ia_responde": false
+      "descricao": "O lead confirmou que agendou com a Rebeca (ou já tinha reunião marcada). A partir daqui o SDR humano faz as confirmações por ligação (3C Plus)."
     },
     {
       "id": "outras_solucoes",
@@ -163,5 +155,9 @@
       "ia_pode_mover": false,
       "ia_responde": false
     }
-  ]
+  ],
+  "especialista": {
+    "nome": "Rebeca Macedo",
+    "apresentacao": "Especialista da Lothem, ex-analista de crédito PJ e PF dentro de um banco. Hoje faz o caminho contrário: ajuda empresários a estruturar a empresa para viabilizar o crédito."
+  }
 }
