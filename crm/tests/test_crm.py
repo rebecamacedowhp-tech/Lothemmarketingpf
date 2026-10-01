@@ -198,5 +198,5 @@ def test_resposta_dividida_em_varias_mensagens(cli):
     assert len(cli.enviados) == 2
 
 
-def test_dividir_mensagens_limita_a_tres():
-    assert crm.dividir_mensagens("a\n\nb\n\nc\n\nd") == ["a", "b", "c\n\nd"]
+def test_dividir_mensagens_limita_a_duas():
+    assert crm.dividir_mensagens("a\n\nb\n\nc") == ["a", "b\n\nc"]

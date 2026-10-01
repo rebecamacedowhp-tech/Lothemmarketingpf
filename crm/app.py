@@ -41,7 +41,7 @@ def _lock(lead_id: int) -> asyncio.Lock:
     return _locks.setdefault(lead_id, asyncio.Lock())
 
 
-def dividir_mensagens(texto: str, maximo: int = 3) -> list[str]:
+def dividir_mensagens(texto: str, maximo: int = 2) -> list[str]:
     """A IA separa as mensagens com linha em branco; manda no máximo `maximo` balões."""
     partes = [p.strip() for p in texto.split("\n\n") if p.strip()]
     if len(partes) > maximo:

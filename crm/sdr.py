@@ -64,8 +64,8 @@ def montar_system_prompt() -> str:
 ## Como preencher o retorno
 Você recebe a ficha atual do lead e a conversa inteira. Devolva SEMPRE o JSON pedido:
 - resposta: o que a Ingrid vai mandar agora no WhatsApp, escrito como uma pessoa real (seção de escrita
-  humanizada do treinamento): texto puro, sem markdown, sem listas. Para mandar mais de uma mensagem
-  (no máximo 3), separe cada uma com uma linha em branco. Se a instrução disser para não responder,
+  humanizada do treinamento): texto puro, sem markdown, sem listas, curto e objetivo (no máximo 2
+  linhas). Normalmente uma mensagem só; se precisar de duas, separe com uma linha em branco. Se a instrução disser para não responder,
   devolva "".
 - nome: nome da pessoa ("" se não souber).
 - dor: a dor/necessidade principal do cliente com as palavras e o contexto dele, incluindo o impacto
