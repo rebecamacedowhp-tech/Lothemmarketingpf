@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM Lothem</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--txt:#1f2328;--sub:#667085;--borda:#e4e7ec;--prim:#6d28d9;--ok:#10b981;--alerta:#f59e0b}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#1a1d23;--txt:#e6e8eb;--sub:#98a2b3;--borda:#2b3039}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);font-size:14px}
+header{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--borda);background:var(--card);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:17px;margin:0 8px 0 0}
+input,textarea,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--borda);border-radius:8px;padding:7px 9px;width:100%}
+button{font:inherit;border:0;border-radius:8px;padding:7px 12px;cursor:pointer;background:var(--prim);color:#fff}
+button.sec{background:transparent;color:var(--txt);border:1px solid var(--borda)}
+.pill{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--sub);white-space:nowrap}
+.status{font-size:12px;color:var(--sub)}
+#busca{max-width:260px}
+.quadro{display:flex;gap:12px;padding:16px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 60px)}
+.coluna{flex:0 0 272px;background:var(--card);border:1px solid var(--borda);border-radius:12px;display:flex;flex-direction:column;max-height:calc(100vh - 92px)}
+.coluna h2{font-size:13px;margin:0;padding:10px 12px;border-bottom:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.coluna h2 .bolinha{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+.cards{padding:8px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:60px}
+.cards.sobre{background:color-mix(in srgb,var(--prim) 10%,transparent)}
+.lead{background:var(--bg);border:1px solid var(--borda);border-radius:10px;padding:9px 10px;cursor:pointer}
+.lead:hover{border-color:var(--prim)}
+.lead b{display:block;margin-bottom:2px}
+.lead .tel{color:var(--sub);font-size:12px}
+.lead .dor{font-size:12px;margin:6px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.lead .rodape{display:flex;gap:6px;flex-wrap:wrap}
+.quente{background:#fee2e2;color:#b91c1c}.morno{background:#fef3c7;color:#92400e}.frio{background:#e0e7ff;color:#3730a3}
+.ia-on{background:#d1fae5;color:#065f46}.ia-off{background:#ede9fe;color:#5b21b6}
+#painel{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--card);border-left:1px solid var(--borda);box-shadow:-8px 0 24px rgba(0,0,0,.12);transform:translateX(105%);transition:transform .2s;display:flex;flex-direction:column;z-index:10}
+#painel.aberto{transform:none}
+#painel .topo{padding:14px 16px;border-bottom:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;gap:8px}
+#painel .corpo{overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;flex:1}
+.resumo{background:color-mix(in srgb,var(--prim) 8%,var(--card));border:1px solid color-mix(in srgb,var(--prim) 35%,transparent);border-radius:10px;padding:12px}
+.resumo h3,.bloco h3{margin:0 0 6px;font-size:13px}
+.resumo p{margin:0;white-space:pre-wrap}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grade label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;gap:3px}
+.grade .inteira{grid-column:1/-1}
+.chat{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;padding:8px;background:var(--bg);border-radius:10px}
+.msg{max-width:85%;padding:7px 10px;border-radius:10px;white-space:pre-wrap;font-size:13px}
+.msg small{display:block;color:var(--sub);font-size:10px;margin-bottom:2px}
+.msg.cliente{background:var(--card);align-self:flex-start;border:1px solid var(--borda)}
+.msg.ia{background:#dcfce7;color:#14532d;align-self:flex-end}
+.msg.vendedor{background:#ede9fe;color:#3b0764;align-self:flex-end}
+.enviar{display:flex;gap:8px}
+.hist{font-size:12px;color:var(--sub);margin:0;padding-left:16px}
+.hist a{color:var(--prim)}
+#simulador{display:none;position:fixed;bottom:16px;left:16px;width:min(340px,calc(100% - 32px));background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:9;gap:8px;flex-direction:column}
+#simulador.aberto{display:flex}
+@media (max-width:640px){.grade{grid-template-columns:1fr}#busca{max-width:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="titulo">CRM</h1>
+  <input id="busca" placeholder="Buscar nome, telefone, dor…">
+  <span class="status" id="status"></span>
+  <span style="flex:1"></span>
+  <button class="sec" onclick="document.getElementById('simulador').classList.toggle('aberto')">Testar SDR</button>
+</header>
+
+<main class="quadro" id="quadro"></main>
+
+<aside id="painel">
+  <div class="topo">
+    <div><b id="p-nome"></b><div class="status" id="p-tel"></div></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="sec" id="p-ia" title="Liga/desliga a SDR IA neste lead"></button>
+      <button class="sec" onclick="fechar()">✕</button>
+    </div>
+  </div>
+  <div class="corpo">
+    <div class="resumo">
+      <h3>📋 Resumo para o vendedor</h3>
+      <p id="p-resumo"></p>
+      <p style="margin-top:8px"><b>Próximo passo:</b> <span id="p-proximo"></span></p>
+      <div style="margin-top:8px"><button class="sec" id="p-resumir">Atualizar resumo com IA</button></div>
+    </div>
+    <div class="bloco">
+      <h3>Ficha do lead</h3>
+      <div class="grade" id="p-campos"></div>
+      <div style="margin-top:8px"><button id="p-salvar">Salvar ficha</button></div>
+    </div>
+    <div class="bloco">
+      <h3>Conversa no WhatsApp</h3>
+      <div class="chat" id="p-chat"></div>
+      <div class="enviar" style="margin-top:8px">
+        <input id="p-texto" placeholder="Responder como vendedor (pausa a IA)">
+        <button id="p-enviar">Enviar</button>
+      </div>
+    </div>
+    <div class="bloco">
+      <h3>Documentos</h3>
+      <ul class="hist" id="p-anexos" style="list-style:none;padding:0"></ul>
+    </div>
+    <div class="bloco">
+      <h3>Histórico</h3>
+      <ul class="hist" id="p-hist"></ul>
+    </div>
+  </div>
+</aside>
+
+<div id="simulador">
+  <b>Testar a SDR sem WhatsApp</b>
+  <span class="status">Simula um cliente mandando mensagem. A resposta da IA aparece na conversa do lead.</span>
+  <input id="s-tel" placeholder="Telefone (ex.: 5511999990000)" value="5511999990000">
+  <input id="s-nome" placeholder="Nome no WhatsApp" value="Cliente Teste">
+  <textarea id="s-texto" rows="3" placeholder="Mensagem do cliente"></textarea>
+  <button id="s-enviar">Enviar como cliente</button>
+</div>
+
+<script>
+const FIXOS = [["nome","Nome"],["telefone","Telefone WhatsApp"],["dor","Dor do cliente",true]];
+const FINAIS = [["vendedor","Vendedor responsável"],["lista","Lista"]];
+let cfg = null, leads = [], aberto = null, arrastando = null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hora = iso => iso ? new Date(iso).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "";
+
+async function api(url, opts = {}) {
+  const r = await fetch(url, {headers: {"Content-Type": "application/json"}, ...opts});
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+  return r.json();
+}
+
+async function carregar() {
+  try {
+    leads = await api("/api/leads?busca=" + encodeURIComponent($("busca").value));
+    desenhar();
+    $("status").textContent = (cfg.whatsapp_conectado ? "WhatsApp conectado" : "WhatsApp em modo simulação") + " · " + leads.length + " leads";
+  } catch (e) { $("status").textContent = "Erro: " + e.message; }
+}
+
+function desenhar() {
+  const q = $("quadro");
+  q.innerHTML = "";
+  for (const l of cfg.listas) {
+    const doLista = leads.filter(x => x.lista === l.id);
+    const col = document.createElement("section");
+    col.className = "coluna";
+    col.innerHTML = `<h2><span><span class="bolinha" style="background:${l.cor}"></span>${esc(l.nome)}</span><span class="pill">${doLista.length}</span></h2><div class="cards"></div>`;
+    const cards = col.querySelector(".cards");
+    cards.ondragover = e => { e.preventDefault(); cards.classList.add("sobre"); };
+    cards.ondragleave = () => cards.classList.remove("sobre");
+    cards.ondrop = async e => {
+      e.preventDefault(); cards.classList.remove("sobre");
+      if (arrastando) { await api(`/api/leads/${arrastando}`, {method:"PATCH", body: JSON.stringify({lista: l.id})}); carregar(); }
+    };
+    for (const x of doLista) {
+      const c = document.createElement("div");
+      c.className = "lead"; c.draggable = true;
+      c.ondragstart = () => arrastando = x.id;
+      c.onclick = () => abrir(x.id);
+      c.innerHTML = `<b>${esc(x.nome || x.nome_whatsapp || "Sem nome")}</b>
+        <span class="tel">${esc(x.telefone)}${x.ficha.empresa ? " · " + esc(x.ficha.empresa) : ""}</span>
+        <div class="dor">${x.dor ? "🎯 " + esc(x.dor) : "<i style='color:var(--sub)'>Dor ainda não identificada</i>"}</div>
+        <div class="rodape">
+          ${x.ficha.tipo ? `<span class="pill">${esc(x.ficha.tipo)}</span>` : ""}
+          ${x.temperatura ? `<span class="pill ${x.temperatura}">${x.temperatura}</span>` : ""}
+          ${x.score ? `<span class="pill">score ${x.score}</span>` : ""}
+          <span class="pill ${x.ia_ativa ? "ia-on" : "ia-off"}">${x.ia_ativa ? "IA atendendo" : "Humano"}</span>
+          ${x.vendedor ? `<span class="pill">👤 ${esc(x.vendedor)}</span>` : ""}
+        </div>`;
+      cards.appendChild(c);
+    }
+    q.appendChild(col);
+  }
+}
+
+async function abrir(id) {
+  aberto = id;
+  const d = await api(`/api/leads/${id}`);
+  $("p-nome").textContent = d.nome || d.nome_whatsapp || "Sem nome";
+  $("p-tel").textContent = "+" + d.telefone + (d.temperatura ? " · " + d.temperatura : "") + (d.score ? " · score " + d.score : "");
+  $("p-resumo").textContent = d.resumo || "A IA ainda não gerou o resumo.";
+  $("p-proximo").textContent = d.proximo_passo || "—";
+  $("p-ia").textContent = d.ia_ativa ? "🤖 IA ligada" : "👤 IA pausada";
+  $("p-ia").onclick = async () => { await api(`/api/leads/${id}`, {method:"PATCH", body: JSON.stringify({ia_ativa: !d.ia_ativa})}); abrir(id); carregar(); };
+  const html = [];
+  for (const [k, rot, inteira] of FIXOS) {
+    const campo = k === "dor"
+      ? `<textarea data-k="dor" rows="3">${esc(d.dor)}</textarea>`
+      : `<input data-k="${k}" value="${esc(d[k])}" ${k === "telefone" ? "readonly" : ""}>`;
+    html.push(`<label class="${inteira ? "inteira" : ""}">${rot}${campo}</label>`);
+  }
+  for (const c of cfg.campos) html.push(`<label title="${esc(c.instrucao)}">${esc(c.rotulo)}<input data-f="${c.id}" value="${esc(d.ficha[c.id])}"></label>`);
+  html.push(`<label>Vendedor responsável<input data-k="vendedor" value="${esc(d.vendedor)}"></label>`);
+  html.push(`<label>Lista<select data-k="lista">${cfg.listas.map(l => `<option value="${l.id}" ${l.id === d.lista ? "selected" : ""}>${esc(l.nome)}</option>`).join("")}</select></label>`);
+  $("p-campos").innerHTML = html.join("");
+  $("p-anexos").innerHTML = d.anexos.map(a => `<li><a href="/api/anexos/${a.id}" target="_blank">📎 ${esc(a.nome_arquivo)}</a> <span class="status">${hora(a.criado_em)}</span></li>`).join("") || "<li class='status'>Nenhum arquivo recebido ainda (ex.: Contrato Social)</li>";
+  $("p-chat").innerHTML = d.mensagens.map(m => `<div class="msg ${m.autor}"><small>${{cliente:"Cliente",ia:cfg.nome_sdr + " (IA)",vendedor:"Vendedor"}[m.autor]} · ${hora(m.criado_em)}</small>${esc(m.texto)}</div>`).join("") || "<span class='status'>Sem mensagens</span>";
+  $("p-chat").scrollTop = 1e9;
+  $("p-hist").innerHTML = d.historico.map(h => `<li>${hora(h.criado_em)} — ${esc(h.descricao)}</li>`).join("");
+  $("painel").classList.add("aberto");
+}
+function fechar() { aberto = null; $("painel").classList.remove("aberto"); }
+
+$("p-salvar").onclick = async () => {
+  const dados = {ficha: {}};
+  $("p-campos").querySelectorAll("[data-k]").forEach(el => { if (el.dataset.k !== "telefone") dados[el.dataset.k] = el.value; });
+  $("p-campos").querySelectorAll("[data-f]").forEach(el => { dados.ficha[el.dataset.f] = el.value; });
+  await api(`/api/leads/${aberto}`, {method:"PATCH", body: JSON.stringify(dados)});
+  abrir(aberto); carregar();
+};
+$("p-enviar").onclick = async () => {
+  const texto = $("p-texto").value.trim(); if (!texto) return;
+  const vendedor = localStorage.getItem("vendedor") || prompt("Seu nome (vendedor):") || "";
+  try { localStorage.setItem("vendedor", vendedor); } catch {}
+  try { await api(`/api/leads/${aberto}/mensagens`, {method:"POST", body: JSON.stringify({texto, vendedor})}); $("p-texto").value = ""; }
+  catch (e) { alert("Não enviou: " + e.message); }
+  abrir(aberto); carregar();
+};
+$("p-texto").onkeydown = e => { if (e.key === "Enter") $("p-enviar").click(); };
+$("p-resumir").onclick = async () => {
+  $("p-resumir").textContent = "Analisando…";
+  try { await api(`/api/leads/${aberto}/resumir`, {method:"POST"}); } finally { $("p-resumir").textContent = "Atualizar resumo com IA"; }
+  abrir(aberto); carregar();
+};
+$("s-enviar").onclick = async () => {
+  const b = $("s-enviar"); b.disabled = true; b.textContent = "IA pensando…";
+  try {
+    const r = await api("/api/simular", {method:"POST", body: JSON.stringify({telefone: $("s-tel").value, nome_whatsapp: $("s-nome").value, texto: $("s-texto").value})});
+    $("s-texto").value = ""; await carregar(); abrir(r.id);
+  } catch (e) { alert(e.message); }
+  b.disabled = false; b.textContent = "Enviar como cliente";
+};
+let t; $("busca").oninput = () => { clearTimeout(t); t = setTimeout(carregar, 300); };
+
+(async () => {
+  cfg = await api("/api/config");
+  $("titulo").textContent = "CRM " + cfg.empresa;
+  await carregar();
+  setInterval(() => { carregar(); if (aberto && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT") abrir(aberto); }, 6000);
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Lothemmarketingpf
 
+> **CRM + SDR IA no WhatsApp:** veja [`crm/`](crm/README.md).
+
 ## Persona e Missão
 Aja como **Consultor de Growth Marketing de Elite** e **Head de Inteligência Artificial para Agências de Alta Performance**.
 
