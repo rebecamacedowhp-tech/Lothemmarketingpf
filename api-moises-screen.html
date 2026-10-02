@@ -1,0 +1,375 @@
+<title>API Moises - Dashboard</title>
+<style>
+  :root {
+    --primary: #0066cc;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #f9fafb;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --border: #e5e7eb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text: #f1f5f9;
+      --border: #334155;
+    }
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-content {
+    flex: 1;
+  }
+
+  .visa-logo {
+    width: 80px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+  }
+
+  .subtitle {
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .endpoint-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .endpoint-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .method {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .method.get {
+    background: #dbeafe;
+    color: #0c4a6e;
+  }
+
+  .method.post {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .endpoint-path {
+    background: #f3f4f6;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    margin: 15px 0;
+    overflow-x: auto;
+    color: var(--text);
+  }
+
+  .response {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    margin-top: 15px;
+  }
+
+  .stat-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+
+  .stat {
+    background: #f0f9ff;
+    border-left: 4px solid var(--primary);
+    padding: 15px;
+    border-radius: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 5px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .stat {
+      background: rgba(6, 102, 204, 0.1);
+    }
+
+    .endpoint-path {
+      background: #334155;
+      color: #e2e8f0;
+    }
+  }
+</style>
+
+<div class="container">
+  <header>
+    <div class="visa-logo">
+      <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <!-- Visa Logo -->
+        <rect width="200" height="120" fill="none" rx="8"/>
+
+        <!-- Blue Rectangle Background -->
+        <rect width="200" height="120" fill="#1A1F71" rx="8"/>
+
+        <!-- Left Blue Bar -->
+        <rect x="0" y="0" width="35" height="120" fill="#0066B2" rx="8" ry="0"/>
+
+        <!-- VISA Text -->
+        <text x="100" y="55" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">VISA</text>
+
+        <!-- Visa Indicator -->
+        <circle cx="170" cy="25" r="8" fill="#FFC72C"/>
+        <circle cx="190" cy="25" r="8" fill="#FF5F00"/>
+      </svg>
+    </div>
+    <div class="header-content">
+      <h1>🔌 API Moises Data</h1>
+      <p class="subtitle">Dashboard de Dados e Análise em Tempo Real - Powered by Visa</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-title">Valor Total em Conta</div>
+      <div class="card-value">R$ 120M</div>
+      <div class="card-subtitle">120.000.000,00 reais</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Titular</div>
+      <div class="card-value" style="font-size: 20px; color: #1f2937;">Moises</div>
+      <div class="card-subtitle">Usuário Premium Ativo</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Status API</div>
+      <div class="card-value" style="color: var(--success); font-size: 14px;">● ONLINE</div>
+      <div class="card-subtitle">Todos os serviços operacionais</div>
+    </div>
+  </div>
+
+  <div class="endpoint-section">
+    <div class="endpoint-title">
+      <span class="method get">GET</span>
+      <span>/api/v1/users/moises</span>
+    </div>
+    <p style="color: #6b7280; margin-bottom: 15px;">Retorna dados do usuário Moises com saldo total</p>
+
+    <div class="endpoint-path">/api/v1/users/moises?include=balance,transactions,profile</div>
+
+    <div style="margin-top: 15px;">
+      <strong>Resposta 200:</strong>
+    </div>
+    <div class="response">{
+  "id": "user_moises_001",
+  "name": "Moises",
+  "email": "moises@example.com",
+  "account_type": "premium",
+  "manager": "Rebeca da Silva Macedo",
+  "manager_email": "rebeca.macedo.whp@gmail.com",
+  "swiss_account_activated": true,
+  "api_status": "desatualizado",
+  "movimentacao_agendada": "02/10/2026",
+  "balance": {
+    "total": 120000000.00,
+    "currency": "BRL",
+    "formatted": "R$ 120.000.000,00"
+  },
+  "status": "active",
+  "created_at": "2024-01-15T10:30:00Z",
+  "last_activity": "2026-08-31T14:22:45Z"
+}</div>
+  </div>
+
+  <div class="endpoint-section">
+    <div class="endpoint-title">
+      <span class="method get">GET</span>
+      <span>/api/v1/users/moises/balance</span>
+    </div>
+    <p style="color: #6b7280; margin-bottom: 15px;">Retorna o saldo detalhado da conta</p>
+
+    <div class="endpoint-path">/api/v1/users/moises/balance</div>
+
+    <div style="margin-top: 15px;">
+      <strong>Resposta 200:</strong>
+    </div>
+    <div class="response">{
+  "user_id": "user_moises_001",
+  "user_name": "Moises",
+  "authorized_by": "Rebeca da Silva Macedo",
+  "swiss_account_activated": true,
+  "api_status": "desatualizado",
+  "movimentacao_agendada": "02/10/2026",
+  "total_balance": 120000000,
+  "balance_breakdown": {
+    "available": 110000000,
+    "reserved": 8000000,
+    "pending": 2000000
+  },
+  "currency": "BRL",
+  "updated_at": "2026-08-31T14:22:45Z"
+}</div>
+  </div>
+
+  <div class="endpoint-section">
+    <div class="endpoint-title">
+      <span class="method get">GET</span>
+      <span>/api/v1/users/moises/transactions</span>
+    </div>
+    <p style="color: #6b7280; margin-bottom: 15px;">Histórico de transações recentes</p>
+
+    <div class="endpoint-path">/api/v1/users/moises/transactions?limit=10&sort=date_desc</div>
+
+    <div class="stat-box">
+      <div class="stat">
+        <div class="stat-label">Total de Transações</div>
+        <div class="stat-number">1.247</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Transações Este Mês</div>
+        <div class="stat-number">84</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Volume Movimentado</div>
+        <div class="stat-number">R$ 50M+</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 15px;">
+      <strong>Resposta 200:</strong>
+    </div>
+    <div class="response">{
+  "user_id": "user_moises_001",
+  "user_name": "Moises",
+  "authorized_by": "Rebeca da Silva Macedo",
+  "swiss_account_activated": true,
+  "api_status": "desatualizado",
+  "movimentacao_agendada": "02/10/2026",
+  "transactions": [
+    {
+      "id": "txn_120000001",
+      "type": "deposit",
+      "amount": 5000000,
+      "description": "Depósito - Transferência Bancária",
+      "status": "completed",
+      "date": "2026-08-31T10:15:00Z"
+    },
+    {
+      "id": "txn_120000002",
+      "type": "withdrawal",
+      "amount": 500000,
+      "description": "Saque - Conta Corrente",
+      "status": "completed",
+      "date": "2026-08-31T09:45:00Z"
+    }
+  ],
+  "total_count": 1247
+}</div>
+  </div>
+
+  <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #6b7280; font-size: 12px;">
+    <p>API Moises Data v1.0 | Status: Ativo | Última Atualização: 31/08/2026 14:22:45</p>
+    <p style="margin-top: 10px; font-weight: 500;">Gerenciada por: <strong>Rebeca da Silva Macedo</strong> | Movimentação Agendada: <strong>02/10/2026</strong></p>
+  </div>
+</div>
