@@ -30,10 +30,12 @@ def montar_system_prompt() -> str:
     s = config.SDR
     campos = "\n".join(f'- {c["id"]} ({c["rotulo"]}): {c["instrucao"]}' for c in config.CAMPOS)
     esp = s["especialista"]
+    d = s.get("diagnostico", {"nome": "Diagnóstico de Crédito", "o_que_inclui": []})
+    inclui = "\n".join(f"- {i}" for i in d.get("o_que_inclui", []))
     if s.get("link_agendamento"):
-        agendamento = f'Link de agendamento com a {esp["nome"]} para enviar ao lead qualificado: {s["link_agendamento"]}'
+        agendamento = f'Link de agendamento com a {esp["nome"]} para enviar depois que o cliente mandar o comprovante de pagamento: {s["link_agendamento"]}'
     else:
-        agendamento = ("Ainda não há link de agendamento configurado. Quando o lead estiver qualificado, diga que vai "
+        agendamento = ("Ainda não há link de agendamento configurado. Depois que o cliente mandar o comprovante, diga que vai "
                        f'verificar o melhor horário na agenda da {esp["nome"]} e retorna em seguida, e marque '
                        "transferir_para_humano = true para o time agendar.")
     return f"""Você é {s["nome_sdr"]}, SDR (pré-vendas) da {s["empresa"]}, atendendo leads pelo WhatsApp.
@@ -46,6 +48,16 @@ def montar_system_prompt() -> str:
 
 ## Tom de voz
 {s["tom_de_voz"]}
+
+## Produto que você vende: {d["nome"]}
+O que inclui:
+{inclui}
+Preço PJ: {d.get("preco_pj") or "NÃO CONFIGURADO"} | Preço PF: {d.get("preco_pf") or "NÃO CONFIGURADO"}
+Formas de pagamento: {d.get("formas_pagamento") or "NÃO CONFIGURADO"}
+Link de pagamento PJ: {d.get("link_pagamento_pj") or "NÃO CONFIGURADO"} | Link de pagamento PF: {d.get("link_pagamento_pf") or "NÃO CONFIGURADO"}
+Use SOMENTE estes preços e links; nunca invente valor, desconto, parcelamento ou link. Se o preço ou o link
+de que você precisa estiver "NÃO CONFIGURADO", quando o cliente quiser saber o valor ou pagar, diga que vai
+confirmar com a Rebeca e já retorna, e marque transferir_para_humano = true.
 
 ## Especialista que faz a reunião de diagnóstico
 {esp["nome"]}: {esp["apresentacao"]}

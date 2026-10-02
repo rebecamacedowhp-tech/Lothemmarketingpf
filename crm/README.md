@@ -9,10 +9,12 @@ treinamento oficial da Lothem (Formação de SDR, POP 01 e Manual do SDR PJ):
 2. **Preenche a ficha sozinha**: nome, telefone WhatsApp, **dor do cliente**, empresa, segmento, natureza
    jurídica, tempo de CNPJ, estrutura, faturamento, endividamento, objetivo e valor do crédito, bancos,
    garantias, decisor, caminho provável, Contrato Social e agendamento.
-3. **Move o lead para a lista certa**: Novo → Em qualificação → Qualificado (agendar) → Agendado,
-   ou Outras soluções (MEI/fora do ICP) / Nutrir / Desqualificado.
-4. Com o lead qualificado, **envia o link de agendamento** da consultoria + diagnóstico e **pede o
-   Contrato Social**; o documento que o cliente manda é **anexado ao card** automaticamente.
+3. **Vende a Consultoria + Diagnóstico de Crédito**: oferta ligada à dor do cliente, valor, link de
+   pagamento e contorno das objeções de compra (preço, link e o que inclui ficam em `sdr_config.json`).
+4. **Move o lead para a lista certa**: Novo → Em qualificação → Diagnóstico ofertado → Pagamento
+   informado → Agendado, ou Nutrir / Desqualificado.
+5. Com o comprovante, **envia o link de agendamento** com a Rebeca Macedo e **pede o Contrato Social**;
+   documentos e comprovantes que o cliente manda são **anexados ao card** automaticamente.
 5. **Escreve as observações para o Closer** (quem é, se está no ICP, dor, o que foi falado, objeções)
    e o **próximo passo**, para qualquer vendedor continuar sem ler o histórico.
 6. Contorna as objeções do manual. Se o cliente pedir uma pessoa ou o caso for sensível, **passa para

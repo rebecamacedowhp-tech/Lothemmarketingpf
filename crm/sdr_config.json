@@ -4,7 +4,7 @@
   "link_agendamento": "",
   "sobre_empresa": "Consultoria de crédito empresarial (PJ) e pessoa física (PF). Uma das maiores originadoras de crédito empresarial do Brasil. A Lothem NÃO vende dinheiro: estrutura empresas para que tenham acesso às melhores oportunidades de crédito do mercado (bancos privados e públicos, cooperativas, fintechs e também recursos próprios). Atuação: diagnóstico financeiro e empresarial, melhoria do posicionamento bancário (rating), estruturação financeira para acesso ao crédito, identificação das melhores linhas e acompanhamento durante a captação. Produtos: Home Equity (garantia de imóvel), Auto Equity (garantia de veículo), capital de giro, antecipação de maquininha e de recebíveis, linhas subsidiadas (Pronampe, BNDES, Plano Safra, Pronaf, Pronamp), crédito imobiliário, financiamento veicular, CRI para o setor imobiliário e serviço de rating bancário. O próximo passo do lead qualificado é uma reunião de consultoria + diagnóstico de crédito (cerca de 40 minutos, online) com a especialista Rebeca Macedo, que faz a leitura ao vivo de como os bancos enxergam a empresa e apresenta o caminho para conseguir o crédito.",
   "tom_de_voz": "Escreva como uma pessoa real no WhatsApp, nunca como robô: português do Brasil do dia a dia, próximo e profissional, com autoridade de quem entende de crédito. Mensagens curtas. No máximo 1 emoji por mensagem, e não em todas. Honesta e generosa; simpatia sem servilismo; nunca insistente a ponto de irritar.",
-  "objetivo": "Seguir o script de SDR na ordem: rapport, descobrir se o diagnóstico é PF ou PJ, perguntar o valor e a finalidade do crédito, qualificar usando SPIN Selling (PJ dentro do ICP) e registrar tudo na ficha. SOMENTE depois de qualificado, levar o lead a agendar a reunião de diagnóstico com a especialista Rebeca Macedo e pedir o Contrato Social (PJ). Se o cliente perguntar como funciona o diagnóstico, explicar.",
+  "objetivo": "Qualificar o lead rápido (PF ou PJ, valor, finalidade, dor e perfil), VENDER a Consultoria + Diagnóstico de Crédito ligando-a à dor do cliente, enviar o link de pagamento e, após o cliente enviar o comprovante, levar ao agendamento da reunião com a especialista Rebeca Macedo (e pedir o Contrato Social, se PJ). Registrar tudo na ficha.",
   "campos": [
     {
       "id": "tipo",
@@ -72,6 +72,11 @@
       "instrucao": "Se é o decisor e quem mais deve participar da reunião (sócio, financeiro)."
     },
     {
+      "id": "icp",
+      "rotulo": "Perfil p/ assessoria (ICP)",
+      "instrucao": "PJ: se está dentro do ICP da assessoria (não MEI, 12+ meses como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável) e por quê. PF: 'PF'. Serve para a Rebeca; não impede a venda do diagnóstico."
+    },
+    {
       "id": "caminho_provavel",
       "rotulo": "Caminho provável",
       "instrucao": "Pela tabela 'o que o empresário fala → caminho', qual solução parece se encaixar (ex.: capital de giro, rating bancário, Home Equity, linha subsidiada). Só indicação para o Closer; nunca prometa ao cliente."
@@ -82,9 +87,14 @@
       "instrucao": "Status: 'não solicitado', 'solicitado' ou 'recebido'."
     },
     {
+      "id": "diagnostico",
+      "rotulo": "Venda do diagnóstico",
+      "instrucao": "Status: 'ainda não ofertado', 'ofertado', 'link de pagamento enviado', 'comprovante recebido', 'recusou (motivo)'."
+    },
+    {
       "id": "agendamento",
       "rotulo": "Agendamento",
-      "instrucao": "Status da reunião: 'link enviado', 'agendado para <data/hora>', 'pediu para remarcar' etc."
+      "instrucao": "Status da reunião com a Rebeca: 'link enviado', 'agendado para <data/hora>', 'pediu para remarcar' etc."
     }
   ],
   "lista_quando_transferir": "humano",
@@ -102,34 +112,34 @@
       "descricao": "A SDR IA está conversando e levantando as informações do ICP."
     },
     {
-      "id": "qualificado",
-      "nome": "Qualificado – agendar reunião",
+      "id": "proposta",
+      "nome": "Diagnóstico ofertado – aguardando pagamento",
       "cor": "#ef4444",
-      "descricao": "PJ dentro do ICP (não é MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês, endividamento saudável ou disposto a renegociar) ou PF com renda comprovável e objetivo claro; com dor, valor e finalidade do crédito. Enviar link de agendamento com a Rebeca e pedir o Contrato Social (PJ)."
+      "descricao": "Qualificado e com dor clara: a Ingrid apresentou o diagnóstico e/ou enviou o link de pagamento e está aguardando o cliente pagar."
+    },
+    {
+      "id": "pago",
+      "nome": "Pagamento informado – conferir e agendar",
+      "cor": "#f97316",
+      "descricao": "Cliente disse que pagou ou enviou comprovante. O time confere o pagamento; a Ingrid envia o link de agendamento com a Rebeca e pede o Contrato Social (PJ)."
     },
     {
       "id": "agendado",
       "nome": "Reunião agendada",
       "cor": "#10b981",
-      "descricao": "O lead confirmou que agendou com a Rebeca (ou já tinha reunião marcada). A partir daqui o SDR humano faz as confirmações por ligação (3C Plus)."
-    },
-    {
-      "id": "outras_solucoes",
-      "nome": "Outras soluções (MEI / fora do ICP)",
-      "cor": "#8b5cf6",
-      "descricao": "Não se encaixa na assessoria (ex.: MEI, menos de 12 meses, faturamento abaixo de R$ 30 mil), mas pode ter valor em rating bancário ou crédito com garantia (imóvel/veículo quitado)."
+      "descricao": "Cliente pagou e agendou a reunião com a Rebeca. A partir daqui o time humano faz as confirmações por ligação (3C Plus)."
     },
     {
       "id": "nutrir",
       "nome": "Nutrir / sem momento",
       "cor": "#f59e0b",
-      "descricao": "Tem perfil, mas não é o momento, parou de responder no meio da qualificação ou pediu para falar depois."
+      "descricao": "Tem necessidade real, mas não comprou agora (vai pensar, sem dinheiro no momento, sem urgência) ou parou de responder."
     },
     {
       "id": "desqualificado",
       "nome": "Desqualificado",
       "cor": "#94a3b8",
-      "descricao": "Sem perfil e sem solução possível agora: pessoa física buscando empréstimo pessoal, empresa sem operação/faturamento, curioso, spam, fornecedor ou candidato a vaga."
+      "descricao": "Sem necessidade real de crédito ou sem perfil algum: curioso, spam, fornecedor, candidato a vaga, quer só simular sem intenção."
     },
     {
       "id": "humano",
@@ -141,9 +151,9 @@
     },
     {
       "id": "fechado",
-      "nome": "Fechado – ganho",
+      "nome": "Fechou assessoria",
       "cor": "#059669",
-      "descricao": "Contratou a assessoria.",
+      "descricao": "Depois do diagnóstico, contratou a assessoria.",
       "ia_pode_mover": false,
       "ia_responde": false
     },
@@ -159,5 +169,20 @@
   "especialista": {
     "nome": "Rebeca Macedo",
     "apresentacao": "Especialista da Lothem, ex-analista de crédito PJ e PF dentro de um banco. Hoje faz o caminho contrário: ajuda empresários a estruturar a empresa para viabilizar o crédito."
+  },
+  "diagnostico": {
+    "nome": "Consultoria + Diagnóstico de Crédito",
+    "preco_pj": "",
+    "preco_pf": "",
+    "link_pagamento_pj": "",
+    "link_pagamento_pf": "",
+    "formas_pagamento": "",
+    "o_que_inclui": [
+      "Análise completa de como os bancos enxergam a empresa/pessoa: score, rating, histórico no sistema bancário (SCR), pendências, endividamento e capacidade de pagamento",
+      "Identificação do que está travando o crédito",
+      "Reunião online de cerca de 40 minutos com a Rebeca Macedo (ex-analista de crédito PJ e PF em banco) para a leitura ao vivo do diagnóstico",
+      "O caminho personalizado para destravar o crédito: o que ajustar e quais linhas combinam com o perfil",
+      "Material da consultoria + diagnóstico para o cliente guardar"
+    ]
   }
 }

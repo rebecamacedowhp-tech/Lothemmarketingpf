@@ -107,10 +107,10 @@ def test_campo_vazio_da_ia_nao_apaga_ficha(cli):
 
 
 def test_qualificado_ia_continua_atendendo(cli):
-    cli.resultado.update(lista="qualificado", temperatura="quente", score=85,
+    cli.resultado.update(lista="proposta", temperatura="quente", score=85,
                          resposta="Vou deixar aqui o link pra você escolher o horário.")
     d = cli.post("/api/simular", json={"telefone": "5566", "texto": "Faturo 80 mil, CNPJ de 3 anos"}).json()
-    assert d["lista"] == "qualificado" and d["ia_ativa"] == 1
+    assert d["lista"] == "proposta" and d["ia_ativa"] == 1
 
 
 def test_transferir_para_humano_pausa_ia(cli):
@@ -200,3 +200,10 @@ def test_resposta_dividida_em_varias_mensagens(cli):
 
 def test_dividir_mensagens_limita_a_duas():
     assert crm.dividir_mensagens("a\n\nb\n\nc") == ["a", "b\n\nc"]
+
+
+def test_prompt_traz_oferta_e_avisa_quando_preco_nao_configurado():
+    import sdr
+    p = sdr.montar_system_prompt()
+    assert "Consultoria + Diagnóstico de Crédito" in p
+    assert "NÃO CONFIGURADO" in p and "nunca invente valor" in p
