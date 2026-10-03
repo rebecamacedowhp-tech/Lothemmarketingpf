@@ -23,6 +23,15 @@ Negócio → mercado → público → categoria → concorrência → territóri
 
 Teste: se trocar o nome da marca e o texto continuar servindo para o concorrente, está genérico. Refaça.
 
+## Referências para modelar
+As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
+
+1. **Marty Neumeier (The Brand Gap, Zag)** — marca é o que o cliente sente; diferenciação radical ("se ninguém mais faz, faça"). *Na Lothem:* teste do "onliness": somos a única ___ que ___.
+2. **David Aaker** — brand equity, identidade de marca e arquitetura de marcas. *Na Lothem:* organizar a família LOTHEM (Marketing e Crédito) como arquitetura coerente.
+3. **Jean-Noël Kapferer** — prisma de identidade: físico, personalidade, cultura, relação, reflexo, autoimagem. *Na Lothem:* checar cada marca nas seis faces antes de definir voz.
+4. **Wally Olins** — identidade corporativa como comportamento, não só logo. *Na Lothem:* a voz precisa aparecer no atendimento, no WhatsApp e na proposta, não só no post.
+5. **Margaret Mark & Carol Pearson (The Hero and the Outlaw)** — arquétipos como atalho de significado. *Na Lothem:* usar arquétipo como direção, nunca como fantasia caricata.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

@@ -30,6 +30,15 @@ HOOK → PROBLEMA → SOLUÇÃO → COMO FUNCIONA → BENEFÍCIOS → PROVA → 
 3. Notas de UI (paleta, tipografia, componentes) alinhadas ao Agente 05.
 4. Checklist técnico (SEO, rastreamento: Pixel/GA4/eventos, formulário, velocidade).
 
+## Referências para modelar
+As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
+
+1. **Steve Krug (Don't Make Me Think)** — a página precisa ser óbvia; o usuário não lê, escaneia. *Na Lothem:* acima da dobra entendível em 3 segundos.
+2. **Jakob Nielsen (Nielsen Norman Group)** — heurísticas de usabilidade baseadas em pesquisa. *Na Lothem:* checar cada página contra as 10 heurísticas.
+3. **Peep Laja (CXL)** — conversão guiada por pesquisa e testes, não por opinião. *Na Lothem:* hipótese de conversão antes de mudar a página.
+4. **Oli Gardner (Unbounce)** — landing page com um objetivo só (attention ratio 1:1). *Na Lothem:* um CTA principal por página.
+5. **Rand Fishkin (Moz, SparkToro)** — SEO e descoberta de onde o público realmente está. *Na Lothem:* SEO local e conteúdo que responde buscas reais.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.
