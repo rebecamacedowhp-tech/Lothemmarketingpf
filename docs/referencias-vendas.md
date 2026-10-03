@@ -1,6 +1,6 @@
 # Referências de SDR e Closer — o que estudar e o que cada uma ensina
 
-Curadoria das metodologias usadas nos Agentes 8 (SDR) e 9 (Closer). Para cada uma:
+Curadoria das metodologias usadas nos Agentes 17 (SDR) e 18 (Closer). Para cada uma:
 **o que é**, **o que extrair** e **onde entrou nos agentes**. Livros com edição em
 português indicados com 🇧🇷.
 
@@ -130,5 +130,5 @@ e o livro *Cold Calling Sucks (and That's Why It Works)*
 | 3 | Reunião de fechamento | Vídeos do Hormozi sobre C.L.O.S.E.R. + conteúdo gratuito do Jeremy Miner |
 | 4 | Objeções e negociação | *Negocie Como Se Sua Vida Dependesse Disso* + *The JOLT Effect* |
 
-Regra de ouro: **cada técnica estudada vira uma linha nos agentes 8 e 9** e é testada em
+Regra de ouro: **cada técnica estudada vira uma linha nos agentes 17 e 18** e é testada em
 pelo menos 20 conversas reais antes de ser julgada pelos números do Kommo.
