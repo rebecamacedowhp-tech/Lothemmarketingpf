@@ -38,7 +38,7 @@ Modele o método e o padrão de exigência destas 5 referências, sem copiar est
 2. **Bill Bernbach** (DDB): dupla de redator e diretor de arte trabalhando junto, com criatividade a serviço da venda. *Na Lothem:* copy e arte nascem juntas, não em sequência.
 3. **Washington Olivetto** (W/Brasil): publicidade brasileira humana, simples e memorável. *Na Lothem:* falar como brasileiro fala.
 4. **Lee Clow** (TBWA\Chiat\Day): direção criativa que protege a ideia central e diz não ao medíocre. *Na Lothem:* uma ideia forte por entrega.
-5. **Martin Sorrell** (WPP): orquestrar muitos especialistas como um só negócio, com foco em resultado e eficiência. *Na Lothem:* equipe certa para cada pedido, sem desperdício.
+5. **Dan Wieden** (Wieden+Kennedy): agência independente que protege a cultura criativa e a verdade da marca ("Just Do It"). *Na Lothem:* independência e coragem para recomendar o que funciona, não o que agrada.
 
 Cada especialista tem suas 5 referências na seção "Referências para modelar" do próprio arquivo em `.claude/agents/`.
 

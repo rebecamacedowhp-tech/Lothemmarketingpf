@@ -31,8 +31,8 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 1. **MrBeast (Jimmy Donaldson)** — obsessão por retenção: hook nos primeiros segundos, nenhum momento morto. *Na Lothem:* cortar tudo que não segura a atenção.
 2. **Walter Murch (In the Blink of an Eye)** — o corte serve primeiro à emoção, depois à história e ao ritmo. *Na Lothem:* editar pelo que a pessoa sente, não pelo que é bonito.
 3. **Casey Neistat** — narrativa forte com câmera simples e edição ágil. *Na Lothem:* roteiros que funcionam gravados com celular, por uma pessoa.
-4. **Ridley Scott (comercial "1984")** — publicidade com linguagem de cinema e uma única ideia poderosa. *Na Lothem:* um vídeo, uma ideia, imagem que fica na memória.
-5. **Spike Jonze** — originalidade e humanidade em comerciais. *Na Lothem:* fugir do formato óbvio de "vídeo de agência".
+4. **Paddy Galloway** — análise de retenção e de padrões de vídeos que viralizam; ideia e embalagem antes da gravação. *Na Lothem:* validar tema e hook antes de gravar e olhar a curva de retenção depois.
+5. **Jenny Hoyos** — vídeos curtos com hook imediato, roteiro enxuto e loop no final. *Na Lothem:* Reels de 15 a 40 segundos sem um segundo sobrando.
 
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).

@@ -30,8 +30,8 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 1. **Bob Moesta (Jobs to Be Done, com Clayton Christensen)** — entrevistas que reconstroem o momento real da compra: o que empurrou, o que puxou, o que travou. *Na Lothem:* investigar a "troca" que o cliente fez, e não só o perfil demográfico.
 2. **Byron Sharp (How Brands Grow, Ehrenberg-Bass)** — evidência acima de achismo; disponibilidade mental e física; momentos de entrada na categoria. *Na Lothem:* mapear em que situações o público lembra que precisa do serviço.
 3. **Gerald Zaltman (How Customers Think)** — a maior parte da decisão é emocional e inconsciente; metáforas revelam o que a pessoa não diz. *Na Lothem:* ler as metáforas que o público usa nos reviews e comentários.
-4. **Paco Underhill (Why We Buy)** — observar comportamento real em vez de confiar no que as pessoas declaram. *Na Lothem:* preferir dados de comportamento (reviews, buscas, conversas) a pesquisa de opinião.
-5. **Ernest Dichter (pai da pesquisa motivacional)** — perguntar "por que de verdade?" até achar o desejo por trás do produto. *Na Lothem:* todo insight precisa chegar na motivação, não parar na característica.
+4. **Rory Sutherland (Ogilvy UK, Alchemy)** — economia comportamental: as pessoas decidem por percepção, não por lógica. *Na Lothem:* procurar o motivo psicológico escondido (medo, status, segurança), não só o racional.
+5. **Rob Fitzpatrick (The Mom Test)** — perguntar sobre o passado e os fatos da vida do cliente, nunca "você compraria?". *Na Lothem:* roteiros de conversa com cliente e lead que trazem verdade, não elogio educado.
 
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).

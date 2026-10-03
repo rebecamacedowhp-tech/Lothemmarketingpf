@@ -33,7 +33,7 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 2. **Chris Voss (Never Split the Difference)** — empatia tática, espelhamento, rotular emoções. *Na Lothem:* contornar objeção reconhecendo o sentimento antes de argumentar.
 3. **Matthew Dixon & Brent Adamson (The Challenger Sale)** — ensinar algo novo ao cliente e conduzir a conversa. *Na Lothem:* levar um insight útil em cada follow-up.
 4. **Daniel Pink (To Sell Is Human)** — vender é ajudar; clareza e sintonia. *Na Lothem:* tom de quem ajuda, nunca de vendedor desesperado.
-5. **Zig Ziglar** — confiança e relacionamento antes do fechamento. *Na Lothem:* construir confiança antes de pedir o sim.
+5. **Keenan (Gap Selling)** — vender é mostrar a distância entre onde o cliente está e onde quer chegar. *Na Lothem:* diagnosticar o estado atual e o desejado do lead antes de apresentar solução.
 
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
