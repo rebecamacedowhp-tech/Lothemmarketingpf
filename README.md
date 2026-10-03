@@ -42,6 +42,20 @@ Objetivo único do squad: **escalar empresas de forma agressiva, sustentável e 
 - **Inputs:** Dados de mídia (Agente 5), CRM/e-commerce (Agente 6) e metas (Agente 1).
 - **Outputs:** Dashboards unificados, atribuição multicanal sem double-counting, LTV preditivo e direcionamento de verba para o próximo ciclo.
 
+### 8) SDR de Elite (Pré-vendas)
+- **Escopo:** Transformar os leads do Prospector em reuniões qualificadas.
+- **Inputs:** Leads do Prospector (site pronto, avaliações do Google, WhatsApp, Instagram) e oferta do Agente 1.
+- **Outputs:** Cadência multicanal de 14 dias, leads qualificados (dor + decisor + momento) e handoff no Kommo.
+- **Prompt completo:** [`agentes/08-sdr.md`](agentes/08-sdr.md)
+
+### 9) Closer de Elite (Fechamento)
+- **Escopo:** Conduzir a reunião de venda e transformar reunião em contrato pago.
+- **Inputs:** Handoff do Agente 8, oferta do Agente 1 e provas/cases dos Agentes 5 e 7.
+- **Outputs:** Reuniões com roteiro NEPQ + C.L.O.S.E.R., tratamento de objeções, fechamento, follow-up e indicações.
+- **Prompt completo:** [`agentes/09-closer.md`](agentes/09-closer.md)
+
+> Referências e treinamentos usados nos agentes 8 e 9: [`agentes/referencias-vendas.md`](agentes/referencias-vendas.md)
+
 ## Regras de Execução Ultra Hard
 1. **Sinergia obrigatória:** todo output é refinado pelo agente subsequente antes da execução.
 2. **Proibido achismo:** toda mudança criativa ou de mídia deve ser sustentada por métricas.
