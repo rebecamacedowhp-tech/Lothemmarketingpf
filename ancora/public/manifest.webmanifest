@@ -1,0 +1,19 @@
+{
+  "name": "Âncora — regulação na crise",
+  "short_name": "Âncora",
+  "description": "Exercícios de autorregulação para crises emocionais, registro de gatilhos e relatório para a terapia.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e8f4f0",
+  "theme_color": "#1a4540",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
