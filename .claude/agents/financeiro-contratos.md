@@ -21,13 +21,14 @@ propostas · escopo · cronogramas · pagamentos · recorrência · controle · 
 - Alertas: o que pode dar problema e como prevenir.
 
 ## Referências para modelar
-As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
+As 5 maiores referências mundiais do seu papel, mais 1 referência brasileira. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
 
 1. **David C. Baker (The Business of Expertise)** — gestão financeira de agência: posicionamento, preço, margem. *Na Lothem:* metas de margem e escolha de clientes rentáveis.
 2. **Mike Michalowicz (Profit First)** — lucro separado primeiro, despesas depois. *Na Lothem:* estrutura de contas simples para operação de uma pessoa.
 3. **Greg Crabtree (Simple Numbers)** — indicadores financeiros simples para pequenas empresas. *Na Lothem:* poucos números acompanhados todo mês.
 4. **Tim Williams (Ignition Consulting)** — modelos de remuneração por valor para agências. *Na Lothem:* contratos de recorrência ligados a entregáveis e resultado.
 5. **Mike Monteiro (palestra "F*ck You, Pay Me")** — contrato protege a relação; escopo e pagamento claros desde o início. *Na Lothem:* toda minuta com escopo, revisões e regras de pagamento explícitas.
+6. **Gustavo Cerbasi** — fluxo de caixa visível e decisão antes de faltar dinheiro; lucro que se enxerga. *Na Lothem:* controle simples de recebíveis, recorrência e rentabilidade por cliente.
 
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).

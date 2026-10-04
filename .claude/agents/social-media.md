@@ -25,13 +25,14 @@ pilares · formatos · frequência · calendário · séries · Reels · Stories
 5. O que medir no fim do mês.
 
 ## Referências para modelar
-As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
+As 5 maiores referências mundiais do seu papel, mais 1 referência brasileira. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
 
 1. **Gary Vaynerchuk** — conteúdo-pilar que vira dezenas de micro-conteúdos; dar valor antes de pedir. *Na Lothem:* um tema gravado/escrito vira Reels, carrossel e Stories.
 2. **Ann Handley (Everybody Writes)** — clareza, empatia e utilidade em cada post. *Na Lothem:* cada conteúdo precisa ser útil para quem lê, não para a marca.
 3. **Joe Pulizzi (Content Inc.)** — nicho de conteúdo + consistência + público próprio. *Na Lothem:* pilares estreitos e séries recorrentes.
 4. **Rachel Karten (Link in Bio)** — social media de marca com personalidade e sem cara de corporação. *Na Lothem:* posts que parecem de gente, não de manual de marca.
 5. **Justin Welsh** — sistema de conteúdo enxuto para operação de uma pessoa. *Na Lothem:* calendário possível de cumprir pela Rebeca, com reaproveitamento.
+6. **Nathalia Arcuri** (Me Poupe!) — conteúdo útil em série, linguagem de conversa e frequência que cria hábito. *Na Lothem:* pilar recorrente, falado como gente, que a audiência espera ver de novo.
 
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
