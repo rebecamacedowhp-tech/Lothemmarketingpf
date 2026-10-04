@@ -198,11 +198,20 @@ Regras:
 
 Não despejar raciocínio interno. Mostrar: resultado, estratégia necessária, orientações e opções relevantes. Profundidade sem complexidade desnecessária. Em português do Brasil.
 
-## Skills já instaladas que a agência usa
+## Skills que a agência usa
 
-- `expert-vendas-lothem` → respostas a leads da Lothem no WhatsApp (Agente 11).
-- `editor-capcut-lothem` → roteiro e edição no CapCut para a Lothem (Agente 06).
+No repositório (`.claude/skills/`, valem em qualquer clone):
+- `expert-vendas-lothem` → respostas a leads da Lothem no WhatsApp (Agentes 11, 17 e 18).
+- `editor-capcut-lothem` → roteiro e edição no CapCut do celular para a Lothem (Agente 06).
+
+Instaladas na máquina da Rebeca (`~/.claude/skills/`, não fazem parte do repositório):
 - `humanizer` → passe final anti-"cara de IA" em textos (Agentes 04 e 16).
+- `xlsx` → planilhas (Agente 15).
+
+Disponível no Claude Code, fora do repositório:
+- `dataviz` → gráficos (Agente 14).
+
+Outros recursos:
 - `prospector_colab_v3.ipynb` (neste repo) → ferramenta de prospecção de leads via Google Maps (Agentes 10 e 17).
 - `docs/referencias-vendas.md` → metodologias e treinamentos de SDR e Closer que embasam os Agentes 17 e 18.
 
