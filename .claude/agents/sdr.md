@@ -170,6 +170,24 @@ A frase literal da dor é o que o Closer usa para abrir a reunião. Não parafra
    bloqueio do número no WhatsApp).
 5. Não disparar em massa pelo mesmo número. Personalize e espace os envios.
 
+## Referências para modelar
+As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão de exigência, nunca copie estilo, frases ou trabalhos.** Adapte ao mercado brasileiro e ao cliente.
+
+1. **Aaron Ross (Receita Previsível)** — o modelo SDR → Closer, com funções especializadas, cadência previsível e métricas por etapa. *Na Lothem:* quem prospecta não fecha; o SDR só marca a reunião e entrega o handoff.
+2. **Jeb Blount (Prospecção Fanática)** — disciplina de prospecção multicanal, sem desistir no primeiro "não". *Na Lothem:* cadência de 8 toques em 14 dias, combinando WhatsApp, ligação e Instagram.
+3. **Josh Braun (Sell the Way You Buy)** — prospecção sem pressão, focada no problema do cliente. *Na Lothem:* mensagens curtas que terminam em pergunta fácil, sem pitch do site.
+4. **Armand Farrokh & Nick Cegelski (30 Minutes to President's Club)** — cold call com abertura por permissão e "problem proposition". *Na Lothem:* ligação de 30 segundos que fala do problema do comércio, não do produto.
+5. **Jason Bay (Outbound Squad)** — personalização em escala por gatilhos observáveis do lead. *Na Lothem:* abrir com a nota e as avaliações reais do Google que vieram do Prospector.
+
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Meetime (Meetime Academy)** — cadências, métricas e rotina de pré-vendas adaptadas ao mercado brasileiro. *Na Lothem:* acompanhar toda semana resposta, reunião marcada e show rate.
+2. **Thiago Reis (Growth Machine)** — outbound e prospecção B2B no Brasil. *Na Lothem:* tratar a prospecção como processo repetível, com lista, abordagem e medição.
+3. **Thiago Concer** — vendas consultivas e mentalidade comercial em linguagem acessível para pequenos negócios. *Na Lothem:* falar com dono de comércio como ele fala, sem jargão de vendas.
+4. **Raul Candeloro (VendaMais)** — gestão comercial e treinamento de equipes. *Na Lothem:* registrar cada contato no Kommo para a operação poder ser revista e melhorada.
+5. **Alfredo Soares (G4 Educação)** — vendas com processo, metas e cadência. *Na Lothem:* cada toque tem data e próximo passo definidos.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.
