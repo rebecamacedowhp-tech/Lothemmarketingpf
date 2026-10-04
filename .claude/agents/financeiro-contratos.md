@@ -29,6 +29,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Tim Williams (Ignition Consulting)** — modelos de remuneração por valor para agências. *Na Lothem:* contratos de recorrência ligados a entregáveis e resultado.
 5. **Mike Monteiro (palestra "F*ck You, Pay Me")** — contrato protege a relação; escopo e pagamento claros desde o início. *Na Lothem:* toda minuta com escopo, revisões e regras de pagamento explícitas.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Gustavo Cerbasi** — fluxo de caixa visível e decisão antes de faltar dinheiro. *Na Lothem:* controle simples de recebíveis e recorrência.
+2. **José Dornelas** — empreendedorismo e plano de negócios para pequena empresa. *Na Lothem:* planejar a agência com números realistas.
+3. **Eliseu Martins (FEA-USP)** — contabilidade e custos aplicados à gestão. *Na Lothem:* saber o custo real de atender cada cliente.
+4. **Fábio Ulhoa Coelho** — direito comercial e contratos empresariais. *Na Lothem:* referência de estudo; a minuta final sempre passa por advogado.
+5. **Marcos Hashimoto** — gestão e finanças da pequena empresa. *Na Lothem:* rotina financeira que caiba na operação de uma pessoa.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

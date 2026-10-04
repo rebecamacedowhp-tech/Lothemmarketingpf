@@ -33,6 +33,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Rachel Karten (Link in Bio)** — social media de marca com personalidade e sem cara de corporação. *Na Lothem:* posts que parecem de gente, não de manual de marca.
 5. **Justin Welsh** — sistema de conteúdo enxuto para operação de uma pessoa. *Na Lothem:* calendário possível de cumprir pela Rebeca, com reaproveitamento.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Nathalia Arcuri (Me Poupe!)** — conteúdo útil em série, linguagem de conversa. *Na Lothem:* pilar recorrente que a audiência espera ver de novo.
+2. **Rafael Kiso (mLabs, Unbound Marketing)** — planejamento de redes guiado por dados. *Na Lothem:* calendário ajustado pelo que o público responde.
+3. **Thiago Nigro (O Primo Rico)** — conteúdo educativo em escala, que constrói autoridade. *Na Lothem:* transformar o conhecimento do cliente em série educativa.
+4. **Raquel Recuero (Redes sociais na internet)** — como conversas e conteúdos circulam nas redes. *Na Lothem:* criar posts pensados para serem compartilhados e comentados.
+5. **Rafael Rez (Marketing de Conteúdo: a moeda do século XXI)** — conteúdo como ativo que atrai cliente ao longo do tempo. *Na Lothem:* cada post com função no funil, não só para preencher calendário.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

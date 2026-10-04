@@ -36,6 +36,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Joseph Sugarman** — "escorregador": cada frase serve para fazer ler a próxima. *Na Lothem:* primeira frase curta, ritmo que puxa até o CTA.
 5. **Joanna Wiebe (Copyhackers)** — copy de conversão minerada da voz do cliente (reviews, entrevistas). *Na Lothem:* usar as palavras literais do público vindas do Agente 01.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Neil Ferreira** — texto com fala de gente e uma frase que fica. *Na Lothem:* copy em português falado, uma ideia por peça.
+2. **Washington Olivetto (W/Brasil)** — humor, simplicidade e afeto que o brasileiro guarda. *Na Lothem:* escrever algo que a pessoa contaria para outra.
+3. **Stalimir Vieira (Raciocínio criativo na publicidade)** — criação como raciocínio, do problema à ideia. *Na Lothem:* justificar cada hook pelo problema que ele resolve.
+4. **Paulo Maccedo** — copywriting de resposta direta adaptado ao Brasil. *Na Lothem:* estruturas clássicas de copy, mas com vocabulário brasileiro.
+5. **Ícaro de Carvalho (O Novo Mercado)** — escrita autoral e persuasiva, com posicionamento. *Na Lothem:* texto com opinião e voz própria, não neutro.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

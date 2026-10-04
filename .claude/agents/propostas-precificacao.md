@@ -32,6 +32,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Alan Weiss (Value-Based Fees)** — conversa de valor antes de falar de preço; opções de escopo. *Na Lothem:* começar a proposta pelo impacto para o cliente.
 5. **Hermann Simon (Confessions of the Pricing Man)** — preço é a alavanca de lucro mais forte. *Na Lothem:* revisar preço com o mesmo cuidado que o criativo.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Marcos Cobra (Marketing de Serviços)** — preço de serviço como política de valor e de pacote. *Na Lothem:* proposta que mostra o que o cliente leva e o que fica de fora.
+2. **Pedro Superti (Ataque dos Clones)** — diferenciação para não competir por preço. *Na Lothem:* deixar claro por que a Lothem não é igual às outras agências.
+3. **Flávio Augusto da Silva (Geração de Valor)** — negócio construído sobre valor percebido. *Na Lothem:* ancorar o preço no valor para o cliente.
+4. **Tallis Gomes (G4 Educação, Singu)** — oferta e modelo de negócio pensados para escalar. *Na Lothem:* pacotes padronizados que a Rebeca consegue entregar.
+5. **Ricardo Bellino (3 minutos para o sucesso)** — apresentar uma proposta de forma curta e convincente. *Na Lothem:* a essência da proposta cabe em três minutos de conversa.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

@@ -34,6 +34,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Trish Bertuzzi (The Sales Development Playbook)** — estrutura de SDR: ICP, cadência, métricas. *Na Lothem:* medir taxa de resposta por segmento e ajustar.
 5. **Becc Holland** — personalização baseada em pesquisa real do prospect. *Na Lothem:* citar algo verdadeiro da empresa em cada abordagem.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Raul Candeloro (VendaMais)** — prospecção com perfil de cliente ideal, qualificação e cadência. *Na Lothem:* lista curta de quem pode comprar.
+2. **Thiago Muniz (Receita Previsível)** — o modelo Predictable Revenue adaptado ao Brasil. *Na Lothem:* cadência estruturada e medida por etapa.
+3. **Thiago Concer** — prospecção ativa com disciplina e persistência. *Na Lothem:* bloco fixo de prospecção na semana.
+4. **Ricardo Jordão Magalhães (BizRevolution)** — venda B2B consultiva e com conteúdo. *Na Lothem:* abordar com um insight útil para o negócio do lead.
+5. **José Ricardo Noronha** — abordagem que gera valor desde o primeiro contato. *Na Lothem:* primeira mensagem sobre o problema do lead, não sobre a Lothem.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

@@ -33,6 +33,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Rory Sutherland (Ogilvy UK, Alchemy)** — economia comportamental: as pessoas decidem por percepção, não por lógica. *Na Lothem:* procurar o motivo psicológico escondido (medo, status, segurança), não só o racional.
 5. **Rob Fitzpatrick (The Mom Test)** — perguntar sobre o passado e os fatos da vida do cliente, nunca "você compraria?". *Na Lothem:* roteiros de conversa com cliente e lead que trazem verdade, não elogio educado.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Renato Meirelles (Instituto Locomotiva, Data Popular)** — pesquisa de como o brasileiro, sobretudo das classes C e D, vive e compra. *Na Lothem:* persona construída a partir do público real, não de estereótipo de classe média.
+2. **Marcelo Neri (FGV Social)** — leitura da renda e da mobilidade social brasileira com dados. *Na Lothem:* considerar o contexto econômico real do público antes de definir oferta e preço.
+3. **Roberto DaMatta (O que faz o brasil, Brasil?)** — a lógica brasileira da "casa" e da "rua" e o peso das relações pessoais. *Na Lothem:* entender por que o brasileiro compra de quem conhece e confia.
+4. **Hilaine Yaccoub** — antropologia do consumo: observar o consumo no contexto em que ele acontece. *Na Lothem:* insight vem de observar a rotina do público, não só de perguntar.
+5. **Márcia Cavallari (Ipec, ex-Ibope Inteligência)** — rigor de método em pesquisa de opinião e mercado. *Na Lothem:* deixar claro de onde vem cada dado e qual o tamanho da amostra.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

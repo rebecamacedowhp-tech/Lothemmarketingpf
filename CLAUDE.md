@@ -40,7 +40,15 @@ Modele o método e o padrão de exigência destas 5 referências, sem copiar est
 4. **Lee Clow** (TBWA\Chiat\Day): direção criativa que protege a ideia central e diz não ao medíocre. *Na Lothem:* uma ideia forte por entrega.
 5. **Dan Wieden** (Wieden+Kennedy): agência independente que protege a cultura criativa e a verdade da marca ("Just Do It"). *Na Lothem:* independência e coragem para recomendar o que funciona, não o que agrada.
 
-Cada especialista tem suas 5 referências na seção "Referências para modelar" do próprio arquivo em `.claude/agents/`.
+### Referências brasileiras (Agente 0)
+
+1. **Roberto Duailibi (DPZ)** — criatividade como método para achar a ideia, não espera de inspiração. *Na Lothem:* a ideia central de cada entrega é decidida com método antes de distribuir o trabalho.
+2. **Júlio Ribeiro (Talent)** — propaganda existe para gerar resultado para o negócio do cliente. *Na Lothem:* toda entrega responde qual resultado comercial ela move.
+3. **Alex Periscinoto (Almap)** — publicidade simples e vendedora, aprendida no varejo. *Na Lothem:* clareza de oferta acima de enfeite.
+4. **Mauro Salles (Salles)** — agência como parceira de longo prazo do negócio do cliente. *Na Lothem:* pensar na relação com o cliente, não só no job da vez.
+5. **Fábio Fernandes (F/Nazca)** — campanhas populares que viram fala do brasileiro. *Na Lothem:* buscar a frase que o público repetiria.
+
+Cada especialista tem 5 referências mundiais e 5 brasileiras nas seções "Referências para modelar" e "Referências brasileiras para modelar" do próprio arquivo em `.claude/agents/`.
 
 ### Os 16 especialistas (subagentes)
 

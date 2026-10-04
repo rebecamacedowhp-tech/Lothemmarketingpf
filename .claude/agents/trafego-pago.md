@@ -34,6 +34,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Molly Pittman (DigitalMarketer)** — tráfego conforme a temperatura do público (frio, morno, quente). *Na Lothem:* mensagem e oferta diferentes para cada temperatura.
 5. **Frederick Vallaeys (ex-Google, Optmyzr)** — automação e Smart Bidding do Google com supervisão humana e dados de negócio. *Na Lothem:* alimentar o algoritmo com conversões de verdade (lead qualificado, venda), não só cliques.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Pedro Sobral (Subido)** — estrutura simples de campanha e decisão pela métrica de venda. *Na Lothem:* conta enxuta e otimização por lead qualificado.
+2. **Leandro Ladeira (Venda Todo Santo Dia)** — venda contínua com anúncio e oferta sempre ativos. *Na Lothem:* campanha de captação rodando todo dia, não só em ação pontual.
+3. **Tiago Tessmann** — Google Ads aplicado a pequenas e médias empresas. *Na Lothem:* rede de pesquisa para quem já está procurando o serviço.
+4. **Conrado Adolpho (8Ps do Marketing Digital)** — método passo a passo de marketing digital, do público à conversão. *Na Lothem:* tráfego conectado a página, oferta e mensuração.
+5. **Érico Rocha (Fórmula de Lançamento)** — tráfego somado a sequência de aquecimento e evento de venda. *Na Lothem:* anúncio que leva para uma sequência, não direto para o "compre".
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

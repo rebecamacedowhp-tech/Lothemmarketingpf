@@ -32,6 +32,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Wally Olins** — identidade corporativa como comportamento, não só logo. *Na Lothem:* a voz precisa aparecer no atendimento, no WhatsApp e na proposta, não só no post.
 5. **Margaret Mark & Carol Pearson (The Hero and the Outlaw)** — arquétipos como atalho de significado. *Na Lothem:* usar arquétipo como direção, nunca como fantasia caricata.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Ricardo Guimarães (Thymus)** — marca é um jeito de pensar e de agir, não só o que se diz. *Na Lothem:* a voz é a mesma no manifesto, no WhatsApp e no atendimento.
+2. **Jaime Troiano (Troiano Branding)** — a dimensão emocional e psicológica das marcas. *Na Lothem:* definir o que a marca faz o cliente sentir, não só o que ela entrega.
+3. **Ana Couto (Ana Couto Branding)** — branding ligado ao valor do negócio. *Na Lothem:* plataforma de marca que orienta decisões comerciais.
+4. **Fred Gelli (Tátil Design, marca Rio 2016)** — marca com conceito forte e propósito. *Na Lothem:* o conceito vem antes da forma.
+5. **Gilberto Strunck (Como criar identidades visuais para marcas de sucesso)** — identidade como sistema aplicado com consistência. *Na Lothem:* manual simples que a Rebeca consegue aplicar em toda peça.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

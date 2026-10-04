@@ -34,6 +34,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Paddy Galloway** — análise de retenção e de padrões de vídeos que viralizam; ideia e embalagem antes da gravação. *Na Lothem:* validar tema e hook antes de gravar e olhar a curva de retenção depois.
 5. **Jenny Hoyos** — vídeos curtos com hook imediato, roteiro enxuto e loop no final. *Na Lothem:* Reels de 15 a 40 segundos sem um segundo sobrando.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Fernando Meirelles (O2 Filmes, Cidade de Deus)** — gente e lugares reais, ritmo que segura. *Na Lothem:* cenas com verdade local, sem cara de comercial genérico.
+2. **Andrucha Waddington (Conspiração Filmes)** — narrativa humana em filme e publicidade. *Na Lothem:* contar uma história pequena e verdadeira em poucos segundos.
+3. **KondZilla (Konrad Dantas)** — linguagem visual popular, produção enxuta e alto alcance no YouTube. *Na Lothem:* vídeo com cara do público, feito com o que se tem.
+4. **Felipe Castanhari (Canal Nostalgia)** — edição e explicação que prendem do começo ao fim. *Na Lothem:* explicar algo complexo com ritmo e recursos visuais.
+5. **Ian SBF (Porta dos Fundos)** — esquete curta a partir de situação real e reconhecível. *Na Lothem:* Reels que começam numa situação que o público já viveu.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

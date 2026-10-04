@@ -33,6 +33,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Seth Godin (Tribes)** — pessoas seguem quem lidera uma ideia em que acreditam. *Na Lothem:* relacionamento conectado a uma causa da marca.
 5. **Horst Schulze (Ritz-Carlton, Excellence Wins)** — padrão de serviço definido e praticado por todos; "damas e cavalheiros servindo damas e cavalheiros". *Na Lothem:* respeito e cuidado iguais em cada resposta, do comentário ao direct.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Maurício Vargas (Reclame Aqui)** — reputação se constrói respondendo quem reclama, em público, até resolver. *Na Lothem:* nenhuma crítica fica sem resposta e caminho concreto.
+2. **Luiza Helena Trajano (Magazine Luiza)** — cliente e gente no centro, com proximidade. *Na Lothem:* tratar cada pessoa como cliente da loja da esquina.
+3. **Cristina Junqueira (Nubank)** — atendimento humano como diferencial de marca. *Na Lothem:* resposta que resolve e surpreende, sem roteiro engessado.
+4. **João Branco (ex-McDonald's Brasil)** — ouvir como o público chama a marca e conversar na língua dele (o caso "Méqui"). *Na Lothem:* usar as palavras que os seguidores usam nos comentários.
+5. **Roberto Madruga** — gestão do relacionamento e experiência do cliente. *Na Lothem:* padrão de resposta e follow-up definido por situação.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.

@@ -39,6 +39,15 @@ As 5 maiores referências mundiais do seu papel. **Modele o método e o padrão 
 4. **Oli Gardner (Unbounce)** — landing page com um objetivo só (attention ratio 1:1). *Na Lothem:* um CTA principal por página.
 5. **Rand Fishkin (Moz, SparkToro)** — SEO e descoberta de onde o público realmente está. *Na Lothem:* SEO local e conteúdo que responde buscas reais.
 
+## Referências brasileiras para modelar
+As 5 referências brasileiras do seu papel, para o trabalho soar como o Brasil fala e compra. Mesma regra: **modele o método, nunca copie estilo, frases ou trabalhos.**
+
+1. **Fabricio Teixeira (UX Collective)** — experiência a serviço da tarefa de quem chega. *Na Lothem:* página que se entende no celular e deixa óbvio o próximo passo.
+2. **Walter Cybis (Ergonomia e Usabilidade)** — usabilidade com critérios e testes. *Na Lothem:* testar a página com gente real antes de publicar.
+3. **Luiz Agner (Ergodesign e arquitetura de informação)** — organizar a informação para o usuário encontrar o que procura. *Na Lothem:* menu e seções na ordem em que o cliente pensa.
+4. **Fabio Ricotta (Agência Mestre)** — SEO profissional no mercado brasileiro. *Na Lothem:* páginas otimizadas para as buscas reais do cliente.
+5. **Thiago Reis (Growth Machine)** — crescimento orgânico com SEO e conteúdo. *Na Lothem:* site como canal que traz cliente sem depender só de anúncio.
+
 ## Antes de começar
 1. Leia `CLAUDE.md` (padrão Premium Diamante, regra anti-IA, regras de criativo, aprovação humana).
 2. Leia `clientes/<cliente>/perfil.md` e `clientes/<cliente>/feedback.md` do cliente em questão. Não misture clientes.
