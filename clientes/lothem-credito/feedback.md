@@ -7,6 +7,8 @@
 - 2026-10-06 · briefing · oferta gratuita atraiu lead desqualificado · nunca anunciar pré-análise ou qualquer coisa grátis; o diagnóstico é pago e o anúncio leva ao funil, não ao WhatsApp.
 - 2026-10-06 · briefing · pagamento não compra aprovação · toda peça deixa claro que a decisão e as condições são da instituição financeira.
 
+- 2026-10-07 · funil do diagnóstico · "vídeo muito longo, empresário não vê" · vídeo de página com no máximo 2 minutos; o resto da explicação vai para texto curto, FAQ e reunião.
+
 ## Aprovados (direções a repetir)
 - 2026-10-06 · briefing · identidade original da Lothem (verde, azul-marinho, prata), retratos aprovados da Rebeca e peças anteriores são a referência visual.
 
