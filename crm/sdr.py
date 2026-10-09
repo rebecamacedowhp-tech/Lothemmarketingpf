@@ -1,10 +1,16 @@
-"""SDR IA: lê a conversa, responde o lead, preenche os campos, escolhe a lista e escreve o resumo."""
+"""IA do CRM: lê a conversa do WhatsApp, preenche a ficha, escolhe a lista e escreve o resumo.
+
+Funciona em dois modos, conforme a configuração de cada empresa:
+- SDR ativa: além de preencher o CRM, responde e qualifica o cliente sozinha.
+- Só CRM: nunca responde; apenas lê a conversa (vendedor x cliente) e preenche o CRM.
+"""
 import json
 import logging
 
 import anthropic
 
 import config
+import db
 
 log = logging.getLogger("sdr")
 
@@ -18,92 +24,72 @@ def client() -> anthropic.AsyncAnthropic:
     return _client
 
 
-def _texto_listas() -> str:
-    linhas = []
-    for l in config.LISTAS:
-        if l["id"] in config.LISTAS_DA_IA:
-            linhas.append(f'- "{l["id"]}" ({l["nome"]}): {l["descricao"]}')
-    return "\n".join(linhas)
+def _texto_listas(emp) -> str:
+    return "\n".join(f'- "{l["id"]}" ({l["nome"]}): {l["descricao"]}' for l in emp.listas if l["id"] in emp.listas_da_ia)
 
 
-def montar_system_prompt() -> str:
-    s = config.SDR
-    campos = "\n".join(f'- {c["id"]} ({c["rotulo"]}): {c["instrucao"]}' for c in config.CAMPOS)
-    esp = s["especialista"]
-    d = s.get("diagnostico", {"nome": "Diagnóstico de Crédito", "o_que_inclui": []})
-    inclui = "\n".join(f"- {i}" for i in d.get("o_que_inclui", []))
-    if s.get("link_agendamento"):
-        agendamento = f'Link de agendamento com a {esp["nome"]} para enviar depois que o cliente mandar o comprovante de pagamento: {s["link_agendamento"]}'
+def montar_system_prompt(emp) -> str:
+    c = emp.cfg
+    campos = "\n".join(f'- {x["id"]} ({x["rotulo"]}): {x["instrucao"]}' for x in emp.campos) or "(nenhum campo extra)"
+    if emp.sdr_ativa:
+        cabecalho = (f"Você é {emp.nome_sdr}, SDR (pré-vendas) da {emp.nome}, atendendo clientes pelo WhatsApp. "
+                     "Você conversa com o cliente, qualifica e mantém o CRM preenchido.")
+        tom = f"\n## Tom de voz\n{c.get('tom_de_voz') or ''}\n"
+        treino = f"\n## Treinamento (siga este método)\n<treinamento>\n{emp.treinamento or '(sem treinamento extra)'}\n</treinamento>\n"
+        resposta = ("- resposta: a próxima mensagem para o cliente no WhatsApp, escrita como uma pessoa real: texto puro,\n"
+                    "  sem markdown, sem listas, curta. Para mandar duas mensagens, separe com uma linha em branco.\n"
+                    "  Se a instrução disser para não responder, devolva \"\".")
     else:
-        agendamento = ("Ainda não há link de agendamento configurado. Depois que o cliente mandar o comprovante, diga que vai "
-                       f'verificar o melhor horário na agenda da {esp["nome"]} e retorna em seguida, e marque '
-                       "transferir_para_humano = true para o time agendar.")
-    return f"""Você é {s["nome_sdr"]}, SDR (pré-vendas) da {s["empresa"]}, atendendo leads pelo WhatsApp.
+        cabecalho = (f"Você é o assistente de CRM da {emp.nome}. Você lê as conversas de WhatsApp entre os vendedores "
+                     "e os clientes e mantém o CRM preenchido. Você NUNCA escreve para o cliente.")
+        tom = ""
+        treino = (f"\n## Orientações da empresa\n<orientacoes>\n{emp.treinamento}\n</orientacoes>\n"
+                  if emp.treinamento.strip() else "")
+        resposta = '- resposta: sempre "".'
+    return f"""{cabecalho}
 
 ## Sobre a empresa
-{s["sobre_empresa"]}
+Nicho: {c.get("nicho") or "não informado"}
+{c.get("sobre_empresa") or ""}
 
-## Seu objetivo
-{s["objetivo"]}
-
-## Tom de voz
-{s["tom_de_voz"]}
-
-## Produto que você vende: {d["nome"]}
-O que inclui:
-{inclui}
-Preço PJ: {d.get("preco_pj") or "NÃO CONFIGURADO"} | Preço PF: {d.get("preco_pf") or "NÃO CONFIGURADO"}
-Formas de pagamento: {d.get("formas_pagamento") or "NÃO CONFIGURADO"}
-Link de pagamento PJ: {d.get("link_pagamento_pj") or "NÃO CONFIGURADO"} | Link de pagamento PF: {d.get("link_pagamento_pf") or "NÃO CONFIGURADO"}
-Use SOMENTE estes preços e links; nunca invente valor, desconto, parcelamento ou link. Se o preço ou o link
-de que você precisa estiver "NÃO CONFIGURADO", quando o cliente quiser saber o valor ou pagar, diga que vai
-confirmar com a Rebeca e já retorna, e marque transferir_para_humano = true.
-
-## Especialista que faz a reunião de diagnóstico
-{esp["nome"]}: {esp["apresentacao"]}
-
-## Agendamento
-{agendamento}
-
-## Treinamento de SDR (siga este método)
-<treinamento>
-{config.TREINAMENTO or "(sem treinamento extra)"}
-</treinamento>
-
-## Listas (etapas do funil) que você pode escolher para o lead
-{_texto_listas()}
+## Objetivo comercial
+{c.get("objetivo") or ""}
+{tom}
+## Informações da empresa (produtos, preços, links, pessoas)
+{c.get("informacoes") or "(nenhuma)"}
+Use SOMENTE as informações acima para preços, condições e links; nunca invente valor, desconto, prazo ou link.
+Se algo estiver "ainda não definido" ou não estiver aqui e o cliente pedir, diga que vai confirmar e já retorna,
+e marque transferir_para_humano = true.
+{treino}
+## Listas (etapas do funil) que você pode escolher para o cliente
+{_texto_listas(emp)}
 
 ## Como preencher o retorno
-Você recebe a ficha atual do lead e a conversa inteira. Devolva SEMPRE o JSON pedido:
-- resposta: o que a Ingrid vai mandar agora no WhatsApp, escrito como uma pessoa real (seção de escrita
-  humanizada do treinamento): texto puro, sem markdown, sem listas, curto e objetivo (no máximo 2
-  linhas). Normalmente uma mensagem só; se precisar de duas, separe com uma linha em branco. Se a instrução disser para não responder,
-  devolva "".
-- nome: nome da pessoa ("" se não souber).
-- dor: a dor/necessidade principal do cliente com as palavras e o contexto dele, incluindo o impacto
-  (ex.: "limite do banco acabou e precisa de ~R$ 200 mil de capital de giro para comprar estoque do fim
-  de ano; banco aprovou só R$ 50 mil"). "" se ainda não souber.
-- ficha: um objeto com os campos abaixo. Use "" para o que ainda não se sabe. Nunca invente nem
-  altere o que o cliente disse.
+Você recebe a ficha atual do cliente e a conversa inteira. Devolva SEMPRE o JSON pedido:
+{resposta}
+- nome: nome do cliente ("" se não souber).
+- dor: a necessidade/dor principal do cliente, com as palavras e o contexto dele, incluindo o impacto
+  ou o motivo. "" se ainda não souber.
+- ficha: um objeto com os campos abaixo. Use "" para o que ainda não se sabe. Nunca invente nem altere o
+  que o cliente disse.
 {campos}
-- lista: o id da lista em que o lead deve ficar agora.
+- lista: o id da lista em que o cliente deve ficar agora.
 - temperatura: quente, morno ou frio.
-- score: nota de 0 a 100 de aderência ao ICP + interesse real.
-- resumo: observações para a especialista (Closer), em 4 a 8 linhas curtas, respondendo: quem é
-  esse cliente e a empresa; se está no ICP (e por quê); a dor e o objetivo; o que já foi falado,
-  objeções e o que foi prometido. Escreva para que qualquer vendedor continue o atendimento sem ler o
-  histórico.
-- proximo_passo: uma frase com o que deve acontecer a seguir (e quem faz: IA ou time humano).
+- score: nota de 0 a 100 de quão perto o cliente está de comprar (perfil + interesse real).
+- resumo: resumo para o VENDEDOR que vai continuar o atendimento, em 4 a 8 linhas curtas: quem é o
+  cliente; o que ele quer e por quê; o que já foi perguntado e respondido; objeções e dúvidas; o que já
+  foi prometido. Escreva de forma que qualquer vendedor continue a conversa sem ler o histórico.
+- proximo_passo: uma frase com o que deve acontecer a seguir (e quem faz).
 - transferir_para_humano: true ou false.
 """
 
 
-def _schema() -> dict:
+def _schema(emp) -> dict:
     texto = {"type": "string"}
     ficha = {
         "type": "object",
-        "properties": {c: texto for c in config.CAMPOS_IDS},
-        "required": list(config.CAMPOS_IDS),
+        "properties": {c: texto for c in emp.campos_ids},
+        "required": list(emp.campos_ids),
         "additionalProperties": False,
     }
     campos = {
@@ -111,45 +97,41 @@ def _schema() -> dict:
         "nome": texto,
         "dor": texto,
         "ficha": ficha,
-        "lista": {"type": "string", "enum": config.LISTAS_DA_IA},
+        "lista": {"type": "string", "enum": emp.listas_da_ia or [emp.lista_inicial]},
         "temperatura": {"type": "string", "enum": ["quente", "morno", "frio"]},
         "score": {"type": "integer"},
         "resumo": texto,
         "proximo_passo": texto,
         "transferir_para_humano": {"type": "boolean"},
     }
-    return {
-        "type": "object",
-        "properties": campos,
-        "required": list(campos),
-        "additionalProperties": False,
-    }
+    return {"type": "object", "properties": campos, "required": list(campos), "additionalProperties": False}
 
 
-def _formatar_conversa(mensagens: list[dict]) -> str:
-    rotulo = {"cliente": "CLIENTE", "ia": config.SDR["nome_sdr"].upper() + " (IA)", "vendedor": "VENDEDOR"}
-    return "\n".join(f"[{m['criado_em'][:16].replace('T', ' ')}] {rotulo.get(m['autor'], m['autor'])}: {m['texto']}" for m in mensagens)
+def _formatar_conversa(emp, mensagens: list[dict]) -> str:
+    rotulo = {"cliente": "CLIENTE", "ia": emp.nome_sdr.upper() + " (IA)", "vendedor": "VENDEDOR"}
+    return "\n".join(f"[{m['criado_em'][:16].replace('T', ' ')}] {rotulo.get(m['autor'], m['autor'])}: {m['texto']}"
+                     for m in mensagens)
 
 
-def _formatar_ficha(lead: dict) -> str:
+def _formatar_ficha(emp, lead: dict) -> str:
     linhas = [f"{c}: {lead.get(c) or ''}" for c in
               ["telefone", "nome_whatsapp", "nome", "dor", "lista", "temperatura", "score", "resumo"]]
     ficha = lead.get("ficha") or {}
-    linhas += [f"ficha.{c}: {ficha.get(c, '')}" for c in config.CAMPOS_IDS]
+    linhas += [f"ficha.{c}: {ficha.get(c, '')}" for c in emp.campos_ids]
     return "\n".join(linhas)
 
 
-async def analisar(lead: dict, mensagens: list[dict], responder: bool) -> dict | None:
+async def analisar(emp, lead: dict, mensagens: list[dict], responder: bool) -> dict | None:
     """Chama o Claude e devolve o dicionário com resposta + campos. None se não deu para analisar."""
     instrucao = (
         "Escreva a próxima mensagem para o cliente e atualize a ficha."
         if responder
-        else "NÃO escreva mensagem para o cliente (resposta = \"\"): um vendedor humano está atendendo. "
-             "Apenas atualize a ficha, o resumo e o próximo passo com base na conversa."
+        else "NÃO escreva mensagem para o cliente (resposta = \"\"). Apenas atualize a ficha, a lista, o resumo e o "
+             "próximo passo com base na conversa."
     )
     conteudo = (
-        f"<ficha_atual>\n{_formatar_ficha(lead)}\n</ficha_atual>\n\n"
-        f"<conversa>\n{_formatar_conversa(mensagens)}\n</conversa>\n\n{instrucao}"
+        f"<ficha_atual>\n{_formatar_ficha(emp, lead)}\n</ficha_atual>\n\n"
+        f"<conversa>\n{_formatar_conversa(emp, mensagens)}\n</conversa>\n\n{instrucao}"
     )
     try:
         resp = await client().beta.messages.create(
@@ -160,9 +142,9 @@ async def analisar(lead: dict, mensagens: list[dict], responder: bool) -> dict |
             thinking={"type": "adaptive"},
             output_config={
                 "effort": config.CLAUDE_EFFORT,
-                "format": {"type": "json_schema", "schema": _schema()},
+                "format": {"type": "json_schema", "schema": _schema(emp)},
             },
-            system=[{"type": "text", "text": montar_system_prompt(), "cache_control": {"type": "ephemeral"}}],
+            system=[{"type": "text", "text": montar_system_prompt(emp), "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": conteudo}],
         )
     except anthropic.RateLimitError:
@@ -175,8 +157,13 @@ async def analisar(lead: dict, mensagens: list[dict], responder: bool) -> dict |
         log.exception("Sem conexão com a API do Claude")
         return None
     except TypeError:
-        log.error("ANTHROPIC_API_KEY não configurada no .env – a SDR IA está desligada")
+        log.error("ANTHROPIC_API_KEY não configurada – a IA está desligada")
         return None
+
+    u = resp.usage
+    entrada = (u.input_tokens or 0) + (getattr(u, "cache_creation_input_tokens", 0) or 0) + \
+        (getattr(u, "cache_read_input_tokens", 0) or 0)
+    db.registrar_uso(emp.id, entrada, u.output_tokens or 0)
 
     if resp.stop_reason in ("refusal", "max_tokens"):
         log.warning("Claude não completou a análise (stop_reason=%s)", resp.stop_reason)

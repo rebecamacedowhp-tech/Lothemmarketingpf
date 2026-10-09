@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configurações do CRM</title>
+<link rel="stylesheet" href="/static/estilo.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<style>
+main{max-width:920px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.modos{display:flex;flex-direction:column;gap:8px}
+.modo{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--borda);border-radius:10px;padding:10px 12px;cursor:pointer}
+.modo:has(input:checked){border-color:var(--prim);background:color-mix(in srgb,var(--prim) 7%,var(--card))}
+.modo b{display:block;font-size:13px}
+.modo span{color:var(--sub);font-size:12px}
+.itens{display:flex;flex-direction:column;gap:8px}
+.item{display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;align-items:start;border:1px solid var(--borda);border-radius:10px;padding:8px}
+.item.lista{grid-template-columns:34px 1fr 1.6fr auto}
+.item .acoes{display:flex;gap:4px}
+.item .acoes button{padding:6px 9px}
+.item .opcoes{grid-column:2/-1;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub)}
+.item .opcoes label{display:flex;gap:5px;align-items:center}
+input[type=color]{padding:2px;height:34px;width:34px}
+.barra{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--borda);padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:flex-end;z-index:4}
+.fixos{font-size:12px;color:var(--sub);margin:0 0 10px}
+@media (max-width:640px){.item,.item.lista{grid-template-columns:1fr}.item .opcoes{grid-column:auto}}
+</style>
+</head>
+<body>
+<header class="topo-app">
+  <h1 id="titulo">Configurações</h1>
+  <span style="flex:1"></span>
+  <nav id="nav"><a href="/">Leads</a><a href="/configuracoes" class="ativo">Configurações</a></nav>
+</header>
+
+<main>
+  <section class="cartao">
+    <h2>Sua empresa</h2>
+    <p class="ajuda">A IA usa estas informações para entender o seu negócio e preencher o CRM do jeito certo.</p>
+    <label class="campo"><span>Nome da empresa</span><input id="nome"></label>
+    <label class="campo"><span>Nicho / ramo</span><input id="nicho" placeholder="Ex.: imobiliária, clínica de estética, loja de móveis…"></label>
+    <label class="campo"><span>O que a empresa vende e para quem</span><textarea id="sobre_empresa" rows="3"></textarea></label>
+    <label class="campo"><span>Objetivo comercial</span><textarea id="objetivo" rows="2" placeholder="Ex.: agendar uma visita ao imóvel; vender o plano anual…"></textarea></label>
+    <label class="campo"><span>Produtos, preços, links e condições</span><textarea id="informacoes" rows="5" placeholder="A IA só usa preços e links que estiverem aqui. Ex.: Plano mensal R$ 197 – link: https://…"></textarea></label>
+  </section>
+
+  <section class="cartao">
+    <h2>Como a IA trabalha</h2>
+    <p class="ajuda">Escolha o nível de automação.</p>
+    <div class="modos">
+      <label class="modo"><input type="radio" name="modo" value="botao"><div><b>Só no botão</b><span>A IA preenche a ficha e o resumo quando o vendedor clica em “✨ Preencher CRM com IA”.</span></div></label>
+      <label class="modo"><input type="radio" name="modo" value="auto"><div><b>Preencher automaticamente</b><span>A cada mensagem nova, a IA atualiza a ficha e o resumo sozinha. Nunca responde o cliente.</span></div></label>
+      <label class="modo"><input type="radio" name="modo" value="sdr"><div><b>SDR com IA</b><span>A IA também responde o cliente no WhatsApp, qualifica e passa para o vendedor no momento certo.</span></div></label>
+    </div>
+    <div id="bloco-sdr" style="margin-top:12px">
+      <label class="campo"><span>Nome da SDR</span><input id="nome_sdr" placeholder="Ex.: Ingrid"></label>
+      <label class="campo"><span>Tom de voz</span><textarea id="tom_de_voz" rows="2"></textarea></label>
+    </div>
+    <label class="campo" style="margin-top:4px"><span id="rotulo-treino">Treinamento / orientações para a IA</span>
+      <textarea id="treinamento" rows="10" placeholder="Cole aqui o script de vendas, perguntas de qualificação, objeções e como responder…"></textarea></label>
+  </section>
+
+  <section class="cartao">
+    <h2>Campos da ficha</h2>
+    <p class="ajuda">O que a IA deve descobrir e anotar sobre cada cliente.</p>
+    <p class="fixos">Sempre incluídos: nome, telefone WhatsApp, necessidade/dor, resumo e próximo passo.</p>
+    <div class="itens" id="campos"></div>
+    <button class="sec" id="add-campo" style="margin-top:8px">+ Adicionar campo</button>
+  </section>
+
+  <section class="cartao">
+    <h2>Etapas do funil</h2>
+    <p class="ajuda">As colunas do quadro. A descrição diz à IA quando colocar o cliente em cada etapa. A primeira é onde os leads novos entram.</p>
+    <div class="itens" id="listas"></div>
+    <button class="sec" id="add-lista" style="margin-top:8px">+ Adicionar etapa</button>
+    <label class="campo" style="margin-top:12px"><span>Quando a SDR passar o cliente para um humano, mover para</span><select id="lista_quando_transferir"></select></label>
+  </section>
+
+  <section class="cartao">
+    <h2>WhatsApp</h2>
+    <p class="ajuda">Dados do número no WhatsApp Business (Cloud API da Meta).</p>
+    <label class="campo"><span>Phone number ID</span><input id="wa_numero"></label>
+    <label class="campo"><span>Token de acesso <small id="wa_token_status"></small></span><input id="wa_token" type="password" placeholder="Deixe em branco para manter o atual"></label>
+    <p class="status">Endereço do webhook para cadastrar na Meta: <code id="webhook_url"></code></p>
+    <button class="sec" id="salvar-wa">Salvar WhatsApp</button>
+  </section>
+
+  <section class="cartao">
+    <h2>Equipe</h2>
+    <p class="ajuda">Quem pode entrar no CRM. Vendedores veem os leads; donos também acessam as configurações.</p>
+    <table><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th></th></tr></thead><tbody id="usuarios"></tbody></table>
+    <div class="linha" style="margin-top:10px;flex-wrap:wrap">
+      <input id="u-nome" placeholder="Nome" style="flex:1;min-width:140px">
+      <input id="u-email" placeholder="E-mail" style="flex:1;min-width:160px">
+      <input id="u-senha" placeholder="Senha (mín. 8)" type="password" style="flex:1;min-width:140px">
+      <select id="u-papel" style="width:auto"><option value="vendedor">Vendedor</option><option value="dono">Dono</option></select>
+      <button id="u-add">Adicionar</button>
+    </div>
+  </section>
+
+  <section class="cartao">
+    <h2>Histórico de versões</h2>
+    <p class="ajuda">Cada vez que você salva, uma cópia fica guardada. Se algo der errado, é só restaurar.</p>
+    <table><tbody id="versoes"></tbody></table>
+  </section>
+
+  <section class="cartao">
+    <h2>Uso da IA neste mês</h2>
+    <p id="uso" style="margin:0"></p>
+  </section>
+</main>
+
+<div class="barra"><span class="status" id="salvo"></span><button id="salvar">Salvar configurações</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hora = iso => iso ? new Date(iso).toLocaleString("pt-BR") : "";
+function aviso(t) { const el = $("toast"); el.textContent = t; el.classList.add("vis"); setTimeout(() => el.classList.remove("vis"), 3000); }
+async function api(url, opts = {}) {
+  const r = await fetch(url, {headers: {"Content-Type": "application/json"}, ...opts});
+  if (r.status === 401) { location.href = "/login"; throw new Error("login"); }
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+  return r.json();
+}
+let E = null, campos = [], listas = [];
+const TEXTOS = ["nicho", "sobre_empresa", "objetivo", "informacoes", "nome_sdr", "tom_de_voz"];
+
+function modoAtual() { return document.querySelector("input[name=modo]:checked")?.value || "botao"; }
+function atualizarModo() {
+  const sdr = modoAtual() === "sdr";
+  $("bloco-sdr").hidden = !sdr;
+  $("rotulo-treino").textContent = sdr ? "Treinamento da SDR (script, perguntas, objeções)" : "Orientações para a IA ao preencher o CRM (opcional)";
+}
+document.querySelectorAll("input[name=modo]").forEach(r => r.onchange = atualizarModo);
+
+function desenharCampos() {
+  $("campos").innerHTML = campos.map((c, i) => `<div class="item">
+    <input value="${esc(c.rotulo)}" placeholder="Nome do campo (ex.: Bairro de interesse)" oninput="campos[${i}].rotulo=this.value">
+    <input value="${esc(c.instrucao)}" placeholder="O que a IA deve anotar aqui" oninput="campos[${i}].instrucao=this.value">
+    <div class="acoes"><button class="sec" title="Subir" onclick="mover(campos,${i},-1,desenharCampos)">↑</button><button class="perigo" title="Remover" onclick="campos.splice(${i},1);desenharCampos()">✕</button></div>
+  </div>`).join("") || "<p class='status'>Nenhum campo extra.</p>";
+}
+function desenharListas() {
+  $("listas").innerHTML = listas.map((l, i) => `<div class="item lista">
+    <input type="color" value="${esc(l.cor)}" oninput="listas[${i}].cor=this.value">
+    <input value="${esc(l.nome)}" placeholder="Nome da etapa" oninput="listas[${i}].nome=this.value;opcoesHandoff()">
+    <input value="${esc(l.descricao)}" placeholder="Quando o cliente deve ficar aqui" oninput="listas[${i}].descricao=this.value">
+    <div class="acoes"><button class="sec" title="Subir" onclick="mover(listas,${i},-1,desenharListas)">↑</button><button class="perigo" title="Remover" onclick="listas.splice(${i},1);desenharListas()">✕</button></div>
+    <div class="opcoes">
+      <label><input type="checkbox" ${l.ia_pode_mover ? "checked" : ""} onchange="listas[${i}].ia_pode_mover=this.checked"> A IA pode colocar clientes aqui</label>
+      <label><input type="checkbox" ${l.ia_responde ? "checked" : ""} onchange="listas[${i}].ia_responde=this.checked"> A SDR continua respondendo nesta etapa</label>
+    </div>
+  </div>`).join("");
+  opcoesHandoff();
+}
+function opcoesHandoff() {
+  const atual = $("lista_quando_transferir").value || E.config.lista_quando_transferir;
+  $("lista_quando_transferir").innerHTML = listas.map(l => `<option value="${esc(l.id || "")}" ${l.id === atual ? "selected" : ""}>${esc(l.nome)}</option>`).join("");
+}
+function mover(arr, i, d, redesenhar) { const j = i + d; if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; redesenhar(); }
+$("add-campo").onclick = () => { campos.push({rotulo: "", instrucao: ""}); desenharCampos(); };
+$("add-lista").onclick = () => { listas.push({nome: "", descricao: "", cor: "#64748b", ia_pode_mover: true, ia_responde: true}); desenharListas(); };
+
+async function carregar() {
+  E = await api("/api/empresa");
+  $("titulo").textContent = "Configurações · " + E.nome;
+  $("nome").value = E.nome;
+  for (const k of TEXTOS) $(k).value = E.config[k] || "";
+  $("treinamento").value = E.treinamento || "";
+  const modo = E.config.sdr_ativa ? "sdr" : (E.config.preencher_automatico ? "auto" : "botao");
+  document.querySelector(`input[name=modo][value=${modo}]`).checked = true;
+  atualizarModo();
+  campos = structuredClone(E.config.campos); desenharCampos();
+  listas = structuredClone(E.config.listas); desenharListas();
+  $("wa_numero").value = E.whatsapp.phone_number_id || "";
+  $("wa_token_status").textContent = E.whatsapp.token_configurado ? "(configurado ✓)" : "(não configurado)";
+  $("webhook_url").textContent = location.origin + "/webhook";
+  const lim = E.limite_mensal ? ` de ${E.limite_mensal}` : "";
+  $("uso").textContent = `${E.uso.chamadas}${lim} análises da IA · ${(E.uso.tokens_entrada / 1000).toFixed(0)} mil tokens lidos · ${(E.uso.tokens_saida / 1000).toFixed(0)} mil tokens escritos`;
+  carregarUsuarios(); carregarVersoes();
+}
+async function carregarUsuarios() {
+  const us = await api("/api/empresa/usuarios");
+  $("usuarios").innerHTML = us.map(u => `<tr><td>${esc(u.nome)}</td><td>${esc(u.email)}</td><td>${esc(u.papel)}</td>
+    <td style="text-align:right">${u.papel === "admin" ? "" : `<button class="perigo" onclick="removerUsuario(${u.id})">Remover</button>`}</td></tr>`).join("");
+}
+async function removerUsuario(id) {
+  if (!confirm("Remover este usuário?")) return;
+  try { await api(`/api/empresa/usuarios/${id}`, {method: "DELETE"}); carregarUsuarios(); } catch (e) { aviso(e.message); }
+}
+$("u-add").onclick = async () => {
+  try {
+    await api("/api/empresa/usuarios", {method: "POST", body: JSON.stringify({nome: $("u-nome").value, email: $("u-email").value, senha: $("u-senha").value, papel: $("u-papel").value})});
+    ["u-nome", "u-email", "u-senha"].forEach(k => $(k).value = ""); aviso("Usuário adicionado"); carregarUsuarios();
+  } catch (e) { aviso(e.message); }
+};
+async function carregarVersoes() {
+  const vs = await api("/api/empresa/versoes");
+  $("versoes").innerHTML = vs.map((v, i) => `<tr><td>#${v.id}</td><td>${hora(v.criado_em)}</td><td>${esc(v.autor)}</td>
+    <td style="text-align:right">${i === 0 ? "<span class='pill'>atual</span>" : `<button class="sec" onclick="restaurar(${v.id})">Restaurar</button>`}</td></tr>`).join("");
+}
+async function restaurar(id) {
+  if (!confirm("Voltar as configurações para esta versão? A versão atual continua guardada no histórico.")) return;
+  await api(`/api/empresa/versoes/${id}/restaurar`, {method: "POST"}); aviso("Versão restaurada"); carregar();
+}
+$("salvar").onclick = async () => {
+  const b = $("salvar"); b.disabled = true;
+  const cfg = {...E.config};
+  for (const k of TEXTOS) cfg[k] = $(k).value;
+  const modo = modoAtual();
+  cfg.sdr_ativa = modo === "sdr"; cfg.preencher_automatico = modo !== "botao";
+  cfg.campos = campos; cfg.listas = listas; cfg.lista_quando_transferir = $("lista_quando_transferir").value;
+  try {
+    await api("/api/empresa", {method: "PUT", body: JSON.stringify({nome: $("nome").value, config: cfg, treinamento: $("treinamento").value})});
+    aviso("Configurações salvas"); $("salvo").textContent = "Salvo às " + new Date().toLocaleTimeString("pt-BR");
+    await carregar();
+  } catch (e) { aviso(e.message); }
+  b.disabled = false;
+};
+$("salvar-wa").onclick = async () => {
+  try {
+    await api("/api/empresa/whatsapp", {method: "PUT", body: JSON.stringify({phone_number_id: $("wa_numero").value, token: $("wa_token").value})});
+    $("wa_token").value = ""; aviso("WhatsApp salvo"); carregar();
+  } catch (e) { aviso(e.message); }
+};
+(async () => {
+  const eu = await api("/api/config");
+  if (eu.papel === "admin") $("nav").insertAdjacentHTML("beforeend", `<a href="/admin">Administração</a>`);
+  carregar();
+})();
+</script>
+</body>
+</html>

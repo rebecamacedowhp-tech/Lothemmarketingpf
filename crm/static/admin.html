@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administração da plataforma</title>
+<link rel="stylesheet" href="/static/estilo.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<style>
+main{max-width:1080px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.tabela{overflow-x:auto}
+.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+td input{width:90px;padding:5px 7px}
+.ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<header class="topo-app">
+  <h1>Administração</h1>
+  <span style="flex:1"></span>
+  <nav><a href="/">Leads</a><a href="/configuracoes">Configurações</a><a href="/admin" class="ativo">Administração</a></nav>
+</header>
+<main>
+  <section class="cartao">
+    <h2>Empresas clientes</h2>
+    <p class="ajuda">Uso = análises da IA neste mês. Limite 0 = sem limite. “Abrir” entra no CRM da empresa para configurar ou dar suporte.</p>
+    <div class="tabela"><table>
+      <thead><tr><th>Empresa</th><th>Nicho</th><th>Leads</th><th>Uso / limite</th><th>WhatsApp</th><th>Ativa</th><th></th></tr></thead>
+      <tbody id="empresas"></tbody>
+    </table></div>
+  </section>
+  <section class="cartao">
+    <h2>Nova empresa cliente</h2>
+    <p class="ajuda">Cria a conta com o modelo padrão (campos e funil de vendas). Depois o dono ajusta tudo em Configurações.</p>
+    <div class="grade">
+      <label class="campo"><span>Nome da empresa</span><input id="n-nome"></label>
+      <label class="campo"><span>Nicho</span><input id="n-nicho" placeholder="Ex.: imobiliária"></label>
+      <label class="campo"><span>Limite mensal de análises</span><input id="n-limite" type="number" value="0" min="0"></label>
+      <label class="campo"><span>Nome do dono</span><input id="n-dono"></label>
+      <label class="campo"><span>E-mail do dono</span><input id="n-email"></label>
+      <label class="campo"><span>Senha inicial (mín. 8)</span><input id="n-senha" type="password"></label>
+    </div>
+    <button id="criar">Criar empresa</button>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function aviso(t) { const el = $("toast"); el.textContent = t; el.classList.add("vis"); setTimeout(() => el.classList.remove("vis"), 3000); }
+async function api(url, opts = {}) {
+  const r = await fetch(url, {headers: {"Content-Type": "application/json"}, ...opts});
+  if (r.status === 401) { location.href = "/login"; throw new Error("login"); }
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+  return r.json();
+}
+async function carregar() {
+  const es = await api("/api/admin/empresas");
+  $("empresas").innerHTML = es.map(e => `<tr>
+    <td><b>${esc(e.nome)}</b></td><td>${esc(e.nicho)}</td><td>${e.total_leads}</td>
+    <td>${e.chamadas_mes} / <input type="number" min="0" value="${e.limite_mensal}" onchange="ajustar(${e.id},{limite_mensal:+this.value})"></td>
+    <td>${e.whatsapp_conectado ? "<span class='ok'>conectado</span>" : "<span class='status'>não</span>"}</td>
+    <td><input type="checkbox" ${e.ativo ? "checked" : ""} onchange="ajustar(${e.id},{ativo:this.checked})"></td>
+    <td style="text-align:right"><button class="sec" onclick="entrar(${e.id})">Abrir</button></td>
+  </tr>`).join("");
+}
+async function ajustar(id, dados) { try { await api(`/api/admin/empresas/${id}`, {method: "PATCH", body: JSON.stringify(dados)}); aviso("Atualizado"); } catch (e) { aviso(e.message); } }
+async function entrar(id) { await api(`/api/admin/entrar/${id}`, {method: "POST"}); location.href = "/"; }
+$("criar").onclick = async () => {
+  try {
+    await api("/api/admin/empresas", {method: "POST", body: JSON.stringify({nome: $("n-nome").value, nicho: $("n-nicho").value,
+      limite_mensal: +$("n-limite").value || 0, dono_nome: $("n-dono").value, dono_email: $("n-email").value, dono_senha: $("n-senha").value})});
+    ["n-nome", "n-nicho", "n-dono", "n-email", "n-senha"].forEach(k => $(k).value = "");
+    aviso("Empresa criada"); carregar();
+  } catch (e) { aviso(e.message); }
+};
+carregar();
+</script>
+</body>
+</html>

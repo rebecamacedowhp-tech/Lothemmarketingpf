@@ -1,0 +1,29 @@
+{
+  "nicho": "Vendas em geral",
+  "sobre_empresa": "",
+  "nome_sdr": "Assistente",
+  "sdr_ativa": false,
+  "preencher_automatico": false,
+  "tom_de_voz": "Escreva como uma pessoa real no WhatsApp: português do Brasil do dia a dia, próximo e profissional, mensagens curtas, no máximo 1 emoji por mensagem.",
+  "objetivo": "Entender o que o cliente precisa, qualificar o interesse e levar para o próximo passo da venda.",
+  "informacoes": "",
+  "campos": [
+    {"id": "interesse", "rotulo": "Produto / serviço de interesse", "instrucao": "O que o cliente quer comprar ou contratar."},
+    {"id": "orcamento", "rotulo": "Orçamento", "instrucao": "Quanto pretende investir, se disse."},
+    {"id": "prazo", "rotulo": "Prazo / urgência", "instrucao": "Para quando precisa."},
+    {"id": "decisor", "rotulo": "Decisor", "instrucao": "Se é quem decide a compra ou quem mais participa."},
+    {"id": "origem", "rotulo": "Como nos conheceu", "instrucao": "Anúncio, indicação, Instagram, Google..."},
+    {"id": "objecoes", "rotulo": "Objeções", "instrucao": "Dúvidas ou resistências que o cliente levantou (preço, prazo, confiança...)."}
+  ],
+  "lista_quando_transferir": "humano",
+  "listas": [
+    {"id": "novo", "nome": "Novo lead", "cor": "#64748b", "descricao": "Acabou de chegar."},
+    {"id": "qualificando", "nome": "Em qualificação", "cor": "#3b82f6", "descricao": "Conversa em andamento, ainda levantando informações."},
+    {"id": "quente", "nome": "Quente", "cor": "#ef4444", "descricao": "Interesse claro, perfil certo e quer comprar logo."},
+    {"id": "morno", "nome": "Morno", "cor": "#f59e0b", "descricao": "Tem interesse, mas sem urgência, sem orçamento agora ou parou de responder."},
+    {"id": "frio", "nome": "Frio / sem perfil", "cor": "#94a3b8", "descricao": "Sem interesse real ou fora do perfil (curioso, spam, fornecedor, vaga de emprego)."},
+    {"id": "humano", "nome": "Precisa de humano", "cor": "#d946ef", "descricao": "Pediu para falar com uma pessoa ou caso sensível.", "ia_pode_mover": false, "ia_responde": false},
+    {"id": "ganho", "nome": "Venda fechada", "cor": "#10b981", "descricao": "Comprou.", "ia_pode_mover": false, "ia_responde": false},
+    {"id": "perdido", "nome": "Perdido", "cor": "#1f2937", "descricao": "Não comprou.", "ia_pode_mover": false, "ia_responde": false}
+  ]
+}

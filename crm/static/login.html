@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar no CRM</title>
+<link rel="stylesheet" href="/static/estilo.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<style>
+body{display:grid;place-items:center;min-height:100vh;padding:16px}
+.cartao{width:min(380px,100%);padding:24px}
+h1{font-size:20px;margin:0 0 4px}
+p{color:var(--sub);margin:0 0 18px}
+button{width:100%;padding:10px}
+#erro{color:var(--erro);font-size:13px;min-height:18px;margin:4px 0 10px}
+</style>
+</head>
+<body>
+<form class="cartao" id="form">
+  <h1>CRM com IA</h1>
+  <p>Entre com seu e-mail e senha.</p>
+  <label class="campo"><span>E-mail</span><input id="email" type="text" autocomplete="username" required autofocus></label>
+  <label class="campo"><span>Senha</span><input id="senha" type="password" autocomplete="current-password" required></label>
+  <div id="erro"></div>
+  <button id="entrar">Entrar</button>
+</form>
+<script>
+document.getElementById("form").onsubmit = async e => {
+  e.preventDefault();
+  const b = document.getElementById("entrar"); b.disabled = true;
+  const r = await fetch("/api/login", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({email: email.value, senha: senha.value})});
+  if (r.ok) { location.href = "/"; return; }
+  erro.textContent = (await r.json().catch(() => ({}))).detail || "Não foi possível entrar";
+  b.disabled = false;
+};
+</script>
+</body>
+</html>

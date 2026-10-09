@@ -1,86 +1,63 @@
-# CRM Lothem Inteligência em Crédito + SDR IA no WhatsApp Business
+# CRM com IA para WhatsApp (multiempresa)
 
-CRM em que uma **SDR com IA (Claude)** atende todo lead que chega no WhatsApp Business, seguindo o
-treinamento oficial da Lothem (Formação de SDR, POP 01 e Manual do SDR PJ):
+CRM para **qualquer nicho de vendas**, ligado ao WhatsApp Business. A IA lê as conversas e preenche o
+CRM sozinha: ficha do cliente, necessidade/dor, etapa do funil e um **resumo para qualquer vendedor
+continuar o atendimento**. Pode ser vendido para várias empresas: cada uma tem os seus dados separados.
 
-1. **Responde na hora** e qualifica com **SPIN Selling**, uma pergunta por vez, validando o **ICP**
-   (não MEI, 12+ meses de CNPJ como ME, ponto físico ou receita recorrente, faturamento ≥ R$ 30 mil/mês,
-   endividamento saudável).
-2. **Preenche a ficha sozinha**: nome, telefone WhatsApp, **dor do cliente**, empresa, segmento, natureza
-   jurídica, tempo de CNPJ, estrutura, faturamento, endividamento, objetivo e valor do crédito, bancos,
-   garantias, decisor, caminho provável, Contrato Social e agendamento.
-3. **Vende a Consultoria + Diagnóstico de Crédito**: oferta ligada à dor do cliente, valor, link de
-   pagamento e contorno das objeções de compra (preço, link e o que inclui ficam em `sdr_config.json`).
-4. **Move o lead para a lista certa**: Novo → Em qualificação → Diagnóstico ofertado → Pagamento
-   informado → Agendado, ou Nutrir / Desqualificado.
-5. Com o comprovante, **envia o link de agendamento** com a Rebeca Macedo e **pede o Contrato Social**;
-   documentos e comprovantes que o cliente manda são **anexados ao card** automaticamente.
-5. **Escreve as observações para o Closer** (quem é, se está no ICP, dor, o que foi falado, objeções)
-   e o **próximo passo**, para qualquer vendedor continuar sem ler o histórico.
-6. Contorna as objeções do manual. Se o cliente pedir uma pessoa ou o caso for sensível, **passa para
-   o time humano** (lista "Precisa de humano") e para de responder.
+## O que cada empresa cliente tem
 
-O painel é um quadro Kanban (arrastar e soltar entre listas). Clicando no lead você vê as observações,
-a ficha, os documentos, a conversa completa, e pode responder o cliente direto pelo CRM.
+- **Quadro de leads (Kanban)** com as conversas do WhatsApp.
+- **Botão "✨ Preencher CRM com IA"** em cada conversa: a IA lê tudo e preenche a ficha, o resumo, o
+  próximo passo e a etapa do funil.
+- **Três modos de IA** (em Configurações):
+  1. *Só no botão*: a IA trabalha quando o vendedor clica.
+  2. *Preencher automaticamente*: a cada mensagem nova, sem nunca responder o cliente.
+  3. *SDR com IA*: também responde, qualifica e passa para o vendedor (ex.: a Ingrid da Lothem).
+- **Configuração sem código**: nicho, o que vende, produtos/preços/links, **campos da ficha**,
+  **etapas do funil**, treinamento/script, WhatsApp e equipe.
+- **Histórico de versões** das configurações: dá para restaurar qualquer versão.
+- **Login por usuário** (dono e vendedores) e documentos recebidos anexados ao card.
 
-## Arquivos que você edita
+## Para você (administradora da plataforma)
 
-| Arquivo | O que é |
-|---|---|
-| `treinamento_sdr.md` | **Treinamento da SDR** (já com o conteúdo da Formação, POP e Manual). |
-| `sdr_config.json` | Nome da SDR, **link de agendamento**, descrição da empresa, tom de voz, **campos da ficha** e **listas do funil**. |
-| `.env` | Chaves do Claude e do WhatsApp, senha do painel. |
+- Página **Administração**: cadastra empresas clientes, define **limite mensal de análises da IA**
+  (para o plano que ela paga), ativa/desativa e abre o CRM de qualquer empresa para dar suporte.
+- O **uso da IA** é contado por empresa e por mês (análises e tokens).
+- A empresa nº 1 é a Lothem, criada a partir de `sdr_config.json` + `treinamento_sdr.md` na primeira
+  execução; os leads do banco antigo (uma empresa só) são importados automaticamente.
 
-Depois de editar, reinicie o servidor.
+## Banco de dados
 
-## Como rodar
+- **Produção:** Postgres (variável `DATABASE_URL`). No Railway: *+ Add → Database → PostgreSQL* e, no
+  serviço do CRM, a variável `DATABASE_URL=${{Postgres.DATABASE_URL}}`.
+- **Sem `DATABASE_URL`:** usa SQLite em `/data/crm_multi.db` (volume do Railway).
+- Todas as tabelas de clientes têm `empresa_id` e todas as consultas filtram por ele.
+
+## Variáveis de ambiente
+
+Veja `.env.example`. As principais: `ANTHROPIC_API_KEY`, `DATABASE_URL`, `ADMIN_EMAIL`,
+`ADMIN_SENHA` (se faltar, usa `CRM_SENHA`), `SECRET_KEY` e as do WhatsApp.
+
+## WhatsApp de cada empresa
+
+Um app da Meta (o da plataforma) recebe o webhook de todos os números em `https://SEU-DOMINIO/webhook`.
+Cada empresa informa em Configurações o **Phone number ID** e o **token** do número dela; as mensagens
+vão para a empresa certa pelo número que recebeu. Para cada cliente conectar o próprio número sozinho
+(Embedded Signup), o app precisa virar **Tech Provider** na Meta.
+
+## Rodar localmente
 
 ```bash
 cd crm
-cp .env.example .env        # preencha as chaves
+cp .env.example .env
 pip install -r requirements.txt
-uvicorn app:app --host 0.0.0.0 --port 8000
+uvicorn app:app --reload
 ```
-
-Abra `http://localhost:8000` (usuário: qualquer um, senha: `CRM_SENHA`).
-
-**Testar sem WhatsApp:** no painel, clique em **"Testar SDR"** e mande mensagens como se fosse um cliente.
-Só precisa da `ANTHROPIC_API_KEY`.
-
-Para colocar no ar (Render, Railway, Fly.io, VPS…) use o `Dockerfile`. Monte um volume em `/data`
-para o banco não se perder.
-
-## Conectar o WhatsApp Business (Cloud API da Meta)
-
-1. Em [developers.facebook.com](https://developers.facebook.com) crie um app do tipo **Business** e adicione o produto **WhatsApp**.
-2. Em *WhatsApp > Configuração da API*, adicione o seu número e copie o **Phone number ID** → `WHATSAPP_PHONE_NUMBER_ID`.
-3. Crie um **token permanente** (Configurações do Negócio > Usuários do sistema > gerar token com
-   `whatsapp_business_messaging` e `whatsapp_business_management`) → `WHATSAPP_TOKEN`.
-4. Em *Configurações do app > Básico*, copie a **Chave secreta do app** → `WHATSAPP_APP_SECRET`.
-5. Em *WhatsApp > Configuração > Webhook*:
-   - URL de callback: `https://SEU-DOMINIO/webhook`
-   - Token de verificação: o mesmo valor de `WHATSAPP_VERIFY_TOKEN`
-   - Assine o campo **messages** (e **smb_message_echoes**, se usar o app no celular junto — veja abaixo).
-
-### Usar o app WhatsApp Business no celular ao mesmo tempo
-Se o seu número estiver no **modo coexistência** (app WhatsApp Business + Cloud API no mesmo número),
-assine também o webhook `smb_message_echoes`. Assim, quando alguém da equipe responder pelo celular,
-a mensagem aparece no CRM, a IA para de responder aquele lead e o resumo leva em conta o que o vendedor falou.
-
-## Como a IA decide
-
-A cada mensagem do cliente (o CRM espera `DEBOUNCE_SEGUNDOS` para juntar mensagens seguidas),
-a SDR recebe a ficha atual + a conversa inteira e devolve, num formato fixo: a resposta, os campos,
-a lista, temperatura (quente/morno/frio), score de 0 a 100, resumo, próximo passo e se deve transferir.
-
-- A IA só move leads entre as listas marcadas como dela. Listas com `"ia_pode_mover": false`
-  (Em atendimento, Ganho, Perdido) são só dos vendedores.
-- Listas com `"ia_responde": false` pausam a IA quando o lead entra nelas.
-- Arrastar um lead para "Em atendimento", responder pelo CRM ou pelo celular pausa a IA.
-  O botão **🤖/👤** no lead liga e desliga a IA manualmente.
 
 ## Testes
 
 ```bash
 pip install pytest && python -m pytest -q tests
+# também contra Postgres:
+TEST_DATABASE_URL=postgresql://usuario@localhost/crmtest python -m pytest -q tests
 ```
