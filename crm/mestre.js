@@ -55,7 +55,7 @@ VIEWS.mestre = {
     const late = T.filter((t) => t.status === 'past_due'), reqs = (MESTRE.tenants || []).filter((t) => t.requested_plan);
     const price = (t) => { const p = DB.plans.find((x) => x.id === t.plan); return p ? (t.cycle === 'anual' ? (p.price * 10) / 12 : p.price) : 0; };
     const mrr = active.concat(late).reduce((a, t) => a + price(t), 0);
-    const tabs = [['resumo', 'Resumo', 'Gauge'], ['contas', 'Contas', 'Building2', T.length], ['pedidos', 'Pedidos', 'Inbox', reqs.length], ['planos', 'Planos e preços', 'Tags']];
+    const tabs = [['resumo', 'Resumo', 'Gauge'], ['contas', 'Contas', 'Building2', T.length], ['pedidos', 'Pedidos', 'Inbox', reqs.length], ['ia', 'IA dos clientes', 'Bot'], ['planos', 'Planos e preços', 'Tags']];
     const kpi = (k, v, sub, icn, cls) => `<div class="pn kpi" style="cursor:default"><span class="lbl">${k}</span><div class="row between"><span class="v num">${v}</span><span class="ico-box ${cls || 'cy'}">${ic(icn, 'sm')}</span></div><div class="ft"><span>${sub}</span></div></div>`;
     let body = '';
     if (tab === 'resumo') body = `<div class="kpis" style="margin-bottom:18px">
@@ -78,7 +78,8 @@ VIEWS.mestre = {
           <td class="r num nowrap" style="font-size:12.5px">${t.members} pessoas<br><span class="dim">${fmt(t.contacts)} contatos</span></td>
           <td class="r nowrap">${t.plan === 'interno' ? '' : `<button class="btn xs pri" data-act="mtActivate" data-id="${t.user_id}">${t.status === 'active' ? 'Renovar' : 'Liberar plano'}</button> <button class="btn xs" data-act="mtTrial" data-id="${t.user_id}">+7 dias</button> ${t.status !== 'canceled' ? `<button class="btn xs ghost" data-act="mtSuspend" data-id="${t.user_id}">Suspender</button>` : ''}`}</td></tr>`; }).join('')}
       </tbody></table></div></div>` : `<div class="pn"><div class="empty">${ic('CircleCheck')}<div>${tab === 'pedidos' ? 'Nenhum pedido esperando.' : 'Nenhuma conta ainda.'}</div></div></div>`;
-    } else body = mestrePlanos();
+    } else if (tab === 'ia') body = mestreIA();
+    else body = mestrePlanos();
     return `<div class="page-h"><div><h2>Painel mestre</h2><p>Só você vê esta tela. Aqui você organiza as contas do Lothem Vendas: libera planos, dá mais dias de teste e ajusta os preços.</p></div></div>
       <div class="tabs" role="tablist">${tabs.map(([id, nm, icn, n]) => `<button class="${tab === id ? 'on' : ''}" data-act="tab" data-v="mestre:${id}" role="tab">${ic(icn, 'sm')}${nm}${n ? `<span class="n">${n}</span>` : ''}</button>`).join('')}</div>${body}`;
   },
@@ -129,7 +130,7 @@ function mestrePlanos() {
   return `<form class="col" style="gap:16px" data-sub="mtPlans">
     <div class="plans">${DB.plans.map((p, i) => `<section class="pn plan"><div class="field"><label for="mp-nm-${i}">Nome</label><input class="in" id="mp-nm-${i}" value="${esc(p.nm)}"></div>
       <div class="form-g"><div class="field"><label for="mp-pr-${i}">Preço/mês (R$)</label><input class="in" id="mp-pr-${i}" inputmode="numeric" value="${p.price}"></div><div class="field"><label for="mp-us-${i}">Usuários</label><input class="in" id="mp-us-${i}" inputmode="numeric" value="${p.lim.users}"></div></div>
-      <div class="form-g"><div class="field"><label for="mp-ia-${i}">Conversas da IA</label><input class="in" id="mp-ia-${i}" inputmode="numeric" value="${p.lim.ia}"></div><div class="field"><label for="mp-og-${i}">Empresas</label><input class="in" id="mp-og-${i}" inputmode="numeric" value="${p.lim.orgs}"></div></div>
+      <div class="field"><label for="mp-og-${i}">Empresas</label><input class="in" id="mp-og-${i}" inputmode="numeric" value="${p.lim.orgs}"></div>
       <div class="field"><label for="mp-wa-${i}">Números de WhatsApp</label><input class="in" id="mp-wa-${i}" inputmode="numeric" value="${p.lim.wa}"></div>
       <div class="field"><label for="mp-ft-${i}">O que inclui (uma linha por item)</label><textarea class="ta" id="mp-ft-${i}" rows="6">${esc(p.feats.join('\n'))}</textarea></div></section>`).join('')}</div>
     <section class="pn"><div class="pn-b grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px">
@@ -144,7 +145,7 @@ SUB.mtPlans = async () => {
   const num = (id) => Math.max(0, parseInt(String($('#' + id).value).replace(/\D/g, ''), 10) || 0);
   DB.plans.forEach((p, i) => {
     p.nm = $('#mp-nm-' + i).value.trim() || p.nm; p.price = num('mp-pr-' + i);
-    p.lim = { users: num('mp-us-' + i), orgs: num('mp-og-' + i), ia: num('mp-ia-' + i), wa: num('mp-wa-' + i) };
+    p.lim = { users: num('mp-us-' + i), orgs: num('mp-og-' + i), ia: 0, wa: num('mp-wa-' + i) };
     p.feats = $('#mp-ft-' + i).value.split('\n').map((x) => x.trim()).filter(Boolean);
   });
   PLAN_EXTRAS.forEach((x, i) => { x[1] = num('mp-ex-' + i); });

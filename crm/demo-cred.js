@@ -142,6 +142,19 @@
   });
 })();
 
+/* Campos que a IA preenche: nome e telefone (vêm do WhatsApp) e, no crédito, quanto a pessoa quer */
+Object.assign(AF_FIELDS, { nm: 'Nome', ph: 'Telefone', credit: 'Crédito pretendido' });
+Object.assign(AF_GROUP, { nm: 'cadastro', ph: 'cadastro', credit: 'qualif' });
+(function demoCredit() {
+  const o = DB.orgs.cred; if (!o) return;
+  const want = { k1: 'R$ 50 mil · capital de giro', k2: 'R$ 60 mil · capital de giro', k3: 'R$ 300 mil · trocar dívida cara', k4: 'R$ 40 mil · equipamento', k5: 'R$ 150 mil · estoque', k6: 'R$ 30 mil · capital de giro', k7: 'R$ 250 mil · máquina (Finame)', k8: 'R$ 120 mil · capital de giro', k11: 'R$ 70 mil · capital de giro', k12: 'R$ 90 mil · reforma' };
+  Object.entries(want).forEach(([id, v]) => {
+    const c = o.contacts.find((x) => x.id === id); if (!c) return; c.credit = v;
+    const cv = o.conversations.find((x) => x.c === id);
+    if (cv) { const e = { id: 'lc' + id, t: cv.t, cv: cv.id, c: id, k: 'credit', nm: 'Crédito pretendido', value: v, quote: 'resposta na conversa', conf: 94, by: 'ia' }; cv.af = cv.af || {}; cv.af.credit = e; o.autofill.log.unshift(e); }
+  });
+})();
+
 /* Na demonstração, o CRM abre na Lothem Crédito */
 if (!/~/.test(location.hash)) S.org = 'cred';
 
@@ -159,7 +172,7 @@ ACT.simLead = () => {
   ];
   const Pp = people[(n - 1) % people.length], first = Pp.nm.split(' ')[0], fem = Pp.fem;
   const cid = 'k' + uid(), did = 'x' + uid(), cvid = 'cx' + uid();
-  o.contacts.unshift({ id: cid, nm: Pp.nm, co: 'Empresa não informada', seg: '—', city: '—', ph: '(19) 90000-32' + String(10 + n), em: '—', src: 'Meta · Teste do site · Vídeo Rebeca 40s', owner: 'u3', life: 'Lead', score: 20, last: 'agora' });
+  o.contacts.unshift({ id: cid, nm: Pp.nm, co: 'Empresa não informada', seg: '—', city: '—', ph: '—', em: '—', src: 'Meta · Teste do site · Vídeo Rebeca 40s', owner: 'u3', life: 'Lead', score: 20, last: 'agora' });
   o.deals.unshift({ id: did, c: cid, p: 'diag', s: 'novo', v: 97, temp: 'frio', owner: 'u3', next: 'Cibelle está atendendo', age: 'agora', moved: true, product: 'Diagnóstico Completo' });
   const cv = { id: cvid, c: cid, inst: 'j1', st: 'ia', unread: 0, t: nowT(), conf: 95, q: {}, af: {}, sugg: [], isNew: true, msgs: [{ f: 'sys', x: 'Lead do teste em diagnostico.lothem.com.br · anúncio "[CAPT] Teste do site · Vídeo Rebeca 40s"', t: nowT() }] };
   o.conversations.unshift(cv);
@@ -182,6 +195,7 @@ ACT.simLead = () => {
     autofill(cv, 'etapa', STAGE('diag', s).nm, why, () => { if (idx(s) > idx(d.s)) { d.s = s; d.next = next; d.moved = true; d.age = 'agora'; } }, () => { d.s = prev[0]; d.next = prev[1]; });
   };
   const steps = [
+    [400, F('ph', '(19) 90000-32' + String(10 + n), 'número do WhatsApp', 99)],
     [700, T('lead')], [1300, Msg('lead', 'Oi, fiz o teste no site. O banco negou meu pedido de capital de giro e não falou o porquê')],
     [500, T('ia')], [1000, Msg('ia', 'Oi, ' + first + '! Aqui é a Cibelle, da equipe da Rebeca, da Lothem. Vi que você fez o teste de crédito no nosso site.')], [300, stage('conversa', 'Cibelle está qualificando', 'A pessoa respondeu e a conversa começou')],
     [400, T('ia')], [1100, Msg('ia', 'Não peço senha nem dado de banco, e nada aqui é cobrado sem você pedir. A Lothem não empresta dinheiro nem cobra para liberar empréstimo.')],
@@ -194,6 +208,9 @@ ACT.simLead = () => {
     [500, T('ia')], [900, Msg('ia', 'Entendi. Você sabe se tem alguma restrição no CNPJ ou no seu CPF?')],
     [700, T('lead')], [1200, Msg('lead', 'No CPF tem uma conta de cartão antiga')],
     [300, Q('dor', 'Capital de giro negado sem explicação · restrição antiga no CPF · metade do faturamento no CPF.', 62, 'No CPF tem uma conta de cartão antiga')],
+    [500, T('ia')], [900, Msg('ia', 'E de quanto você precisaria, mais ou menos? Só para eu entender o tamanho do pedido.')],
+    [700, T('lead')], [1100, Msg('lead', 'Uns 80 mil, para capital de giro')],
+    [300, F('credit', 'R$ 80 mil · capital de giro', 'Uns 80 mil, para capital de giro', 96)],
     [600, T('ia')], [1400, Msg('ia', 'Pelo que você respondeu, o mais provável é isto: o banco só enxerga o que passa na conta da empresa. Com metade caindo no seu CPF, a ' + Pp.co + ' parece menor do que é.')],
     [400, T('ia')], [1200, Msg('ia', 'E no crédito da empresa o banco também olha o CPF do sócio. Aquela conta antiga pode estar travando o CNPJ.')],
     [400, T('ia')], [1000, Msg('ia', 'Uma coisa que dá para fazer hoje: passar a maquininha e o Pix das vendas para a conta da empresa. Faz sentido pra você?')],

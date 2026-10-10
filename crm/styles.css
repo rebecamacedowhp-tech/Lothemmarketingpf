@@ -1165,3 +1165,6 @@ html.real .demo-tag, html.real #guide { display: none !important; }
 @media (max-width: 720px) { .imp-map { grid-template-columns: minmax(0, 1fr); gap: 6px; } .imp-map > span { margin-bottom: 8px; } }
 
 .base-pre { white-space: pre-wrap; font: 12.5px/1.55 var(--f-body); color: var(--fg-2); background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 8px 0 0; max-height: 420px; overflow: auto; }
+
+.mia-bars { display: flex; align-items: flex-end; gap: 3px; height: 90px; margin-top: 8px; }
+.mia-bars span { flex: 1; min-width: 4px; background: var(--cy); border-radius: 3px 3px 0 0; opacity: .8; }

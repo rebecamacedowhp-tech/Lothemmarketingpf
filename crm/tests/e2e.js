@@ -18,7 +18,7 @@ window.E2E = (() => {
   const ROUTES = () => Object.keys(VIEWS);
   const TABS = { central: ['hoje', 'analise', 'equipe'], sdr: ['geral', 'kb', 'play', 'regras', 'af', 'rev', 'test'], evolucao: ['desafios', 'conquistas', 'ranking', 'regras'],
     canais: ['inst', 'tpl', 'int', 'cmp'], equipe: ['pessoas', 'conv', 'perm', 'sla', 'squads'], perfil: ['dados', 'pref', 'notif', 'seg'], contatos: ['pessoas', 'empresas'],
-    financeiro: ['receber', 'atrasadas', 'recebido', 'vendas', 'avisos'], disparo: [null], mestre: ['resumo', 'contas', 'pedidos', 'planos'] };
+    financeiro: ['receber', 'atrasadas', 'recebido', 'vendas', 'avisos'], disparo: [null], mestre: ['resumo', 'contas', 'pedidos', 'ia', 'planos'] };
   const fill = (root) => {
     root.querySelectorAll('input, textarea').forEach((i) => {
       if (i.type === 'file' || i.type === 'checkbox' || i.type === 'radio' || i.type === 'range' || i.value) return;

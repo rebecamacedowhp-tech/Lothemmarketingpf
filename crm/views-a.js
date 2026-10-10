@@ -331,7 +331,7 @@ ACT.acc = (el) => { S.acc = S.acc || {}; S.acc[el.dataset.k] = el.dataset.open !
 ACT.toggleSugg = () => { const cop = O().ia.mode === 'cop'; S.showSugg = !(S.showSugg != null ? S.showSugg : cop); rerender(); };
 function fichaBody(cv, ct) {
   const o = O(), A = o.autofill, admin = ['Proprietária', 'Gestor'].includes(ME().role), sugg = cv.sugg || [];
-  const rows = [['co', ct.pf ? 'Ocupação' : 'Empresa'], ['seg', ct.pf ? 'Produto' : 'Segmento'], ['city', 'Cidade'], ['em', 'E-mail']];
+  const rows = [['nm', 'Nome'], ['ph', 'Telefone / WhatsApp'], ['co', ct.pf ? 'Ocupação' : 'Empresa'], ['seg', ct.pf ? 'Produto' : 'Segmento'], ['city', 'Cidade'], ['em', 'E-mail']].concat(o.kit && o.kit.startsWith('credito') ? [['credit', 'Crédito pretendido']] : []);
   return `<label class="row between af-toggle" title="${admin ? 'Vale para toda a organização' : 'Só a gestão altera'}"><span>Preenchimento pela ${esc(o.ia.name)}</span><span class="sw"><input type="checkbox" ${A.on ? 'checked' : ''} data-chg="afMaster" ${admin ? '' : 'disabled'} aria-label="Preenchimento automático do CRM"><span></span></span></label>
     ${rows.map(([k, nm]) => { const e = afFor(cv, k), v = ct[k]; const empty = !v || v === '—' || v === 'Empresa não informada'; return `<div class="af-row ${S.flashAf === cv.id + k ? 'flash' : ''}"><span class="dim">${nm}</span><span class="${empty ? 'dim' : ''}">${empty ? '—' : esc(v)}${afMark(e)}</span></div>`; }).join('')}
     ${sugg.length ? `<div class="af-sugg"><div class="row between"><b>${sugg.length} ${sugg.length > 1 ? 'sugestões' : 'sugestão'}</b><button class="btn sm pri" data-act="afApplyAll" data-cv="${cv.id}">Aplicar todas</button></div>

@@ -148,6 +148,7 @@ openContact = function (id) {
   finBaseOpenContact(id);
   const o = O(), c = CT(id), b = $('#overlay .drawer-b'); if (!c || !b) return;
   const sales = (o.sales || []).filter((s) => s.c === id), t = finToday();
+  if (c.credit) { const cr = document.createElement('div'); cr.className = 'r-stat'; cr.innerHTML = `<span class="lbl">Crédito pretendido</span><div style="font-size:15px;font-weight:600">${esc(c.credit)}</div><span class="dim" style="font-size:11.5px">${ic('Sparkles', 'xs')} preenchido pela ${esc(o.ia.name)} na conversa</span>`; b.insertBefore(cr, b.children[2] || null); }
   const box = document.createElement('div');
   box.className = 'col svc-box';
   box.innerHTML = `<div class="row between"><span class="lbl">Negociação e pagamento</span><button class="btn xs" data-act="finNew" data-c="${id}">${ic('Plus', 'xs')}Registrar negociação</button></div>

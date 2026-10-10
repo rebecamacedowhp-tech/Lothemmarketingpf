@@ -7,11 +7,11 @@ DB.plans = [
   { id: 'ess', nm: 'Essencial', price: 147, tag: 'Para organizar as vendas', lim: { users: 3, orgs: 1, ia: 0, wa: 1 },
     feats: ['Até 3 usuários', 'Funis, contatos e tarefas sem limite', 'Chat da equipe', 'Painel de campanhas do Meta', 'Metas e evolução da equipe'], no: ['Sem a Cibelle (SDR IA)'] },
   { id: 'pro', nm: 'Profissional', price: 397, tag: 'Mais escolhido', best: true, lim: { users: 6, orgs: 1, ia: 300, wa: 1 },
-    feats: ['Tudo do Essencial', 'Até 6 usuários', 'Cibelle, a SDR IA: 300 conversas por mês', '1 número de WhatsApp', 'Preenchimento automático do CRM', 'SLA de atendimento e meta pessoal'] },
+    feats: ['Tudo do Essencial', 'Até 6 usuários', 'Cibelle, a SDR IA, sem limite de conversas', '1 número de WhatsApp', 'Preenchimento automático do CRM', 'SLA de atendimento e meta pessoal'] },
   { id: 'adv', nm: 'Avançado', price: 897, tag: 'Para várias empresas', lim: { users: 15, orgs: 3, ia: 1500, wa: 3 },
-    feats: ['Tudo do Profissional', 'Até 15 usuários', 'Até 3 empresas, cada uma com a sua Cibelle', '1.500 conversas por mês', '3 números de WhatsApp', 'Sua marca e seu logo', 'Suporte prioritário'] },
+    feats: ['Tudo do Profissional', 'Até 15 usuários', 'Até 3 empresas, cada uma com a sua Cibelle', '3 números de WhatsApp', 'Sua marca e seu logo', 'Suporte prioritário'] },
 ];
-const PLAN_EXTRAS = [['+500 conversas da Cibelle', 97], ['+1 número de WhatsApp', 59]];
+const PLAN_EXTRAS = [['+1 número de WhatsApp', 59]];
 const IMPLANT = { price: 2497, items: ['Funis e etapas montados para o seu processo', 'Cibelle treinada com seus materiais, ofertas e objeções', 'WhatsApp conectado', '2 encontros de treinamento com a equipe', '30 dias de acompanhamento'] };
 const PAY = [
   { id: 'pix', nm: 'Pix', ic: 'QrCode', d: 'QR Code na hora. Todo mês chega um novo Pix.' },
@@ -29,7 +29,6 @@ DB.billing = {
   usage: [
     { nm: 'Usuários', v: 6, max: 15, note: '4 ativos + 2 convites' },
     { nm: 'Instâncias WhatsApp', v: 3, max: 3, note: 'no limite do plano' },
-    { nm: 'Conversas da SDR IA', v: 238, max: 1500, note: 'desde o início do teste' },
     { nm: 'Organizações', v: 3, max: 3, note: 'Marketing, Crédito PJ e Crédito PF' },
   ],
 };
@@ -100,7 +99,7 @@ VIEWS.planos = {
           <div><button class="btn" data-act="askImplant">${ic('MessageCircle', 'sm')}Quero a implantação</button></div></div></section>
       <section class="pn s-5"><div class="pn-h"><span class="pn-t">${ic('PackagePlus')}Extras</span></div>
         <div class="pn-b col" style="gap:10px">${PLAN_EXTRAS.map(([nm, v]) => `<div class="row between" style="font-size:13.5px"><span>${esc(nm)}</span><b class="num">${brl(v)}/mês</b></div>`).join('')}
-          <hr class="sep"><p class="dim" style="font-size:12px">Mensagens que a Meta cobra no WhatsApp oficial (modelos de mensagem) são pagas direto à Meta, pelo uso.</p></div></section>
+          <hr class="sep"><p class="dim" style="font-size:12px">A IA da Cibelle usa a <b>sua própria chave da Anthropic</b>: você paga direto a eles, pelo uso, sem limite de conversas no plano.</p><p class="dim" style="font-size:12px">Mensagens que a Meta cobra no WhatsApp oficial (modelos de mensagem) são pagas direto à Meta, pelo uso.</p></div></section>
       ${st.k !== 'interno' ? `<section class="pn s-12"><div class="pn-h"><span class="pn-t">${ic('Gauge')}Uso da conta</span></div><div class="pn-b"><div class="usage">${B.usage.map((u) => { const p = pct(u.v, u.max); return `<div class="r-stat col" style="gap:6px"><span class="lbl">${esc(u.nm)}</span><div class="num" style="font-size:18px;font-weight:600">${fmt(u.v)} <span class="dim" style="font-size:13px;font-weight:500">de ${fmt(u.max)}</span></div>${bar(p, p > 100 ? 'bad' : p >= 85 ? 'warn' : '')}<span class="dim" style="font-size:12px">${esc(u.note)}</span></div>`; }).join('')}</div></div></section>` : ''}
       ${B.invoices.length ? `<section class="pn s-12"><div class="pn-h"><span class="pn-t">${ic('Receipt')}Faturas</span></div><div class="pn-b" style="padding-top:4px"><div class="tbl-w"><table class="tbl"><thead><tr><th>Data</th><th>Descrição</th><th class="r">Valor</th><th>Status</th></tr></thead><tbody>${B.invoices.map((i) => `<tr><td class="nowrap">${i.date}</td><td>${esc(i.desc)}</td><td class="r num nowrap">${brl(i.v, 2)}</td><td>${pill(i.st, i.st === 'Paga' ? 'ok' : 'warn')}</td></tr>`).join('')}</tbody></table></div></div></section>` : ''}
     </div>`;
@@ -225,7 +224,6 @@ function realBilling(sub, orgs) {
     usage: [
       { nm: 'Usuários', v: users.size, max: p.lim.users, note: 'nas suas empresas' },
       { nm: 'Instâncias WhatsApp', v: 0, max: p.lim.wa, note: 'nenhum número conectado' },
-      { nm: 'Conversas da SDR IA', v: 0, max: p.lim.ia, note: 'neste mês' },
       { nm: 'Organizações', v: owned.length, max: p.lim.orgs, note: 'criadas por você' },
     ],
   };
