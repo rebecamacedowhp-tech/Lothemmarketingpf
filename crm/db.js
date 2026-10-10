@@ -388,6 +388,12 @@ function realWrites() {
     toast('Dados salvos com criptografia', c.nm, '', 'Lock');
     openContact(c.id);
   };
+  /* WhatsApp: a conexão real ainda não existe. Na conta real, nada de QR Code ilustrativo. */
+  ACT.newInstance = ACT.qr = () => openModal(modalHead('Conectar o WhatsApp', '') + `<div class="modal-b col" style="gap:12px;font-size:14px">
+    <p>A conexão do WhatsApp com o Lothem Vendas <b>ainda está sendo construída</b>. Por enquanto não há QR Code nem número para ligar aqui.</p>
+    <p>Ela vai funcionar pela <b>API oficial da Meta</b>, que é o caminho seguro para não perder o número. Quando estiver pronta, você conecta por aqui em poucos passos.</p>
+    <p class="dim" style="font-size:13px">Enquanto isso, contatos, funis, disparos e a base da ${esc(O().ia.name)} já podem ser preparados.</p></div>
+    <div class="modal-f"><button class="btn pri" data-act="close">Entendi</button></div>`);
   const baseSwitch = ACT.switchOrg;
   ACT.switchOrg = (el) => { baseSwitch(el); store.set('realOrg', S.org); };
   ACT.logout = () => ACT.logoutReal();
