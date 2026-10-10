@@ -25,7 +25,12 @@ Sem RAG (mandando a base inteira de 27 mil caracteres em toda mensagem), o cache
 | Gemini 3.8 Flash | 0,75 / 3,75 (dobra em 01/01/2027) | ~US$ 0,03 | ~US$ 30 (US$ 60 em 2027) | Google, página oficial |
 | Claude Haiku 5.5 | 0,10 / 0,50 | ~US$ 0,005 | ~US$ 5 | Anthropic, tabela oficial |
 | DeepSeek V4.1 Flash | 0,15 / 0,60 fora do pico (dobra no pico) | ~US$ 0,005 | ~US$ 5 a 10 | DeepSeek, página oficial |
-| GPT (linha média, ~2 / 10) | 2 / 10 | ~US$ 0,07 | ~US$ 70 | **Não confirmado** (site oficial bloqueou a consulta; blogs divergem nos nomes) |
+| GPT-6 Astra (topo) | 10 / 50 | ~US$ 0,38 | ~US$ 380 | OpenAI, página oficial |
+| GPT-6.1 Sol (linha média) | 2 / 10 (cache 0,10) | ~US$ 0,07 | ~US$ 70 | OpenAI, página oficial |
+| GPT-5.6 Terra | 2 / 12 | ~US$ 0,08 | ~US$ 80 | OpenAI, página oficial |
+| GPT-5.4 mini | 0,75 / 4,50 | ~US$ 0,03 | ~US$ 30 | OpenAI, página oficial |
+| GPT-5 mini | 0,25 / 2 | ~US$ 0,01 | ~US$ 12 | OpenAI, página oficial |
+| GPT-6 Luna (econômico) | 0,10 / 0,50 | ~US$ 0,004 | ~US$ 4 | OpenAI, página oficial |
 
 ## 3. Para empresas grandes, o preço não é o único critério (RECOMENDAÇÃO)
 
@@ -39,7 +44,7 @@ Sem RAG (mandando a base inteira de 27 mil caracteres em toda mensagem), o cache
 1. **Padrão do Lothem Vendas: Claude Sonnet 5.5** para conversar (cerca de 40% do custo do Opus 5.5).
 2. **Claude Haiku 5.5** para tarefas simples em volume: classificar a mensagem, extrair os campos do CRM, triagem do disparo.
 3. **Claude Opus 5.5** como opção "premium" para empresas grandes ou ticket alto, e como reforço quando o Sonnet não tiver certeza.
-4. Antes de fechar, **testar com a mesma base de conversas** os 5 candidatos (Opus 5.5, Sonnet 5.5, Haiku 5.5, Gemini Flash e um GPT de linha média) e escolher pelos números, não pelo preço da tabela.
+4. Antes de fechar, **testar com a mesma base de conversas** os 5 candidatos (Opus 5.5, Sonnet 5.5, Haiku 5.5, Gemini Flash e GPT-6.1 Sol), mais GPT-6 Luna contra o Haiku 5.5) e escolher pelos números, não pelo preço da tabela.
 
 ## 5. Onde testar todos os modelos com uma conta só (FATO)
 
@@ -60,4 +65,4 @@ Teste comparativo: 20 conversas simuladas a partir da base da Lothem Crédito, r
 - DeepSeek: https://api-docs.deepseek.com/quick_start/pricing
 - Vercel AI Gateway: https://vercel.com/docs/ai-gateway/pricing
 - OpenRouter (taxa de 5,5%): https://omidsaffari.com/blog/openrouter-pricing
-- OpenAI (não confirmado): https://www.cloudzero.com/blog/openai-pricing/ , https://benchlm.ai/openai/api-pricing
+- OpenAI: https://developers.openai.com/api/docs/pricing
