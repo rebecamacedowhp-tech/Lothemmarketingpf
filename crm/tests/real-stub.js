@@ -9,11 +9,11 @@ window.REALTEST = (() => {
     memberships: [{ org_id: O1, user_id: U, role: 'owner', squad: null }],
     pipelines: [{ id: 'p1', org_id: O1, name: 'Funil de vendas', position: 0 }],
     stages: [['s1', 'Novo lead', 5, 'open'], ['s2', 'Qualificado', 30, 'open'], ['s3', 'Fechado', 100, 'won'], ['s4', 'Perdido', 0, 'lost']].map(([id, name, probability, kind], position) => ({ id, org_id: O1, pipeline_id: 'p1', name, probability, kind, position })),
-    contacts: [{ id: 'c1', org_id: O1, kind: 'pf', name: 'Ana Teste', phone_hint: '1234', email_hint: 'a•••@t.com', created_at: now, updated_at: now, services: {} }],
+    contacts: [{ id: 'c9', org_id: O1, kind: 'pf', name: 'Maria Teste', phone_hint: '7777', source: 'WhatsApp', created_at: now, updated_at: now, services: {} }, { id: 'c1', org_id: O1, kind: 'pf', name: 'Ana Teste', phone_hint: '1234', email_hint: 'a•••@t.com', created_at: now, updated_at: now, services: {} }],
     deals: [{ id: 'd1', org_id: O1, contact_id: 'c1', pipeline_id: 'p1', stage_id: 's1', value: 150, temperature: 'frio', created_at: now, updated_at: now }],
     tasks: [], campaigns: [], kb_items: [], profiles: [{ id: U, full_name: 'Dona Teste' }],
     subscriptions: [{ user_id: U, plan: 'adv', status: 'trial', trial_ends_at: new Date(Date.now() + 5 * 864e5).toISOString() }],
-    sales: [], installments: [], platform_settings: [{ id: 1, plans: [], extras: [], implant: {}, trial_days: 7 }],
+    sales: [], installments: [], whatsapp_instances: [{ id: 'w1', org_id: O1, name: 'Lothem Crédito', kind: 'nao_oficial', phone_hint: '7410', external_id: 'default', status: 'on' }], conversations: [{ id: 'cv1', org_id: O1, contact_id: 'c9', instance_id: 'w1', status: 'waiting_human', unread: 2, last_message_at: now, created_at: now, chat_id: '5519988887777@c.us' }], platform_settings: [{ id: 1, plans: [], extras: [], implant: {}, trial_days: 7 }],
   };
   const calls = [];
   function from(table) {
@@ -42,6 +42,7 @@ window.REALTEST = (() => {
     is_platform_admin: () => true, admin_tenants: () => [], org_billing: () => [], create_organization: () => { const id = uuid(); T.organizations.push({ id, name: 'Nova', settings: {}, brand: {} }); T.memberships.push({ org_id: id, user_id: U, role: 'owner' }); return id; },
     get_contact_sensitive: () => [{ phone: '(19) 91234-1234', document: '123.456.789-00', email: 'ana@t.com' }], set_contact_sensitive: () => null,
     import_rows: (a) => ({ created: a.p_rows.length, skipped: 0, deals: a.p_rows.filter((r) => r.stage_id).length }), request_plan: () => null,
+    get_conversation_messages: () => [{ id: 'm1', sender: 'lead', author_id: null, body: 'Oi, quero saber do diagnóstico', created_at: now }, { id: 'm2', sender: 'user', author_id: null, body: 'Oi Maria! Posso te explicar.', created_at: now }],
     admin_set_subscription: () => null, admin_save_settings: () => null, find_contact_by_phone: () => null,
   };
   const client = {
