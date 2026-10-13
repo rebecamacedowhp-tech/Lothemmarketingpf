@@ -4,11 +4,17 @@
    Preços oficiais da Anthropic por milhão de tokens (tabela de 06/10/2026). */
 
 const AI_MODELS = [
-  { id: 'claude-opus-5-5', nm: 'Claude Opus 5.5', in: 4, out: 20, note: 'Recomendado para a SDR: conversa melhor e segue as regras com mais firmeza' },
-  { id: 'claude-sonnet-5-5', nm: 'Claude Sonnet 5.5', in: 2, out: 10, note: 'Metade do preço do Opus, bom para volume alto' },
-  { id: 'claude-haiku-5-5', nm: 'Claude Haiku 5.5', in: 0.1, out: 0.5, note: 'O mais barato, para triagem simples' },
-  { id: 'claude-fable-5-1', nm: 'Claude Fable 5.1', in: 10, out: 50, note: 'O mais capaz e o mais caro; raramente necessário para SDR' },
+  { id: 'claude-sonnet-5-5', p: 'anthropic', nm: 'Claude Sonnet 5.5', in: 2, out: 10, note: 'Recomendado para a SDR: bom equilíbrio entre qualidade e custo' },
+  { id: 'claude-opus-5-5', p: 'anthropic', nm: 'Claude Opus 5.5', in: 4, out: 20, note: 'Mais firme nas regras, para ticket alto e empresas grandes' },
+  { id: 'claude-haiku-5-5', p: 'anthropic', nm: 'Claude Haiku 5.5', in: 0.1, out: 0.5, note: 'O mais barato, para triagem simples' },
+  { id: 'claude-fable-5-1', p: 'anthropic', nm: 'Claude Fable 5.1', in: 10, out: 50, note: 'O mais capaz e o mais caro; raramente necessário para SDR' },
+  { id: 'gpt-6.1-sol', p: 'openai', nm: 'GPT-6.1 Sol', in: 2, out: 10, note: 'Recomendado para a SDR com chave da OpenAI' },
+  { id: 'gpt-6-astra', p: 'openai', nm: 'GPT-6 Astra', in: 10, out: 50, note: 'O mais forte da OpenAI e o mais caro' },
+  { id: 'gpt-5.6-terra', p: 'openai', nm: 'GPT-5.6 Terra', in: 2, out: 12, note: 'Linha média anterior' },
+  { id: 'gpt-6-luna', p: 'openai', nm: 'GPT-6 Luna', in: 0.1, out: 0.5, note: 'O mais barato da OpenAI, para triagem simples' },
 ];
+const PROV_NM = { anthropic: 'Anthropic (Claude)', openai: 'OpenAI (GPT)' };
+const provOfKey = (k) => (/^sk-ant-/.test(k) ? 'anthropic' : /^sk-/.test(k) ? 'openai' : 'anthropic');
 const AIM = (id) => AI_MODELS.find((m) => m.id === id) || AI_MODELS[0];
 const isRealM = () => typeof REAL !== 'undefined' && REAL.on;
 const MIA = { list: null, detail: {}, usd: Number(store.get('usdBrl', 0)) || 0 };
@@ -22,13 +28,13 @@ function miaDemo() {
   const seed = (s) => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return () => ((h = (h * 1103515245 + 12345) >>> 0) % 1000) / 1000; };
   const orgs = (MESTRE.tenants || []).flatMap((t) => (t.orgs || '').split(' · ').filter(Boolean).map((nm) => ({ nm, t })));
   MIA.list = orgs.map(({ nm, t }, i) => {
-    const r = seed(nm), model = i % 4 === 1 ? 'claude-sonnet-5-5' : 'claude-opus-5-5', m = AIM(model), days = [];
+    const r = seed(nm), model = i % 4 === 1 ? 'gpt-6.1-sol' : 'claude-sonnet-5-5', m = AIM(model), days = [];
     for (let d = 29; d >= 0; d--) {
       const convs = Math.round((t.plan === 'interno' ? 30 : 8) + r() * (t.plan === 'interno' ? 40 : 25)), inp = convs * Math.round(9000 + r() * 6000), out = convs * Math.round(900 + r() * 700);
       days.push({ day: new Date(Date.now() - d * 864e5).toISOString().slice(0, 10), model, conversations: convs, input_tokens: inp, output_tokens: out, cache_read_tokens: Math.round(inp * 0.6), cost_usd: Math.round(((inp * m.in + out * m.out) / 1e6) * 100) / 100 });
     }
     const own = t.plan !== 'interno' && i % 4 !== 3;
-    return { org_id: 'o' + i, org_name: nm, owner_email: t.email, ia_name: 'Cibelle', model, key_source: t.plan === 'interno' ? 'lothem' : 'cliente', key_hint: own ? 'x7Qa' : null,
+    return { org_id: 'o' + i, org_name: nm, owner_email: t.email, ia_name: 'Cibelle', model, provider: m.p, provider: m.p, key_source: t.plan === 'interno' ? 'lothem' : 'cliente', key_hint: own ? 'x7Qa' : null,
       monthly_cap_usd: t.plan === 'interno' ? 300 : null, paused: false, _days: days,
       _cfg: { effort: 'medium', alert_pct: 80, on_cap: 'pausar', system_prompt: 'Você é a Cibelle, SDR da ' + nm + '. Atenda pelo WhatsApp, qualifique e marque a reunião com o vendedor. Frases curtas, uma pergunta por mensagem.', prompt_version: 1 + (i % 4), blocked_terms: ['garantido', 'grátis'], handoff_terms: ['reclamação', 'advogado', 'cancelar'] },
       _kb: [{ id: 'kb' + i + 'a', title: 'Tabela de preços e condições', category: 'Oferta', chunks: 3, created_at: new Date(Date.now() - 6 * 864e5).toISOString(), text: 'Os planos e preços da ' + nm + ' são informados só pelo vendedor na reunião. Pagamento em Pix, cartão em até 12x ou boleto.' },
@@ -45,7 +51,7 @@ async function miaLoad() {
 }
 async function miaGet(id) {
   const x = MIA.list.find((o) => o.org_id === id);
-  if (!isRealM()) return (MIA.detail[id] = { config: Object.assign({ model: x.model, key_source: x.key_source, key_hint: x.key_hint, monthly_cap_usd: x.monthly_cap_usd, paused: x.paused }, x._cfg), usage: x._days, audit: x._audit, kb: x._kb });
+  if (!isRealM()) return (MIA.detail[id] = { config: Object.assign({ model: x.model, provider: x.provider, key_source: x.key_source, key_hint: x.key_hint, monthly_cap_usd: x.monthly_cap_usd, paused: x.paused }, x._cfg), usage: x._days, audit: x._audit, kb: x._kb });
   const r = await REAL.sb.rpc('admin_ai_get', { p_org: id });
   if (r.error) { toast('Não consegui abrir', r.error.message, 'bad', 'CircleAlert'); return null; }
   return (MIA.detail[id] = r.data);
@@ -65,7 +71,7 @@ function mestreIA() {
       <label class="row" style="gap:8px;font-size:12.5px">Cotação do dólar (R$)<input class="in" style="width:90px" inputmode="decimal" value="${MIA.usd || ''}" placeholder="ex.: 5,40" data-chg="miaUsd"></label></div>
     <div class="pn"><div class="tbl-w"><table class="tbl"><thead><tr><th>Organização</th><th>IA</th><th>Modelo</th><th>Chave</th><th style="min-width:180px">Gasto do mês</th><th class="r">Conversas</th><th class="r">Base (RAG)</th><th></th></tr></thead><tbody>
       ${L.map((x) => { const cap = Number(x.monthly_cap_usd || 0), p = cap ? pct(x.month_cost_usd, cap) : 0; return `<tr><td><b style="font-size:13.5px">${esc(x.org_name)}</b><div class="dim" style="font-size:12px">${esc(x.owner_email || '')}</div></td><td>${esc(x.ia_name)}${x.paused ? ' ' + pill('Pausada', 'bad') : ''}</td><td class="nowrap">${esc(AIM(x.model).nm.replace('Claude ', ''))}</td>
-        <td class="nowrap">${x.key_source === 'cliente' ? pill('Do cliente ••••' + esc(x.key_hint || ''), 'cy', 'KeyRound') : pill('Da Lothem', 'line')}</td>
+        <td class="nowrap">${x.key_source === 'cliente' ? (x.key_hint ? pill((x.provider === 'openai' ? 'OpenAI' : 'Anthropic') + ' ••••' + esc(x.key_hint), 'cy', 'KeyRound') : pill('Sem chave', 'warn')) : pill('Da Lothem', 'line')}</td>
         <td><div class="num" style="font-size:13px">${money(x.month_cost_usd)}${cap ? ` <span class="dim">de ${usd(cap)}</span>` : ''}</div>${cap ? bar(p, p >= 100 ? 'bad' : p >= 80 ? 'warn' : '') : '<span class="dim" style="font-size:12px">sem limite</span>'}</td>
         <td class="r num">${fmt(x.month_conversations || 0)}</td><td class="r num">${fmt(x.kb_docs || 0)} docs</td><td class="r"><button class="btn xs pri" data-act="miaOpen" data-id="${x.org_id}">Abrir</button></td></tr>`; }).join('') || '<tr><td colspan="8" class="dim">Nenhuma organização ainda.</td></tr>'}
     </tbody></table></div></div>`;
@@ -92,7 +98,7 @@ function miaDetail(id) {
       ${C.key_source === 'cliente' && !C.key_hint ? `<div class="row top-a" style="gap:8px;font-size:12.5px;padding:10px 12px;border-radius:9px;background:var(--warn-soft)">${ic('TriangleAlert', 'sm')}<span>Sem chave cadastrada: a ${esc(x.ia_name)} não responde até o cliente colocar a chave dele (em SDR IA, no CRM dele) ou você colar aqui.</span></div>` : ''}
       ${C.key_source === 'cliente' ? `<form class="row wrap" style="gap:8px;align-items:flex-end" data-sub="miaKey"><div class="field grow" style="min-width:240px"><label for="miaKeyIn">Chave de API da Anthropic do cliente</label><input class="in" id="miaKeyIn" type="password" autocomplete="off" placeholder="${C.key_hint ? 'Já cadastrada · termina em ' + esc(C.key_hint) + ' · cole outra para trocar' : 'Cole a chave aqui'}"></div><button class="btn pri" type="submit">${ic('Lock', 'sm')}Salvar cifrada</button>${C.key_hint ? '<button class="btn ghost" type="button" data-act="miaClearKey">Remover</button>' : ''}</form>
         <span class="hint">A chave é guardada com criptografia e nunca aparece de novo, nem para você. Só o servidor da IA consegue usá-la. Trocar ou remover fica na auditoria.</span>` : '<span class="hint">O gasto da IA desta organização entra na conta da Lothem. Use para as suas próprias empresas.</span>'}
-      <div class="field"><label>Modelo</label><div class="col" style="gap:8px">${AI_MODELS.map((mm) => `<button type="button" class="pay-m ${mm.id === m.id ? 'on' : ''}" data-act="miaModel" data-v="${mm.id}"><span class="col" style="gap:2px;text-align:left"><b>${mm.nm}</b><span class="dim" style="font-size:12.5px">${mm.note}</span></span><span class="num dim nowrap" style="font-size:12px;margin-left:auto">US$ ${fmt(mm.in, mm.in < 1 ? 2 : 0)} / ${fmt(mm.out, mm.out < 1 ? 2 : 0)} por 1 mi tokens</span></button>`).join('')}</div></div>
+      <div class="field"><label>Modelo · ${esc(PROV_NM[C.provider || m.p] || '')}</label><div class="col" style="gap:8px">${AI_MODELS.filter((mm) => mm.p === (C.provider || m.p)).map((mm) => `<button type="button" class="pay-m ${mm.id === m.id ? 'on' : ''}" data-act="miaModel" data-v="${mm.id}"><span class="col" style="gap:2px;text-align:left"><b>${mm.nm}</b><span class="dim" style="font-size:12.5px">${mm.note}</span></span><span class="num dim nowrap" style="font-size:12px;margin-left:auto">US$ ${fmt(mm.in, mm.in < 1 ? 2 : 0)} / ${fmt(mm.out, mm.out < 1 ? 2 : 0)} por 1 mi tokens</span></button>`).join('')}</div></div>
       <div class="field" style="max-width:360px"><label>Esforço</label><div class="seg">${[['low', 'Baixo'], ['medium', 'Médio'], ['high', 'Alto']].map(([v, n]) => `<button class="${(C.effort || 'medium') === v ? 'on' : ''}" data-act="miaEffort" data-v="${v}">${n}</button>`).join('')}</div><span class="hint">Mais esforço pensa mais antes de responder e custa mais. Médio é o padrão.</span></div></div>`)}
     ${sec('mia-cost', ic('Coins', 'sm cy') + 'Gasto e auditoria', pill(usd(spent) + ' no mês', cap && spent >= cap ? 'bad' : 'line mono'), `<div class="col" style="gap:14px">
       <div class="usage">${[['Gasto no mês', money(spent)], ['Projeção do mês', money(proj)], ['Conversas no mês', fmt(convs)], ['Custo por conversa', convs ? money(spent / convs) : '—']].map(([k, v]) => `<div class="r-stat"><span class="lbl">${k}</span><div class="num" style="font-size:16px;font-weight:600">${v}</div></div>`).join('')}</div>
@@ -155,9 +161,9 @@ SUB.miaKey = async () => {
   if (k.length < 20) { toast('Chave muito curta', 'Confira se copiou a chave inteira.', 'warn', 'CircleAlert'); return; }
   $('#miaKeyIn').value = '';
   if (isRealM()) { const r = await REAL.sb.rpc('admin_ai_set_key', { p_org: id, p_key: k }); if (r.error) { toast('Não consegui salvar a chave', r.error.message, 'bad', 'CircleAlert'); return; } await miaGet(id); }
-  else { D.config.key_hint = k.slice(-4); D.config.key_source = 'cliente'; D.audit.unshift({ at: new Date().toISOString(), action: 'chave_alterada', detail: { final: k.slice(-4) }, by: (ME() || {}).name }); }
-  x.key_hint = k.slice(-4); x.key_source = 'cliente';
-  toast('Chave salva com criptografia', 'Termina em ' + k.slice(-4), '', 'Lock'); rerender();
+  else { const pv = provOfKey(k); D.config.provider = pv; if (AIM(D.config.model).p !== pv) D.config.model = pv === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5'; x.model = D.config.model; D.config.key_hint = k.slice(-4); D.config.key_source = 'cliente'; D.audit.unshift({ at: new Date().toISOString(), action: 'chave_alterada', detail: { final: k.slice(-4) }, by: (ME() || {}).name }); }
+  x.key_hint = k.slice(-4); x.key_source = 'cliente'; x.provider = provOfKey(k);
+  toast('Chave ' + PROV_NM[provOfKey(k)] + ' salva com criptografia', 'Termina em ' + k.slice(-4), '', 'Lock'); rerender();
 };
 ACT.miaClearKey = async () => {
   const id = S.miaOrg, x = MIA.list.find((o) => o.org_id === id), D = MIA.detail[id];
@@ -208,7 +214,7 @@ SUB.miaSearch = async () => {
 const MY_KEY = {};
 async function myKeyLoad() {
   const o = O();
-  if (!isRealM()) { MY_KEY[o.id] = MY_KEY[o.id] || { key_source: 'cliente', key_hint: o.id === 'mkt' ? null : 'x7Qa', model: 'claude-opus-5-5', paused: false }; return; }
+  if (!isRealM()) { MY_KEY[o.id] = MY_KEY[o.id] || { key_source: 'cliente', key_hint: o.id === 'mkt' ? null : 'x7Qa', model: 'claude-sonnet-5-5', provider: 'anthropic', paused: false }; return; }
   MY_KEY[o.id] = { key_source: 'cliente', key_hint: null, loading: true };
   const r = await REAL.sb.rpc('ai_my_status', { p_org: o.id });
   MY_KEY[o.id] = r.error ? { key_source: 'cliente', key_hint: null } : (r.data && r.data[0]) || { key_source: 'cliente', key_hint: null };
@@ -219,9 +225,9 @@ sdrGeral = function () {
   const o = O(), admin = ['Proprietária', 'Gestor'].includes((ME() || {}).role);
   if (!MY_KEY[o.id]) myKeyLoad();
   const K = MY_KEY[o.id];
-  const card = !K || K.loading || K.key_source === 'lothem' ? '' : `<section class="pn ${K.key_hint ? '' : 'gold-edge'}" style="margin-bottom:16px"><div class="pn-h"><span class="pn-t">${ic('KeyRound')}Chave de IA da ${esc(o.ia.name)}</span>${K.key_hint ? pill('Cadastrada ••••' + esc(K.key_hint), 'ok', 'Lock') : pill('Falta cadastrar', 'warn')}</div>
-    <div class="pn-b col" style="gap:10px"><p class="dim" style="font-size:13px">A ${esc(o.ia.name)} usa a <b>sua conta na Anthropic</b> (console.anthropic.com). Você paga direto a eles, pelo uso, sem limite de conversas no plano.${K.key_hint ? '' : ' Sem a chave, ela não responde.'}</p>
-    ${admin ? `<form class="row wrap" style="gap:8px;align-items:flex-end" data-sub="myKey"><div class="field grow" style="min-width:240px"><label for="myKeyIn">${K.key_hint ? 'Trocar a chave' : 'Cole aqui a chave de API'}</label><input class="in" id="myKeyIn" type="password" autocomplete="off" placeholder="sk-ant-…"></div><button class="btn pri" type="submit">${ic('Lock', 'sm')}Salvar cifrada</button></form><span class="hint">Fica guardada com criptografia e nunca aparece de novo. Só o servidor da IA usa.</span>` : '<span class="hint">Só a proprietária ou a gestão cadastram a chave.</span>'}</div></section>`;
+  const card = !K || K.loading || K.key_source === 'lothem' ? '' : `<section class="pn ${K.key_hint ? '' : 'gold-edge'}" style="margin-bottom:16px"><div class="pn-h"><span class="pn-t">${ic('KeyRound')}Chave de IA da ${esc(o.ia.name)}</span>${K.key_hint ? pill((K.provider === 'openai' ? 'OpenAI' : 'Anthropic') + ' ••••' + esc(K.key_hint), 'ok', 'Lock') : pill('Falta cadastrar', 'warn')}</div>
+    <div class="pn-b col" style="gap:10px"><p class="dim" style="font-size:13px">A ${esc(o.ia.name)} usa a <b>sua própria chave de IA</b>: da Anthropic (Claude, começa com sk-ant-) ou da OpenAI (GPT, começa com sk-). Você paga direto a eles, pelo uso, sem limite de conversas no plano.${K.key_hint ? ' Modelo: <b>' + esc(AIM(K.model).nm) + '</b>.' : ''}${K.key_hint ? '' : ' Sem a chave, ela não responde.'}</p>
+    ${admin ? `<form class="row wrap" style="gap:8px;align-items:flex-end" data-sub="myKey"><div class="field grow" style="min-width:240px"><label for="myKeyIn">${K.key_hint ? 'Trocar a chave' : 'Cole aqui a chave de API'}</label><input class="in" id="myKeyIn" type="password" autocomplete="off" placeholder="sk-ant-… ou sk-…"></div><button class="btn pri" type="submit">${ic('Lock', 'sm')}Salvar cifrada</button></form><span class="hint">Fica guardada com criptografia e nunca aparece de novo. Só o servidor da IA usa.</span>` : '<span class="hint">Só a proprietária ou a gestão cadastram a chave.</span>'}</div></section>`;
   return card + sdrGeralBase();
 };
 SUB.myKey = async () => {
@@ -229,6 +235,7 @@ SUB.myKey = async () => {
   if (k.length < 20) { toast('Chave muito curta', 'Confira se copiou a chave inteira.', 'warn', 'CircleAlert'); return; }
   $('#myKeyIn').value = '';
   if (isRealM()) { const r = await REAL.sb.rpc('ai_set_my_key', { p_org: o.id, p_key: k }); if (r.error) { toast('Não consegui salvar', r.error.message, 'bad', 'CircleAlert'); return; } }
-  MY_KEY[o.id] = Object.assign(MY_KEY[o.id] || {}, { key_source: 'cliente', key_hint: k.slice(-4), loading: false });
-  toast('Chave salva com criptografia', 'Termina em ' + k.slice(-4), '', 'Lock'); rerender();
+  const pv = provOfKey(k);
+  MY_KEY[o.id] = Object.assign(MY_KEY[o.id] || {}, { key_source: 'cliente', key_hint: k.slice(-4), provider: pv, model: pv === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5', loading: false });
+  toast('Chave ' + PROV_NM[pv] + ' salva com criptografia', 'Termina em ' + k.slice(-4), '', 'Lock'); rerender();
 };
