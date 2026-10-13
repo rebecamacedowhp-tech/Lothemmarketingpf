@@ -573,6 +573,17 @@ ACT.newTpl = () => {
 };
 SUB.newTpl = () => { const n = $('#tpN').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_'); if (!n) return; O().templates.unshift({ nm: n, cat: $('#tpC').value, st: 'Em análise', lang: 'pt_BR', body: $('#tpB').value }); closeOverlay(); toast('Modelo enviado para análise', 'A Meta costuma responder em minutos ou poucas horas.', '', 'FileText'); rerender(); };
 function intTab() {
+  if (typeof REAL !== 'undefined' && REAL.on && !O().integrations.length) {
+    const wa = O().instances.length > 0;
+    const L = [
+      ['W', 'WhatsApp (WAHA)', 'Mensagens do número conectado entram no Atendimento.', wa ? ['Ligada', 'ok'] : ['Conecte em Instâncias', 'warn']],
+      ['Q', 'Quiz do site (diagnostico.lothem.com.br)', 'Quem faz o quiz entra no CRM como "Fez o quiz e não comprou", com as respostas.', ['Em construção', 'line']],
+      ['P', 'Cakto · pagamentos', 'Pagamento confirmado marca "Já comprou o diagnóstico" e move o negócio.', ['Em construção', 'line']],
+      ['M', 'Meta · Lead Ads e API de Conversões', 'Leads de formulário da Meta e eventos de volta para otimizar as campanhas.', ['Em construção', 'line']],
+      ['S', 'Importar de outro CRM ou do Prospector', 'Planilha CSV ou Excel, em Contatos.', ['Disponível', 'ok']],
+    ];
+    return `<p class="dim" style="margin-bottom:12px">Na conta real, cada integração só aparece como ligada quando está funcionando de verdade.</p><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">${L.map(([lg, nm, d, [st, cls]]) => `<div class="pn integ"><span class="lg">${lg}</span><div class="grow"><b>${esc(nm)}</b><div class="muted" style="font-size:12.5px">${esc(d)}</div></div>${pill(st, cls)}</div>`).join('')}</div>`;
+  }
   return `<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">${O().integrations.map((it, i) => `<div class="pn integ"><span class="lg">${it.lg}</span><div class="grow"><b>${esc(it.nm)}</b><div class="muted" style="font-size:12.5px">${esc(it.d)}</div></div><span class="sw"><input type="checkbox" ${it.st === 'on' ? 'checked' : ''} data-chg="integ" data-i="${i}" aria-label="${esc(it.nm)}"><span></span></span></div>`).join('')}</div>`;
 }
 CHG.integ = (el) => { const it = O().integrations[+el.dataset.i]; it.st = el.checked ? 'on' : 'off'; toast(it.nm + (el.checked ? ' ligada' : ' desligada'), '', '', 'Plug'); };
