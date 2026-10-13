@@ -4,6 +4,7 @@
 // Segredos ficam nas variáveis da Vercel: WAHA_URL, WAHA_API_KEY, WAHA_WEBHOOK_HMAC, SUPABASE_SERVICE_ROLE_KEY.
 
 import crypto from 'node:crypto';
+import { responder } from './_cibelle.mjs';
 
 const SB_URL = 'https://djjodusiwteuembfvpvt.supabase.co';
 const SB_PUBLIC = 'sb_publishable_CO5CII13uu1sQ6kY2tjLuA_RO2RC2IO';
@@ -54,7 +55,23 @@ async function webhook(request) {
   const waId = typeof p.id === 'object' && p.id ? p.id._serialized || p.id.id : p.id;
   const body = p.body || (p.hasMedia ? '[mídia]' : '');
   const conv = await rpc('wa_ingest', { p_session: ev.session || 'default', p_chat_id: chat, p_phone: phone || null, p_name: name || null, p_body: body, p_wa_id: waId || null, p_from_me: fromMe, p_ts: ts });
-  return json(200, { ok: true, conversa: conv });
+  // mensagem nova de lead: a IA decide se responde (modo de teste, equipe atendendo etc. ficam no banco)
+  let ia = null;
+  if (conv && !fromMe && p.body) {
+    try { ia = await responder({ rpc, waha, conv, waId }); } catch (e) { console.error('motor da IA', e); ia = { respondeu: false, motivo: 'erro' }; }
+  }
+  return json(200, { ok: true, conversa: conv, ia });
+}
+
+async function waha(op, body) {
+  const r = await fetch(`${env('WAHA_URL').replace(/\/$/, '')}/api/${op}`, {
+    method: 'POST',
+    headers: { 'x-api-key': env('WAHA_API_KEY'), 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const out = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error('WAHA ' + op + ': ' + ((out && (out.message || out.error)) || r.status));
+  return out;
 }
 
 async function send(request) {
