@@ -118,7 +118,8 @@ function miaDetail(id) {
       <div class="field"><label for="miaPrompt">Instruções da ${esc(x.ia_name)} (prompt de sistema)</label><textarea class="ta" id="miaPrompt" rows="9" placeholder="Quem ela é, como fala, o que vende, o que nunca diz e quando passa para uma pessoa.">${esc(C.system_prompt || '')}</textarea><span class="hint">Cada vez que o texto muda, a versão sobe e a mudança fica na auditoria.</span></div>
       <div class="form-g"><div class="field"><label for="miaBlocked">Palavras e frases proibidas</label><textarea class="ta" id="miaBlocked" rows="4" placeholder="uma por linha">${esc((C.blocked_terms || []).join('\n'))}</textarea></div>
       <div class="field"><label for="miaHandoff">Passa para uma pessoa quando aparecer</label><textarea class="ta" id="miaHandoff" rows="4" placeholder="uma por linha">${esc((C.handoff_terms || []).join('\n'))}</textarea></div></div>
-      <div><button class="btn pri" type="submit">${ic('Check', 'sm')}Salvar treinamento</button></div></form>`)}
+      <div class="row wrap" style="gap:8px"><button class="btn pri" type="submit">${ic('Check', 'sm')}Salvar treinamento</button><button class="btn" type="button" data-act="miaPacote">${ic('PackageCheck', 'sm')}Carregar pacote oficial da Lothem Crédito</button></div>
+      <span class="hint">O pacote coloca as instruções da Cibelle, a base dividida em trechos, as 18 respostas de objeção aprovadas, o roteiro, as palavras proibidas e quando passar para a Rebeca. Não duplica o que já existe.</span></form>`)}
     ${sec('mia-rag', ic('Library', 'sm cy') + 'Base de conhecimento (RAG)', pill((D.kb || []).length + ' documentos', 'line mono'), `<div class="col" style="gap:14px">
       <p class="dim" style="font-size:12.5px">Cada documento é dividido em trechos. Em cada conversa, a ${esc(x.ia_name)} busca os trechos que respondem à pergunta e usa só eles, em vez de ler a base inteira. Isso deixa a resposta mais certa e mais barata.</p>
       <form class="col" style="gap:10px" data-sub="miaKb">
@@ -238,4 +239,80 @@ SUB.myKey = async () => {
   const pv = provOfKey(k);
   MY_KEY[o.id] = Object.assign(MY_KEY[o.id] || {}, { key_source: 'cliente', key_hint: k.slice(-4), provider: pv, model: pv === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5', loading: false });
   toast('Chave ' + PROV_NM[pv] + ' salva com criptografia', 'Termina em ' + k.slice(-4), '', 'Lock'); rerender();
+};
+
+/* ---------- Pacote oficial da Lothem Crédito: instruções, base em trechos, respostas aprovadas, roteiro e regras ---------- */
+const PACOTE_BLOCKED = ['grátis', 'de graça', 'gratuito', 'pré-aprovado', 'liberado', 'garantido', 'limpar nome', 'aumentar score', 'correspondente bancário', 'parceria com o banco', 'bancos de dados'];
+function pacoteDocs() {
+  const docs = [];
+  const base = (typeof SDR_BASE_CREDITO !== 'undefined' && SDR_BASE_CREDITO.base) || '';
+  base.split(/\n(?=## )/).map((s) => s.trim()).filter((s) => s.startsWith('## ')).forEach((sec) => {
+    const title = sec.split('\n')[0].replace(/^##\s*/, '').trim();
+    docs.push({ title: 'Base: ' + title, category: /Obje/.test(title) ? 'Objeções' : /Produto|preço/i.test(title) ? 'Oferta' : /Scripts|Áudios/i.test(title) ? 'Playbook' : 'Treinamento', chunks: miaChunks(sec) });
+  });
+  if (typeof CRED_OBJ !== 'undefined') docs.push({ title: 'Respostas aprovadas: objeções', category: 'Objeções', chunks: CRED_OBJ.map((x) => 'Quando o cliente disser: "' + x.q + '"\nResposta aprovada:\n' + x.a.replace(/\{ia\}/g, 'Cibelle')) });
+  if (typeof CRED_SCRIPT !== 'undefined') docs.push({ title: 'Roteiro da conversa (scripts aprovados)', category: 'Playbook', chunks: CRED_SCRIPT.map(([nm, when, x]) => nm + ' (' + when + '):\n' + x.replace(/\{ia\}/g, 'Cibelle')) });
+  return docs;
+}
+ACT.miaPacote = async () => {
+  const id = S.miaOrg, D = MIA.detail[id], x = MIA.list.find((o) => o.org_id === id);
+  if (typeof SDR_BASE_CREDITO === 'undefined') return;
+  const have = new Set((D.kb || []).map((k) => k.title));
+  const docs = pacoteDocs().filter((d) => !have.has(d.title));
+  const cfg = { system_prompt: SDR_BASE_CREDITO.prompt, blocked_terms: PACOTE_BLOCKED, handoff_terms: (typeof CRED_HANDOFF_RULES !== 'undefined' ? CRED_HANDOFF_RULES : []) };
+  toast('Carregando o pacote…', docs.length + ' documentos para a base', '', 'LoaderCircle');
+  if (isRealM()) {
+    for (const d of docs) { const r = await REAL.sb.rpc('admin_kb_add', { p_org: id, p_title: d.title, p_category: d.category, p_chunks: d.chunks }); if (r.error) { toast('Parou no meio', d.title + ': ' + r.error.message, 'bad', 'CircleAlert'); return; } }
+    const s = await REAL.sb.rpc('admin_ai_save', { p_org: id, p_cfg: cfg }); if (s.error) { toast('Não consegui salvar as instruções', s.error.message, 'bad', 'CircleAlert'); return; }
+    await miaGet(id);
+  } else {
+    docs.forEach((d) => D.kb.unshift({ id: 'kb' + uid(), title: d.title, category: d.category, chunks: d.chunks.length, created_at: new Date().toISOString(), text: d.chunks.join('\n\n') }));
+    Object.assign(D.config, cfg, { prompt_version: (D.config.prompt_version || 1) + 1 });
+  }
+  x.kb_docs = (x.kb_docs || 0) + docs.length;
+  toast('Pacote da Lothem Crédito carregado', 'Instruções, ' + docs.length + ' documentos, respostas aprovadas, roteiro e regras.', '', 'BadgeCheck');
+  rerender();
+};
+
+/* ---------- Memória da IA por cliente (na ficha) ---------- */
+const MEMO = {};
+function memoDemo(c) {
+  const o = O(), cv = o.conversations.find((x) => x.c === c.id), q = (cv && cv.q) || {}, d = o.deals.find((x) => x.c === c.id);
+  const lines = [];
+  if (q.dor) lines.push('Problema: ' + q.dor);
+  if (c.credit) lines.push('Crédito pretendido: ' + c.credit);
+  if (q.capacidade) lines.push('Faturamento: ' + q.capacidade);
+  if (q.decisor) lines.push('Quem decide: ' + q.decisor);
+  if (q.momento) lines.push('Momento: ' + q.momento);
+  if (d && d.next) lines.push('Combinado: ' + d.next);
+  return lines.join('\n');
+}
+const memoBaseOpen = openContact;
+openContact = function (id) {
+  memoBaseOpen(id);
+  const c = CT(id), b = $('#overlay .drawer-b'); if (!c || !b) return;
+  const box = document.createElement('div');
+  box.className = 'col svc-box'; box.id = 'memoBox';
+  const draw = () => {
+    const m = MEMO[id];
+    box.innerHTML = `<div class="row between"><span class="lbl">Memória da ${esc(O().ia.name)}</span>${m && m.by ? pill(m.by === 'ia' ? 'atualizada pela IA' : 'editada pela equipe', 'line') : ''}</div>
+      <p class="dim" style="font-size:12.5px">O que ela lembra deste cliente na próxima conversa. Corrija se algo estiver errado.</p>
+      ${m && m.loading ? '<div class="dim" style="font-size:13px">Carregando…</div>' : `<textarea class="ta" id="memoTx" rows="5" placeholder="Ex.: Problema: crédito negado. Crédito pretendido: R$ 80 mil. Combinado: conversa com a Rebeca amanhã às 10h.">${esc((m && m.notes) || '')}</textarea>
+      <div><button class="btn sm" data-act="memoSave" data-id="${id}">${ic('Check', 'xs')}Salvar memória</button></div>`}`;
+  };
+  if (!MEMO[id]) {
+    if (isRealM()) {
+      MEMO[id] = { loading: true }; draw();
+      REAL.sb.rpc('get_contact_memory', { p_contact: id }).then((r) => { const row = !r.error && r.data && r.data[0]; MEMO[id] = { notes: row ? row.notes : '', by: row ? row.updated_by : null }; draw(); });
+    } else MEMO[id] = { notes: memoDemo(c), by: memoDemo(c) ? 'ia' : null };
+  }
+  draw();
+  b.insertBefore(box, b.children[2] || null);
+};
+ACT.memoSave = async (el) => {
+  const id = el.dataset.id, notes = $('#memoTx').value.trim();
+  if (isRealM()) { const r = await REAL.sb.rpc('set_contact_memory', { p_contact: id, p_notes: notes }); if (r.error) { toast('Não consegui salvar', r.error.message, 'bad', 'CircleAlert'); return; } }
+  MEMO[id] = { notes, by: 'equipe' };
+  toast('Memória salva', 'A ' + O().ia.name + ' usa isso na próxima conversa com esse cliente.', '', 'Brain');
+  openContact(id);
 };
