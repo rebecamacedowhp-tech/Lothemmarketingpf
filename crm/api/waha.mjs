@@ -13,9 +13,13 @@ const json = (status, body) => new Response(JSON.stringify(body), { status, head
 /* chamadas ao banco: como servidor (chave de serviço) ou como a pessoa logada (token dela) */
 async function rpc(fn, args, token) {
   const key = token ? SB_PUBLIC : env('SUPABASE_SERVICE_ROLE_KEY');
+  const headers = { apikey: key, 'content-type': 'application/json' };
+  // chaves novas (sb_secret_…) vão só no apikey; token de login e chave antiga (JWT) vão no Authorization
+  if (token) headers.authorization = `Bearer ${token}`;
+  else if (!key.startsWith('sb_')) headers.authorization = `Bearer ${key}`;
   const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
     method: 'POST',
-    headers: { apikey: key, authorization: `Bearer ${token || key}`, 'content-type': 'application/json' },
+    headers,
     body: JSON.stringify(args),
   });
   const text = await r.text();
