@@ -12,7 +12,7 @@ function waInstance(i) {
 }
 function waContact(c, uid) {
   return { id: c.id, pf: c.kind === 'pf', nm: c.name, co: c.kind === 'pf' ? (c.occupation || 'Pessoa física') : (c.company || '—'), seg: c.segment || '—', city: c.city || '—',
-    ph: c.phone_hint ? '•••• ' + c.phone_hint : '—', docHint: c.document_hint || null, em: c.email_hint || '—', credit: c.credit_wanted || null, src: c.source || 'WhatsApp',
+    ph: c.phone_hint ? '•••• ' + c.phone_hint : '—', docHint: c.document_hint || null, em: c.email_hint || '—', credit: c.credit_wanted || null, entry: c.entry_path || null, src: c.source || 'WhatsApp',
     owner: c.owner_id || uid, life: c.lifecycle || 'Lead', score: c.score || 0, last: 'agora', services: c.services || {}, camp: c.campaign_id || null };
 }
 function waConv(r, old) {

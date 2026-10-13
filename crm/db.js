@@ -140,7 +140,7 @@ async function loadReal() {
     const o = m.organizations, brand = o.brand || {}, set = o.settings || {};
     REAL.roles[o.id] = m.role;
     const pipelines = pips.data.filter((p) => p.org_id === o.id).map((p) => ({ id: p.id, nm: p.name, desc: p.description || '', stages: stg.data.filter((s) => s.pipeline_id === p.id).map((s) => ({ id: s.id, nm: s.name, p: s.probability, won: s.kind === 'won', lost: s.kind === 'lost' })) }));
-    const contacts = cts.data.filter((c) => c.org_id === o.id).map((c) => ({ id: c.id, pf: c.kind === 'pf', nm: c.name, co: c.kind === 'pf' ? (c.occupation || 'Pessoa física') : (c.company || '—'), seg: c.segment || '—', city: c.city || '—', ph: c.phone_hint ? '•••• ' + c.phone_hint : '—', docHint: c.document_hint || null, em: c.email_hint || '—', credit: c.credit_wanted || null, src: c.source || 'Cadastro manual', owner: c.owner_id || uid, life: c.lifecycle || 'Lead', score: c.score || 0, last: ago(c.updated_at), noContact: c.do_not_contact, services: c.services || {}, camp: c.campaign_id || null }));
+    const contacts = cts.data.filter((c) => c.org_id === o.id).map((c) => ({ id: c.id, pf: c.kind === 'pf', nm: c.name, co: c.kind === 'pf' ? (c.occupation || 'Pessoa física') : (c.company || '—'), seg: c.segment || '—', city: c.city || '—', ph: c.phone_hint ? '•••• ' + c.phone_hint : '—', docHint: c.document_hint || null, em: c.email_hint || '—', credit: c.credit_wanted || null, entry: c.entry_path || null, src: c.source || 'Cadastro manual', owner: c.owner_id || uid, life: c.lifecycle || 'Lead', score: c.score || 0, last: ago(c.updated_at), noContact: c.do_not_contact, services: c.services || {}, camp: c.campaign_id || null }));
     const deals = dls.data.filter((d) => d.org_id === o.id).map((d) => ({ id: d.id, c: d.contact_id, p: d.pipeline_id, s: d.stage_id, v: Number(d.value), temp: d.temperature, owner: d.owner_id || uid, next: d.next_step || '—', age: ago(d.updated_at), product: d.product || null, camp: d.campaign_id || null }));
     const tasks = tks.data.filter((t) => t.org_id === o.id).map((t) => ({ id: t.id, t: t.title, type: t.kind || 'SquareCheck', who: t.assignee_id || uid, due: dayOff(t.due_at), at: hhmm(t.due_at), deal: t.deal_id, pri: t.priority === 'alta' ? 'alta' : 'média', xp: 10, done: !!t.done_at }));
     const words = (brand.short || o.name).replace(/^LOTHEM\s*[—-]\s*/i, '').split(/\s+/);
@@ -304,14 +304,14 @@ function realWrites() {
     const v = parseInt(($('#ndVal').value || '0').replace(/\D/g, ''), 10) || 0;
     const prod = ($('#ndProd') && $('#ndProd').value) || null, camp = ($('#ndCamp') && $('#ndCamp').value) || null;
     const campNm = camp ? (O().camps.find((c) => c.id === camp) || {}).nm : null;
-    const ct = await sb.from('contacts').insert({ org_id: oid(), kind: co ? 'pj' : 'pf', name: nm, company: co || null, segment: $('#ndSeg').value || null, source: campNm ? 'Meta · ' + campNm : 'Cadastro manual', campaign_id: camp, owner_id: DB.me, lifecycle: 'Lead' }).select().single();
+    const ct = await sb.from('contacts').insert({ org_id: oid(), kind: co ? 'pj' : 'pf', name: nm, company: co || null, segment: $('#ndSeg').value || null, source: campNm ? 'Meta · ' + campNm : 'Cadastro manual', campaign_id: camp, owner_id: DB.me, lifecycle: 'Lead', entry_path: ($('#ndEntry') && $('#ndEntry').value) || null }).select().single();
     if (ct.error) return fail(ct.error);
     const phone = $('#ndPh').value.trim();
     if (phone) { const ps = await sb.rpc('set_contact_sensitive', { p_contact: ct.data.id, p_phone: phone }); if (ps.error) fail(ps.error); }
     const dl = await sb.from('deals').insert({ org_id: oid(), contact_id: ct.data.id, pipeline_id: pid, stage_id: first.id, value: v, owner_id: DB.me, next_step: 'Primeiro contato', product: prod, campaign_id: camp }).select().single();
     if (dl.error) return fail(dl.error);
     const o = O();
-    o.contacts.unshift({ id: ct.data.id, pf: !co, nm, co: co || 'Pessoa física', seg: $('#ndSeg').value || '—', city: '—', ph: phone ? '•••• ' + phone.replace(/\D/g, '').slice(-4) : '—', em: '—', src: campNm ? 'Meta · ' + campNm : 'Cadastro manual', owner: DB.me, life: 'Lead', score: 0, last: 'agora', services: {}, camp });
+    o.contacts.unshift({ id: ct.data.id, pf: !co, nm, co: co || 'Pessoa física', seg: $('#ndSeg').value || '—', city: '—', ph: phone ? '•••• ' + phone.replace(/\D/g, '').slice(-4) : '—', em: '—', src: campNm ? 'Meta · ' + campNm : 'Cadastro manual', owner: DB.me, life: 'Lead', score: 0, last: 'agora', services: {}, camp, entry: ($('#ndEntry') && $('#ndEntry').value) || null });
     o.deals.unshift({ id: dl.data.id, c: ct.data.id, p: pid, s: first.id, v, temp: 'frio', owner: DB.me, next: 'Primeiro contato', age: 'agora', moved: true, product: prod, camp });
     refreshRealMetrics(o);
     closeOverlay(); S.pipe = pid;

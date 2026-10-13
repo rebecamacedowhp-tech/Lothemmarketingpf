@@ -251,15 +251,26 @@ function pacoteDocs() {
     docs.push({ title: 'Base: ' + title, category: /Obje/.test(title) ? 'Objeções' : /Produto|preço/i.test(title) ? 'Oferta' : /Scripts|Áudios/i.test(title) ? 'Playbook' : 'Treinamento', chunks: miaChunks(sec) });
   });
   if (typeof CRED_OBJ !== 'undefined') docs.push({ title: 'Respostas aprovadas: objeções', category: 'Objeções', chunks: CRED_OBJ.map((x) => 'Quando o cliente disser: "' + x.q + '"\nResposta aprovada:\n' + x.a.replace(/\{ia\}/g, 'Cibelle')) });
+  if (typeof SDR_TREINO_CREDITO !== 'undefined') SDR_TREINO_CREDITO.text.split(/\n(?=## )/).map((x) => x.trim()).filter((x) => x.startsWith('## ')).forEach((sec) => {
+    const head = sec.split('\n')[0];
+    docs.push({ title: 'Treinamento: ' + head.replace(/^##\s*\d*\.?\s*/, '').trim(), category: /Obje/.test(head) ? 'Objeções' : 'Treinamento', chunks: miaChunks(sec) });
+  });
   if (typeof CRED_SCRIPT !== 'undefined') docs.push({ title: 'Roteiro da conversa (scripts aprovados)', category: 'Playbook', chunks: CRED_SCRIPT.map(([nm, when, x]) => nm + ' (' + when + '):\n' + x.replace(/\{ia\}/g, 'Cibelle')) });
   return docs;
 }
+const TRILHAS_PROMPT = `
+
+ENTRADA DO LEAD (olhe na ficha antes da primeira mensagem)
+- "Já comprou o diagnóstico": não venda de novo. Peça a assinatura da autorização, confirme o faturamento, o valor e a finalidade do crédito e o que levou a pessoa a procurar o diagnóstico, marque a conversa de 30 minutos com a Rebeca e confirme no dia. Não comente o relatório e não venda consultoria.
+- "Fez o quiz e não comprou": venda o Diagnóstico Completo como no treinamento: abertura com um ponto do quiz, leitura como palpite, a dor nas palavras da pessoa, oferta só depois do interesse, link só depois do "quero". Sem escassez inventada, sem pressão.
+- Sem marcação: pergunte antes de oferecer. Se a pessoa disser que já pagou, confira no CRM antes de confirmar. Print de comprovante sozinho não confirma pagamento.
+O treinamento completo está na base, nos documentos que começam com "Treinamento:".`;
 ACT.miaPacote = async () => {
   const id = S.miaOrg, D = MIA.detail[id], x = MIA.list.find((o) => o.org_id === id);
   if (typeof SDR_BASE_CREDITO === 'undefined') return;
   const have = new Set((D.kb || []).map((k) => k.title));
   const docs = pacoteDocs().filter((d) => !have.has(d.title));
-  const cfg = { system_prompt: SDR_BASE_CREDITO.prompt, blocked_terms: PACOTE_BLOCKED, handoff_terms: (typeof CRED_HANDOFF_RULES !== 'undefined' ? CRED_HANDOFF_RULES : []) };
+  const cfg = { system_prompt: SDR_BASE_CREDITO.prompt + TRILHAS_PROMPT, blocked_terms: PACOTE_BLOCKED, handoff_terms: (typeof CRED_HANDOFF_RULES !== 'undefined' ? CRED_HANDOFF_RULES : []) };
   toast('Carregando o pacote…', docs.length + ' documentos para a base', '', 'LoaderCircle');
   if (isRealM()) {
     for (const d of docs) { const r = await REAL.sb.rpc('admin_kb_add', { p_org: id, p_title: d.title, p_category: d.category, p_chunks: d.chunks }); if (r.error) { toast('Parou no meio', d.title + ': ' + r.error.message, 'bad', 'CircleAlert'); return; } }
@@ -270,7 +281,7 @@ ACT.miaPacote = async () => {
     Object.assign(D.config, cfg, { prompt_version: (D.config.prompt_version || 1) + 1 });
   }
   x.kb_docs = (x.kb_docs || 0) + docs.length;
-  toast('Pacote da Lothem Crédito carregado', 'Instruções, ' + docs.length + ' documentos, respostas aprovadas, roteiro e regras.', '', 'BadgeCheck');
+  toast('Pacote da Lothem Crédito carregado', 'Instruções, ' + docs.length + ' documentos novos, treinamento de vendas, respostas aprovadas, roteiro e regras.', '', 'BadgeCheck');
   rerender();
 };
 

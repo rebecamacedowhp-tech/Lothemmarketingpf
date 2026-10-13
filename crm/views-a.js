@@ -357,7 +357,7 @@ function sideHtml(cv) {
     <button class="link" data-act="openDeal" data-id="${d.id}">Abrir negócio ${ic('ArrowUpRight', 'xs')}</button>` : '';
   return `<aside class="ib-side" aria-label="Dados do lead">
     <section class="side-head">
-      <div class="row top-a" style="gap:14px">${contactAv(ct, 'l')}<div class="grow" style="min-width:0"><b style="font-size:15.5px">${esc(ct.nm)}</b><div class="muted ellipsis">${esc(ct.co)}</div></div>
+      <div class="row top-a" style="gap:14px">${contactAv(ct, 'l')}<div class="grow" style="min-width:0"><b style="font-size:15.5px">${esc(ct.nm)}</b><div class="muted ellipsis">${esc(ct.co)}</div>${entryOf(ct) ? '<div style="margin-top:6px">' + entryPill(ct) + '</div>' : ''}</div>
         <button class="iconbtn sm side-tg" data-act="cvSide" aria-label="Fechar">${ic('X', 'sm')}</button></div>
       <div class="row" style="gap:8px"><button class="btn sm" data-act="copy" data-v="${esc(ct.ph)}">${ic('Phone', 'xs')}${esc(ct.ph)}</button><button class="btn sm ghost" data-act="openContact" data-id="${ct.id}">Ficha completa</button></div>
     </section>
@@ -837,7 +837,8 @@ VIEWS.contatos = {
     const o = O(), tab = S.tabs.contatos || 'pessoas', f = S.filters;
     const q = norm(f.cq || '');
     const lifes = LIFE.filter((l) => o.contacts.some((c) => c.life === l));
-    const rows = o.contacts.filter((c) => !f.life || c.life === f.life).filter((c) => !q || norm(c.nm + ' ' + c.co + ' ' + c.seg + ' ' + c.city).includes(q));
+    const ents = Object.keys(ENTRY).map((k) => [k, o.contacts.filter((c) => entryOf(c) === k).length]).filter((x) => x[1]);
+    const rows = o.contacts.filter((c) => !f.entry || entryOf(c) === f.entry).filter((c) => !f.life || c.life === f.life).filter((c) => !q || norm(c.nm + ' ' + c.co + ' ' + c.seg + ' ' + c.city).includes(q));
     const companies = rows.map((c) => ({ c, deals: o.deals.filter((d) => d.c === c.id) }));
     return `
     <div class="page-h"><div><h2>Contatos</h2><p>${o.contacts.length} pessoas e ${o.contacts.length} empresas nesta organização. Cada ficha guarda conversas, negócios e consentimento.</p></div>
@@ -847,6 +848,7 @@ VIEWS.contatos = {
       <div class="search" style="width:min(320px,100%)">${ic('Search')}<input class="in" id="cq" placeholder="Nome, empresa, segmento ou cidade" value="${esc(f.cq || '')}" data-inp="cq" autocomplete="off"></div>
       <div class="chips"><button class="chip ${!f.life ? 'on' : ''}" data-act="fLife" data-v="">Todos<span class="n">${o.contacts.length}</span></button>${lifes.map((l) => `<button class="chip ${f.life === l ? 'on' : ''}" data-act="fLife" data-v="${l}">${l}<span class="n">${o.contacts.filter((c) => c.life === l).length}</span></button>`).join('')}</div>
     </div>
+    ${ents.length ? `<div class="row wrap" style="gap:10px;margin:-2px 0 12px"><span class="lbl">Entrada do Meta</span><div class="chips"><button class="chip ${!f.entry ? 'on' : ''}" data-act="fEntry" data-v="">Todas</button>${ents.map(([k, n]) => `<button class="chip ${f.entry === k ? 'on' : ''}" data-act="fEntry" data-v="${k}">${ic(ENTRY[k].icon, 'xs')}${ENTRY[k].nm}<span class="n">${n}</span></button>`).join('')}</div></div>` : ''}
     <div class="pn"><div class="tbl-w">${tab === 'pessoas' ? `<table class="tbl">
       <thead><tr><th>Pessoa</th><th>Empresa</th><th>Ciclo</th><th>Pontuação</th><th>Origem</th><th>Responsável</th><th>Última interação</th></tr></thead>
       <tbody>${rows.map((c) => `<tr class="click" data-act="openContact" data-id="${c.id}" tabindex="0" role="button">
@@ -854,7 +856,7 @@ VIEWS.contatos = {
         <td><div>${esc(c.co)}</div><div class="dim" style="font-size:12px">${esc(c.seg)} · ${esc(c.city)}</div></td>
         <td>${pill(c.life, lifeCls(c.life))}</td>
         <td style="min-width:110px"><div class="row" style="gap:8px"><span class="num" style="width:22px">${c.score}</span><div class="grow">${bar(c.score, c.score >= 75 ? 'bad thin' : c.score >= 50 ? 'warn thin' : 'thin')}</div></div></td>
-        <td class="nowrap">${esc(c.src)}</td><td>${av(c.owner, 's')}</td><td class="nowrap dim">${esc(c.last)}</td></tr>`).join('')}</tbody></table>`
+        <td class="nowrap">${esc(c.src)}${entryOf(c) ? '<div style="margin-top:4px">' + entryPill(c) + '</div>' : ''}</td><td>${av(c.owner, 's')}</td><td class="nowrap dim">${esc(c.last)}</td></tr>`).join('')}</tbody></table>`
       : `<table class="tbl"><thead><tr><th>Empresa</th><th>Segmento</th><th>Cidade</th><th>Contato principal</th><th class="r">Negócios</th><th class="r">Valor em aberto</th></tr></thead>
       <tbody>${companies.map(({ c, deals }) => `<tr class="click" data-act="openContact" data-id="${c.id}" tabindex="0" role="button"><td><b>${esc(c.co)}</b></td><td>${esc(c.seg)}</td><td>${esc(c.city)}</td><td>${esc(c.nm)}</td><td class="r num">${deals.length}</td><td class="r num">${brl(deals.filter((d) => { const s = STAGE(d.p, d.s); return !s.won && !s.lost; }).reduce((a, d) => a + d.v, 0))}</td></tr>`).join('')}</tbody></table>`}
       ${rows.length ? '' : `<div class="empty">${ic('SearchX')}<div>Nenhum contato com esse filtro.</div></div>`}
