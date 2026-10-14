@@ -118,6 +118,14 @@ Também: conversa de teste zerada (a anterior voltou de onde parou porque a fich
 **Errou (Rebeca: "ela precisa olhar o nome do cliente que está na mensagem"):** manteve o nome dito antes em vez do nome do quiz; não gravou a ficha nem marcou "quiz" porque o motor só lia o quiz na primeira mensagem; comentou o recebimento e repetiu a pergunta.
 **Mudança:** o nome do quiz é o nome do cliente, mesmo quando a mensagem chega no meio (só troca se ele corrigir com clareza; "oi" não é nome); a ficha é gravada sempre que chega a mensagem do quiz e o contato ainda não está marcado; não comenta o recebimento nem repete perguntas.
 
+### Rodada 1 · 14/10/2026 · Ronie (quiz, já tentou o banco, R$ 250 mil, já caiu em golpe) · RESULTADO: "ta bom vou pagar"
+**Bom:** ficha certa (nome do quiz, empresa, CNPJ final 102, "capital de giro de R$ 250 mil", entrada quiz, telefone 2854); abertura, valor, implicação e virada no fluxo purista; respondeu Pronampe com os fatos; empatia depois do golpe; explicou a Cakto; fechou a venda.
+**Errou:**
+1. "eu pago para liberar empréstimo?" → respondeu "Paga sim, Ronie" (parecia confirmar o golpe). Gerou 4 mensagens de confusão.
+2. Repetiu a mesma fala (golpe2, "bora garantir a sua vaga de hoje?") várias vezes e mandou o link duas vezes seguidas.
+3. Depois do relato de golpe, continuou empurrando em vez de oferecer confiança (vídeo com a Rebeca).
+**Mudança:** fala "nao_libera" ("Não! A Lothem não empresta e não libera dinheiro nenhum…") e regra de nunca começar com "Paga sim" para essa pergunta; motor bloqueia balão idêntico a um já enviado (link repetido vira "aguardo": "assim que pagar, me avisa…"); não fechar duas vezes do mesmo jeito, e depois de duas objeções seguidas perguntar o que falta; fala "golpe_sofrido" com convite para vídeo rápido com a Rebeca (aceitou → passa para a equipe).
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)

@@ -204,7 +204,10 @@ export async function responder({ rpc, waha, conv, waId }) {
   }
 
   const j = res.json || {};
-  const baloes = (roteiro ? renderizar(j) : (j.mensagens || [])).map(limpar).filter(Boolean).slice(0, 2);
+  // nunca manda de novo um balão igual a um que a IA já enviou nesta conversa (ex.: o link várias vezes)
+  const jaFoi = new Set((ctx.messages || []).filter((x) => x.de === 'ia').map((x) => limpar(x.texto)));
+  let baloes = (roteiro ? renderizar(j) : (j.mensagens || [])).map(limpar).filter(Boolean).filter((b) => !jaFoi.has(b)).slice(0, 2);
+  if (roteiro && !baloes.length && (j.falas || []).includes('link')) baloes = renderizar({ falas: ['aguardo'], slots: j.slots }).map(limpar);
   const proibido = (ctx.blocked_terms || []).find((t) => baloes.some((b) => b.toLowerCase().includes(String(t).toLowerCase())));
   if (proibido || !baloes.length) {
     if (baloes.length) await rpc('ai_bot_suggest', { p_conv: conv, p_text: baloes.join('\n\n'), p_reason: `não enviada: tinha a palavra proibida "${proibido}"` });
