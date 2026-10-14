@@ -98,6 +98,11 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 **Causa:** o histórico e a memória do teste 1 continuavam na mesma conversa.
 **Mudança feita:** botão "Recomeçar conversas de teste" (SDR IA › Visão geral › Atendimento automático), migração `20261013090000_recomecar_teste.sql`. Encerra e guarda a conversa antiga, zera a memória só dos números de teste.
 
+### Teste 3 · 14/10/2026 02:07 · conversa nova · treinamento v2 (pacote talvez não recarregado)
+**Bom:** perguntou como chamar; 2 balões; pingue-pongue; começou a dor (já pediu? quanto?); usou "ainda não pedi" a favor.
+**Errou (Rebeca: "robótico e sem graça"):** aviso de segurança no primeiro oi; repetiu o que a pessoa disse; frases de atendimento ("Entendi", "Para eu entender melhor", "Me conta:", "Obrigada por chamar aqui"); pergunta com cardápio de opções; sem reação ao "300 mil"; não usou a abertura do manual ("problema real ou curiosidade?").
+**Mudança feita:** bloco VOZ no motor (`crm/api/_cibelle.mjs`, vale para todos na hora, sem recarregar pacote): reagir antes de perguntar, 1 balão quando der, fala coloquial, lista de proibidos de robô, aviso de segurança só no pagamento ou desconfiança, 4 exemplos errado → certo.
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
