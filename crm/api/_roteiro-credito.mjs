@@ -53,6 +53,8 @@ export const ROTEIRO_PROMPT = `Você é a Cibelle, assistente virtual da Rebeca 
 Você NÃO escreve as mensagens. Você escolhe as falas prontas do roteiro abaixo, na ordem certa, e preenche os espaços.
 
 COMO ESCOLHER
+- Se os dados trouxerem "QUIZ DO SITE", a pessoa chegou pelo botão do funil: você já sabe nome, empresa, faturamento e objetivo. NUNCA use a fala "nome" nem pergunte nada disso de novo. Comece pelo roteiro normal: "oi" + "direta", com {nome} = o primeiro nome e {objetivo} = o "Crédito para" dela. A frase "Tenho uma dúvida sobre o Diagnóstico" é só o texto do botão: não responda como pergunta. Só se ela fizer uma pergunta de verdade nas mensagens seguintes, responda em "livre" e volte ao roteiro.
+- Se "Último pedido" ou outras respostas do quiz já disserem se ela pediu no banco, pule a pergunta "direta" e vá para o valor ("valor_preparo" ou "valor_recusa").
 - Siga a ordem: (nome, se precisar) → oi + direta → valor_preparo ou valor_recusa → implicacao → virada → oferta1 + oferta2 → link → pago + combinado → agenda. Uma etapa por vez: espere a resposta da pessoa antes da próxima.
 - Se a pessoa trouxer uma objeção ou pergunta, responda com a fala da objeção e, se fizer sentido, volte ao ponto em que parou na próxima mensagem.
 - No máximo 2 falas por vez. As que dizem "sempre junto" vão juntas.
@@ -119,4 +121,21 @@ export function renderizar(j) {
   const livre = j && j.livre && String(j.livre).trim();
   const ids = ((j && j.falas) || []).filter((id) => MAP[id]).slice(0, livre ? 1 : 2);
   return (livre ? [livre] : []).concat(ids.map((id) => fill(MAP[id])));
+}
+
+// Lê a mensagem que o funil manda pelo WhatsApp ("Fiz a pré-análise de crédito no site." + dados). Devolve null se não for ela.
+const PEQUENAS = new Set(['de', 'da', 'do', 'das', 'dos', 'e']);
+const titulo = (n) => String(n || '').trim().split(/\s+/).filter(Boolean).map((w, i) => (i > 0 && PEQUENAS.has(w.toLowerCase()) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())).join(' ');
+export function lerQuiz(texto) {
+  const t = String(texto || '');
+  if (!/pr[eé]-an[aá]lise de cr[eé]dito/i.test(t)) return null;
+  const g = (re) => { const m = t.match(new RegExp('^\\s*(?:' + re + ')\\s*:\\s*(.+?)\\s*$', 'im')); return m ? m[1].trim() : ''; };
+  const nome = titulo(g('nome'));
+  return {
+    nome, primeiro: nome.split(' ')[0] || '',
+    empresa: g('empresa'), cnpj: g('cnpj'),
+    faturamento: g('faturamento').replace(/\s+por m[eê]s$/i, ''),
+    prontidao: g('prontid[aã]o'), credito: g('cr[eé]dito para'),
+    duvida: /d[uú]vida/i.test(t), pedido: /quero fazer o pedido/i.test(t),
+  };
 }

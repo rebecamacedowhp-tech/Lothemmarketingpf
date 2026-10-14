@@ -3,7 +3,7 @@
 // (chave, modo de teste, equipe atendendo, limite de gasto); aqui só montamos o contexto, chamamos a IA
 // com a chave do cliente, conferimos a resposta e enviamos.
 
-import { ROTEIRO_PROMPT, ROTEIRO_SCHEMA, renderizar } from './_roteiro-credito.mjs';
+import { ROTEIRO_PROMPT, ROTEIRO_SCHEMA, renderizar, lerQuiz } from './_roteiro-credito.mjs';
 
 // organizações que rodam o roteiro fixo (falas escritas por nós; a IA só escolhe e preenche)
 const ROTEIROS = { '5a9f3318-59af-4384-b406-2d5f350fd5fc': 'credito' }; // LOTHEM — Inteligência em Crédito · PJ
@@ -171,8 +171,20 @@ export async function responder({ rpc, waha, conv, waId }) {
   const sistema = roteiro ? ROTEIRO_PROMPT : ctx.system_prompt + FORMATO;
   // conversa nova sem memória (lead novo ou teste recomeçado): não reaproveita a ficha antiga, começa do zero
   const doZero = ctx.first_reply && !ctx.memory;
-  const base = doZero ? Object.assign({}, ctx, { contact: { entrada: (ctx.contact || {}).entrada } }) : ctx;
-  const dinamico = roteiro ? contexto(base, []).split('TRECHOS DA BASE')[0].trim() : contexto(base, trechos || []);
+  // lead que veio do quiz pelo botão do WhatsApp: a mensagem traz os dados dele; guarda na ficha e passa para a IA
+  let quiz = null;
+  if (roteiro) {
+    const q = (ctx.messages || []).find((x) => x.de === 'lead' && lerQuiz(x.texto));
+    quiz = q ? lerQuiz(q.texto) : null;
+    if (quiz && ctx.first_reply) {
+      const notas = ['Veio do quiz do site.', quiz.faturamento && 'Faturamento: ' + quiz.faturamento + '.', quiz.prontidao && 'Prontidão: ' + quiz.prontidao + '.', quiz.credito && 'Crédito para: ' + quiz.credito + '.', quiz.empresa && 'Empresa: ' + quiz.empresa + '.'].filter(Boolean).join('\n');
+      await rpc('ai_bot_quiz', { p_conv: conv, p_nome: quiz.nome, p_empresa: quiz.empresa, p_cnpj: quiz.cnpj, p_credito: quiz.credito, p_notes: notas }).catch((e) => console.error('ai_bot_quiz', e));
+    }
+  }
+  const base = doZero ? Object.assign({}, ctx, { contact: { entrada: quiz ? 'quiz' : (ctx.contact || {}).entrada } }) : ctx;
+  let dinamico = roteiro ? contexto(base, []).split('TRECHOS DA BASE')[0].trim() : contexto(base, trechos || []);
+  if (quiz) dinamico += '\n\nQUIZ DO SITE (a pessoa chegou pelo botão do funil; não pergunte nada disto de novo)\n' +
+    [quiz.primeiro && 'Primeiro nome: ' + quiz.primeiro, quiz.nome && 'Nome completo: ' + quiz.nome, quiz.empresa && 'Empresa: ' + quiz.empresa, quiz.faturamento && 'Faturamento: ' + quiz.faturamento + ' por mês', quiz.prontidao && 'Prontidão: ' + quiz.prontidao, quiz.credito && 'Crédito para: ' + quiz.credito].filter(Boolean).join('\n');
   const schema = roteiro ? ROTEIRO_SCHEMA : SCHEMA;
   const model = ctx.model || (ctx.provider === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5');
 

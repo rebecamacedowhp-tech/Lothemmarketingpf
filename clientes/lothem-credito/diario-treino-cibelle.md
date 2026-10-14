@@ -108,6 +108,11 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 
 **Ajustes do roteiro (14/10, avaliação da Rebeca do teste 3):** "quase perderam a venda por excesso de explicação e falta de comando no final" e "quem controla a conversa faz as perguntas; depois do 'eu pago pra saber isso?', ofereceu CNPJ e site sem cobrar o pagamento". Mudanças: falas encurtadas; toda fala termina com comando ("Te mando o link?", "Bora?"); depois de objeção, fecha pedindo o pagamento; a fala "dados" só quando a pessoa pede; perguntas fora do roteiro: uma frase com FATOS fixos + volta ao roteiro com comando; sem fato, confirma com a Rebeca e passa para a equipe.
 
+### Teste 4 · 14/10/2026 · lead que chega do quiz pelo WhatsApp (decisão da Rebeca)
+O funil manda uma mensagem pronta quando a pessoa não compra: "Olá, Rebeca! Fiz a pré-análise de crédito no site. Nome / Empresa / CNPJ / Faturamento / Prontidão / Crédito para / Tenho uma dúvida sobre o Diagnóstico…".
+**Feito:** o motor (`crm/api/_roteiro-credito.mjs` → `lerQuiz`, `crm/api/_cibelle.mjs`) reconhece essa mensagem, guarda nome, empresa, CNPJ (cifrado), objetivo e notas na ficha, marca a entrada "Fez o quiz e não comprou" e abre direto com "oi" + "direta", sem perguntar nome, objetivo nem faturamento. Migração `20261014010000_quiz_whatsapp.sql` (função `ai_bot_quiz`). Funil: linha nova "Crédito para: ..." na mensagem (`lothem-funil/fonte/app.js`, ainda NÃO publicado).
+Também: conversa de teste zerada (a anterior voltou de onde parou porque a ficha antiga era reaproveitada; agora conversa nova começa do zero).
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
