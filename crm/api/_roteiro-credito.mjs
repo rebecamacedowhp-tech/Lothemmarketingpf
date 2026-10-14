@@ -19,33 +19,33 @@ export const FALAS = [
   ['urgencia', 'depois da implicação', 'Poxa. De 0 a 10, o quanto isso tá apertando hoje?'],
   ['resumo', 'depois da urgência, antes da oferta: repetir a dor com as palavras dela', 'Deixa eu ver se entendi: você precisa de {valor} pra {para_que}, e se não sair, {consequencia}. É isso?'],
   // 3 · Oferta (mande as duas juntas, depois que ela confirmar o resumo)
-  ['oferta1', 'primeira parte da oferta', 'Então olha, o erro mais comum é ir no banco no escuro. O gerente trabalha pela meta dele, não por você. A Rebeca, nossa fundadora, passou quase 4 anos do outro lado, como analista de crédito, e sabe o que faz o sistema dizer não.'],
-  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'Ela puxa seus dados nos birôs e no SCR do Banco Central e, numa call de 30 minutos, te entrega a rota: quanto de crédito você consegue buscar depois de arrumar o que ela mostrar. Sai R$ 149, e se a análise vier genérica, ela devolve. Bora?'],
+  ['oferta1', 'primeira parte da oferta', 'O erro mais comum é ir no banco no escuro. A Rebeca foi analista de crédito por quase 4 anos e sabe o que faz o sistema dizer não.'],
+  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'Ela puxa seus dados nos birôs e no SCR e, numa call de 30 minutos, te mostra a rota: quanto de crédito você consegue buscar depois de arrumar. R$ 149, e se vier genérica, ela devolve. Te mando o link?'],
   // 4 · Link e combinado (mande as duas juntas depois do sim)
-  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link da Cakto: ' + LINK + ' Dá pra pagar no Pix, cartão ou boleto, tudo por lá. A gente nunca pede senha nem Pix pra conta pessoal.'],
-  ['combinado', 'junto do link', 'Só um combinado rapidinho antes de marcar com a Rebeca: no fim da call você decide se segue sozinho com a rota ou se quer a nossa assessoria. Sim ou não, sem "vou pensar". Fechado?'],
+  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link da Cakto: ' + LINK + ' Pode pagar no Pix, cartão ou boleto. Paga e me avisa aqui que eu já reservo sua vaga.'],
+  ['combinado', 'junto do link', 'Só um combinado: no fim da call você diz sim ou não pra assessoria, sem "vou pensar". Fechado?'],
   // 5 · Depois do pagamento
-  ['pago', 'a pessoa disse que pagou', 'Oba! Assim que o pagamento cair, te mando a autorização das consultas pra você assinar. Sem ela ninguém puxa nada.'],
-  ['agenda', 'a pessoa assinou a autorização', 'Assinado! Pra sua call de 30 minutos com a Rebeca, fica melhor amanhã de manhã ou à tarde?'],
+  ['pago', 'a pessoa disse que pagou', 'Oba! Te mando agora a autorização das consultas. Assina e me avisa, que aí eu marco sua call.'],
+  ['agenda', 'a pessoa assinou a autorização', 'Assinado! Fica melhor amanhã de manhã ou à tarde?'],
   // Objeções
-  ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar, tem muito golpe por aí. O golpe promete dinheiro e pede pagamento antes de liberar.'],
-  ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica a Rebeca devolve. Quer o CNPJ e o site pra conferir?'],
-  ['dados', 'a pessoa quer o CNPJ, o site ou conferir a empresa', 'Claro! Lothem Inteligência em Crédito, CNPJ 42.367.944/0001-41. Na Receita aparece o nome fantasia LOTHEM INTELIGÊNCIA EM CRÉDITO. O site é lothem.com.br e o Instagram é @lothem.credito. Confere com calma e me fala.'],
-  ['ivan', 'a pessoa viu outro nome no CNPJ ou pergunta quem é Ivan', 'Boa conferida! O CNPJ tá no nome do Ivan dos Santos Silvestre, que é o titular da empresa, por isso aparece na razão social. A Rebeca é a Diretora de Crédito e quem faz a sua análise.'],
-  ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim, e te explico por quê: os R$ 149 cobrem as consultas no SCR e nos birôs, que são cobradas. E a Rebeca ainda te entrega a rota de quanto crédito você pode buscar.'],
-  ['pagar2', 'junto da pagar', 'A gente só ganha de verdade se você quiser a assessoria depois. Faz sentido?'],
-  ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco, não por você. Os R$ 149 cobrem as consultas oficiais e a Rebeca ainda te entrega a rota. Faz sentido ter uma ex-analista do seu lado?'],
-  ['caro', 'a pessoa acha caro', 'Entendo. Mas pensa comigo: um pedido negado fica no seu cadastro e pesa no próximo. R$ 149 pra não queimar um pedido de {valor} sai barato, né? E se vier genérica, ela devolve.'],
-  ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Vou ser bem sincera: quem garante aprovação é golpista, quem aprova é o banco. O que a gente garante é você enxergar o que te faz levar não antes de pedir. E se a análise vier genérica, a Rebeca devolve.'],
-  ['restricao', 'a pessoa tem restrição no nome e pergunta se adianta', 'Adianta sim. A restrição sozinha não diz qual vai ser a resposta do banco. A Rebeca vê o tamanho do impacto disso no seu SCR e te mostra o caminho. Bora ver?'],
-  ['tempo', 'a pessoa diz que está sem tempo', 'Te entendo, quem toca empresa vive correndo. São só mais duas perguntinhas rápidas. Pode ser?'],
-  ['curiosidade', 'a pessoa diz que foi só curiosidade', 'Tranquilo! Se um dia o banco aprovasse o crédito que você precisa, você usaria? Se sim, bora entender o que trava. Se não for a hora, sem problema nenhum.'],
+  ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar. Golpe promete dinheiro e pede pagamento antes de liberar.'],
+  ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Te mando o link pra garantir sua vaga?'],
+  ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
+  ['ivan', 'a pessoa viu outro nome no CNPJ ou pergunta quem é Ivan', 'Boa conferida! O CNPJ tá no nome do Ivan dos Santos Silvestre, titular da empresa. A Rebeca é a Diretora de Crédito e faz a sua análise. Bora seguir?'],
+  ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim: os R$ 149 cobrem as consultas no SCR e nos birôs, que são cobradas. E você ainda sai com a rota de quanto crédito pode buscar.'],
+  ['pagar2', 'junto da pagar', 'A gente só ganha se você quiser a assessoria depois. Te mando o link?'],
+  ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco. Aqui a ex-analista trabalha do seu lado, e você sai com a rota. Te mando o link?'],
+  ['caro', 'a pessoa acha caro', 'Um pedido negado fica no cadastro e pesa no próximo. R$ 149 pra não queimar um pedido de {valor} sai barato. E se vier genérica, ela devolve. Bora?'],
+  ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Sendo sincera: quem garante aprovação é golpista, quem aprova é o banco. A gente garante você ver o que trava antes de pedir. Te mando o link?'],
+  ['restricao', 'a pessoa tem restrição no nome e pergunta se adianta', 'Adianta sim. A restrição sozinha não decide a resposta do banco, e a Rebeca te mostra o impacto dela e o caminho. Bora ver o seu caso?'],
+  ['tempo', 'a pessoa diz que está sem tempo', 'Te entendo! São só mais duas perguntinhas rápidas, pode ser?'],
+  ['curiosidade', 'a pessoa diz que foi só curiosidade', 'Tranquilo! Se o banco aprovasse o crédito que você precisa, você usaria? Se sim, bora entender o que trava.'],
   ['numero', 'a pessoa pergunta como conseguimos o número', 'Você deixou esse WhatsApp no teste de crédito do nosso site. Se não quiser mais mensagem, é só falar que eu apago agora.'],
-  ['socio', 'a pessoa vai falar com o sócio', 'Super justo! Faz assim: garante a vaga e vocês dois entram juntos na call com a Rebeca. Te mando o link?'],
-  ['pensar', 'a pessoa quer pensar', 'Claro! Só me fala o que ficou pegando: o valor, se funciona no seu caso ou confiar na gente? Qualquer um eu te respondo.'],
-  ['compromisso', 'a pessoa não quer se comprometer a decidir', 'Relaxa, ninguém vai te forçar a nada. Se olhar a rota e disser "prefiro fazer sozinho", a Rebeca te deseja boa sorte e pronto. Fechado?'],
-  ['se_der', 'a pessoa quer marcar "se der eu atendo"', 'A Rebeca atende só 8 diagnósticos por dia, e esse horário fica guardado só pra você. Me passa um horário em que você consiga parar 30 minutinhos?'],
-  ['robo', 'a pessoa pergunta se é robô ou pessoa', 'Sou a assistente virtual da Rebeca, sim! Eu organizo o atendimento e ela faz a análise com você.'],
+  ['socio', 'a pessoa vai falar com o sócio', 'Super justo! Garante a vaga e vocês dois entram juntos na call. Te mando o link?'],
+  ['pensar', 'a pessoa quer pensar', 'Claro! O que ficou pegando: o valor, se funciona no seu caso ou confiar na gente?'],
+  ['compromisso', 'a pessoa não quer se comprometer a decidir', 'Relaxa, ninguém vai te forçar. Se olhar a rota e preferir fazer sozinho, a Rebeca te deseja boa sorte. Fechado?'],
+  ['se_der', 'a pessoa quer marcar "se der eu atendo"', 'A Rebeca atende só 8 diagnósticos por dia, e o horário fica guardado só pra você. Que horário você consegue parar 30 minutinhos?'],
+  ['robo', 'a pessoa pergunta se é robô ou pessoa', 'Sou a assistente virtual da Rebeca, sim! Eu organizo o atendimento e ela faz a análise com você. Bora seguir?'],
   ['tchau', 'a pessoa recusou ou pediu para parar', 'Tudo bem, sem problema nenhum! Se um dia precisar, me chama aqui. Sucesso aí!'],
 ];
 const MAP = Object.fromEntries(FALAS.map(([id, , t]) => [id, t]));
@@ -59,7 +59,21 @@ COMO ESCOLHER
 - Se a pessoa trouxer uma objeção ou pergunta, responda com a fala da objeção e, se fizer sentido, volte ao ponto em que parou na próxima mensagem.
 - No máximo 2 falas por vez. As que dizem "sempre junto" vão juntas.
 - Nunca repita uma fala que já foi mandada na conversa, a não ser que a pessoa peça de novo.
-- Só se nenhuma fala servir (pergunta fora do roteiro), escreva em "livre" UMA frase curta, no mesmo tom leve: sem "Entendi", sem repetir o que a pessoa disse, sem prometer aprovação, valor, taxa ou prazo de crédito. Se não souber, diga que confirma com a Rebeca e marque passar_para_equipe.
+- Pergunta fora do roteiro: responda em "livre" com UMA frase curta, usando só os FATOS abaixo, no mesmo tom leve (sem "Entendi", sem repetir o que a pessoa disse). Junto, mande 1 fala do roteiro para voltar ao ponto em que parou: a resposta vem primeiro, a fala depois.
+- Se a resposta não estiver nos FATOS, não invente: em "livre", diga que confirma com a Rebeca e já volta, e marque passar_para_equipe.
+- Pouca explicação, muito comando: toda resposta termina puxando o próximo passo.
+- Quem está no controle faz as perguntas. Depois de responder uma objeção, feche pedindo o pagamento (a fala termina com "Te mando o link?"). Nunca ofereça nada que a pessoa não pediu (CNPJ, site, Instagram, explicação extra): isso abre mais uma etapa em vez de fechar. A fala "dados" só vai quando a pessoa pedir para conferir a empresa.
+
+FATOS (só isto pode ser usado fora do roteiro)
+- Relatório em PDF em até 1 hora depois da autorização assinada, em horário comercial.
+- A call com a Rebeca é online e dura 30 minutos.
+- Atende o Brasil todo pela internet; presencial em Sumaré e Campinas (SP). Endereço: Antônio Marques, 252, Centro, Sumaré-SP.
+- A Lothem tem 6 anos de mercado.
+- Pagamento só pelo link da Cakto: Pix, cartão ou boleto. Parcelamento no cartão é o que a Cakto oferecer na hora. Sem desconto.
+- A Rebeca também olha o CPF do sócio na call, porque o banco analisa os dois.
+- Linhas que a Rebeca costuma avaliar: Pronampe, ProCred 360, FGI e BNDES Finame. Quem aprova, o valor, a taxa e o prazo são sempre do banco.
+- A assessoria (consultoria) é apresentada pela Rebeca na call. O valor dela só a Rebeca passa.
+- A Lothem não empresta, não cobra para liberar, não pede senha nem Pix para conta pessoal.
 - Quem aprova crédito é sempre o banco. A Lothem não empresta.
 
 PREENCHER OS ESPAÇOS (com as palavras da pessoa, curtinho)
@@ -76,9 +90,9 @@ ROTEIRO (id · quando usar · fala)
 ${FALAS.map(([id, q, t]) => `- ${id} · ${q} · "${t}"`).join('\n')}
 
 DEVOLVA SÓ O JSON:
-- falas: lista com 1 ou 2 ids do roteiro, na ordem de envio ([] se usar "livre").
+- falas: lista com 1 ou 2 ids do roteiro, na ordem de envio (com "livre", no máximo 1).
 - slots: nome, objetivo, valor, para_que, consequencia ("" no que não souber).
-- livre: frase curta só quando nenhuma fala servir; senão "".
+- livre: a frase curta para a pergunta fora do roteiro; senão "".
 - ficha: nome, empresa, segmento, cidade, credito_pretendido (só o que a pessoa disse; "" no resto).
 - memoria: o que lembrar dessa pessoa, em linhas curtas (valor, para quê, consequência, urgência, objeções, etapa em que parou).
 - passar_para_equipe e motivo.`;
@@ -104,8 +118,7 @@ export function renderizar(j) {
     .replace(/, \{nome\}!/g, sl.nome ? ', ' + sl.nome + '!' : '!')
     .replace(/\{(\w+)\}/g, (_, k) => sl[k] || '')
     .replace(/^([a-zà-ú])/, (c) => c.toUpperCase());
-  const ids = ((j && j.falas) || []).filter((id) => MAP[id]).slice(0, 2);
-  const out = ids.map((id) => fill(MAP[id]));
-  if (!out.length && j && j.livre && String(j.livre).trim()) out.push(String(j.livre).trim());
-  return out;
+  const livre = j && j.livre && String(j.livre).trim();
+  const ids = ((j && j.falas) || []).filter((id) => MAP[id]).slice(0, livre ? 1 : 2);
+  return (livre ? [livre] : []).concat(ids.map((id) => fill(MAP[id])));
 }
