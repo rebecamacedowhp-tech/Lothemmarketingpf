@@ -41,6 +41,10 @@ Aqui fica tudo o que decidimos sobre a Cibelle e cada teste de atendimento, para
 | 13/10 22:4x | Mensagem não chegou no CRM | primeira mensagem não foi repassada pela WAHA (webhook já estava configurado) | reenviada; a partir de 22:45 chegou |
 | 13/10 22:48 | Chegou na PJ, a Cibelle não respondeu | chave marcada como "da Lothem"; o motor só aceitava "do cliente" | migração `20261013070000_motor_chave.sql`; opção "Chave da Lothem" removida do Painel Mestre |
 
+## Treinamento novo (14/10/2026)
+
+Rebeca reprovou o atendimento ("está horrível") e pediu para refazer do jeito certo. Memória e conversa de teste zeradas. Oferta única: Diagnóstico com Rota de Crédito, R$ 149. Treinamento atual = `manual-cibelle-v2.md` (manual comercial Hormozi da Rebeca + etapa da dor + objeções do script v1). Instruções ganharam o bloco "ROTEIRO OFICIAL" que vale acima da ordem antiga.
+
 ## Testes de atendimento
 
 ### Teste 1 · 13/10/2026 23:03 · trilha quiz (lead sem quiz no CRM) · modo Autônomo · Claude Sonnet 5.5
