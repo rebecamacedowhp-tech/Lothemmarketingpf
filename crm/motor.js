@@ -35,7 +35,8 @@ function botCard() {
       ${mode === 'teste' ? `<div class="field"><label for="botNums">Números de teste (um por linha, com DDD)</label><textarea class="ta" id="botNums" rows="3" placeholder="(19) 99999-0000" ${admin ? '' : 'disabled'}>${esc(B.nums.map(fmtPhone).join('\n'))}</textarea>
         <span class="hint">Mande mensagem de um destes números para o WhatsApp conectado. A ${esc(o.ia.name)} responde em uns 10 segundos.</span></div>` : ''}
       ${mode === 'todos' && B.mode !== 'todos' ? `<div class="row top-a" style="gap:8px;font-size:12.5px;padding:10px 12px;border-radius:9px;background:var(--warn-soft)">${ic('TriangleAlert', 'sm')}<span>A partir de agora ela responde qualquer pessoa que escrever, inclusive clientes que a equipe já atende. Conversas em que a equipe respondeu nas últimas 12 horas ficam de fora.</span></div>` : ''}
-      ${admin ? `<div><button class="btn pri sm" data-act="botSave">${ic('Check', 'xs')}Salvar</button></div>` : '<span class="hint">Só a proprietária ou a gestão mudam o atendimento automático.</span>'}
+      ${admin ? `<div class="row wrap" style="gap:8px"><button class="btn pri sm" data-act="botSave">${ic('Check', 'xs')}Salvar</button>${B.mode === 'teste' ? `<button class="btn sm" data-act="botReset">${ic('RotateCcw', 'xs')}Recomeçar conversas de teste</button>` : ''}</div>
+        ${B.mode === 'teste' ? `<span class="hint">Recomeçar encerra as conversas dos números de teste e zera a memória da ${esc(o.ia.name)} sobre eles. Nada é apagado: a conversa antiga fica guardada. A próxima mensagem começa do zero.</span>` : ''}` : '<span class="hint">Só a proprietária ou a gestão mudam o atendimento automático.</span>'}
     </div></section>`;
 }
 
@@ -56,6 +57,15 @@ ACT.botSave = async () => {
   rerender();
 };
 
+ACT.botReset = async () => {
+  const o = O();
+  if (!isRealM()) { toast('Conversas de teste recomeçadas', 'Na conta real, a próxima mensagem do número de teste abre uma conversa nova.', '', 'RotateCcw'); return; }
+  const r = await REAL.sb.rpc('ai_test_reset_all', { p_org: o.id });
+  if (r.error) { toast('Não consegui recomeçar', r.error.message, 'bad', 'CircleAlert'); return; }
+  if (typeof MEMO !== 'undefined') Object.keys(MEMO).forEach((k) => delete MEMO[k]);
+  toast(r.data ? r.data + (r.data === 1 ? ' conversa recomeçada' : ' conversas recomeçadas') : 'Nenhuma conversa de teste aberta', 'Mande uma mensagem nova do número de teste: a ' + o.ia.name + ' começa do zero.', '', 'RotateCcw');
+  if (typeof waLoad === 'function') await waLoad(true);
+};
 const botSdrGeralBase = sdrGeral;
 sdrGeral = function () { return botCard() + botSdrGeralBase(); };
 
