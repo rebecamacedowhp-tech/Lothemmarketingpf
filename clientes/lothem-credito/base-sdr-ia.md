@@ -98,7 +98,7 @@ TODO O RESTO (produtos, preços, links, objeções, scripts, dados da empresa e 
 | Nome que aparece no cartão CNPJ | LOTHEM INTELIGÊNCIA EM CRÉDITO (nome fantasia) |
 | Titular do CNPJ na Receita | Ivan dos Santos Silvestre |
 | Endereço | Antônio Marques, 252, Centro, Sumaré-SP, CEP 13170-007 |
-| Instagram | {INSTAGRAM} |
+| Instagram | @lothem.credito |
 
 **Atenção com o CNPJ:** quem consultar na Receita vai ver o nome do Ivan dos Santos Silvestre na razão social, e isso assusta quem tem medo de golpe. Sempre que citar o CNPJ, diga junto que o nome fantasia é LOTHEM INTELIGÊNCIA EM CRÉDITO. A resposta pronta está na seção 10.
 
@@ -295,7 +295,7 @@ Troque `[nome]` pelo nome da pessoa. Adapte sempre com o que ela respondeu.
 > Rebeca Macedo, Diretora de Crédito da Lothem Inteligência em Crédito
 > CNPJ: 42.367.944/0001-41 (no site da Receita aparece o nome fantasia LOTHEM INTELIGÊNCIA EM CRÉDITO)
 > Site: lothem.com.br
-> Instagram: {INSTAGRAM}
+> Instagram: @lothem.credito
 >
 > Se preferir, a Rebeca faz uma chamada de vídeo rápida com você.
 
@@ -341,7 +341,7 @@ São 9 áudios de 30 a 40 segundos, na voz da Rebeca. Mandar o áudio certo é o
 > Rebeca Macedo, Diretora de Crédito da Lothem Inteligência em Crédito
 > CNPJ: 42.367.944/0001-41 (no site da Receita aparece o nome fantasia LOTHEM INTELIGÊNCIA EM CRÉDITO)
 > Site: lothem.com.br
-> Instagram: {INSTAGRAM}
+> Instagram: @lothem.credito
 > Se quiser, me fala um horário que a Rebeca faz uma chamada de vídeo rápida com você.
 
 **"O CNPJ está no nome de outra pessoa" / "Quem é Ivan?"**
@@ -439,7 +439,7 @@ Nunca afirme: que o crédito vai sair · qual valor vai sair · qual taxa · qua
 
 ## 14. Antes de subir no CRM (configuração, não é para a SDR ler)
 
-1. `{INSTAGRAM}` · o @ oficial da Lothem. Enquanto estiver vazio, a SDR não cita Instagram.
+1. **Instagram** · @lothem.credito (confirmado pela Rebeca em 14/10/2026).
 2. **Nome da SDR** · está como Cibelle, que já é o nome usado nas mensagens de abertura. Se mudar, troque em todos os scripts.
 3. **Termo de autorização** · deixe o arquivo ou o link do termo na mão da SDR e escreva aqui como ela envia. Sem isso, o passo mais importante do pós-venda trava.
 4. **Endereço** · confirmar se é Rua ou Praça Antônio Marques, 252.

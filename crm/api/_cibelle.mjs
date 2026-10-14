@@ -3,6 +3,11 @@
 // (chave, modo de teste, equipe atendendo, limite de gasto); aqui só montamos o contexto, chamamos a IA
 // com a chave do cliente, conferimos a resposta e enviamos.
 
+import { ROTEIRO_PROMPT, ROTEIRO_SCHEMA, renderizar } from './_roteiro-credito.mjs';
+
+// organizações que rodam o roteiro fixo (falas escritas por nós; a IA só escolhe e preenche)
+const ROTEIROS = { '5a9f3318-59af-4384-b406-2d5f350fd5fc': 'credito' }; // LOTHEM — Inteligência em Crédito · PJ
+
 const PRICE = { // US$ por milhão de tokens: entrada, saída
   'claude-opus-5-5': [4, 20], 'claude-sonnet-5-5': [2, 10], 'claude-haiku-5-5': [0.1, 0.5], 'claude-fable-5-1': [10, 50],
   'gpt-6.1-sol': [2, 10], 'gpt-6-luna': [0.1, 0.5], 'gpt-6-astra': [10, 50], 'gpt-5.6-terra': [2, 12],
@@ -89,7 +94,7 @@ function historico(msgs) {
   return out;
 }
 
-async function chamarClaude(ctx, sistema, dinamico, msgs) {
+async function chamarClaude(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'x-api-key': ctx.api_key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -97,7 +102,7 @@ async function chamarClaude(ctx, sistema, dinamico, msgs) {
       model: ctx.model || 'claude-sonnet-5-5', max_tokens: 4000,
       system: [{ type: 'text', text: sistema, cache_control: { type: 'ephemeral' } }, { type: 'text', text: dinamico }],
       messages: msgs,
-      output_config: { effort: 'low', format: { type: 'json_schema', schema: SCHEMA } },
+      output_config: { effort: 'low', format: { type: 'json_schema', schema } },
     }),
   });
   const out = await r.json().catch(() => ({}));
@@ -109,14 +114,14 @@ async function chamarClaude(ctx, sistema, dinamico, msgs) {
   return { json: JSON.parse(txt), uso };
 }
 
-async function chamarGPT(ctx, sistema, dinamico, msgs) {
+async function chamarGPT(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   const r = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { authorization: 'Bearer ' + ctx.api_key, 'content-type': 'application/json' },
     body: JSON.stringify({
       model: ctx.model || 'gpt-6.1-sol',
       messages: [{ role: 'system', content: sistema }, { role: 'system', content: dinamico }, ...msgs],
-      response_format: { type: 'json_schema', json_schema: { name: 'resposta', strict: true, schema: SCHEMA } },
+      response_format: { type: 'json_schema', json_schema: { name: 'resposta', strict: true, schema } },
     }),
   });
   const out = await r.json().catch(() => ({}));
@@ -152,23 +157,25 @@ export async function responder({ rpc, waha, conv, waId }) {
   await sleep(DEBOUNCE_MS);
   const ctx = await rpc('ai_bot_context', { p_conv: conv, p_wa_id: waId || null });
   if (!ctx || !ctx.reply) return { respondeu: false, motivo: ctx && ctx.reason };
-  if (!ctx.system_prompt) return { respondeu: false, motivo: 'instruções da IA não carregadas (Painel Mestre → Carregar pacote oficial)' };
+  const roteiro = ROTEIROS[ctx.org_id];
+  if (!roteiro && !ctx.system_prompt) return { respondeu: false, motivo: 'instruções da IA não carregadas (Painel Mestre → Carregar pacote oficial)' };
 
   const msgs = historico(ctx.messages);
   if (!msgs.length || msgs[msgs.length - 1].role !== 'user') return { respondeu: false, motivo: 'nada novo do lead' };
 
   // busca na base com as palavras das últimas mensagens do lead
   const ultimas = (ctx.messages || []).filter((m) => m.de === 'lead').slice(-3).map((m) => m.texto).join(' ');
-  const palavras = Array.from(new Set(ultimas.toLowerCase().normalize('NFC').match(/[a-zà-ú0-9]{4,}/g) || [])).slice(0, 12);
+  const palavras = roteiro ? [] : Array.from(new Set(ultimas.toLowerCase().normalize('NFC').match(/[a-zà-ú0-9]{4,}/g) || [])).slice(0, 12);
   const trechos = palavras.length ? await rpc('ai_kb_find', { p_org: ctx.org_id, p_q: palavras.join(' or ') }).catch(() => []) : [];
 
-  const sistema = ctx.system_prompt + FORMATO;
-  const dinamico = contexto(ctx, trechos || []);
+  const sistema = roteiro ? ROTEIRO_PROMPT : ctx.system_prompt + FORMATO;
+  const dinamico = roteiro ? contexto(ctx, []).split('TRECHOS DA BASE')[0].trim() : contexto(ctx, trechos || []);
+  const schema = roteiro ? ROTEIRO_SCHEMA : SCHEMA;
   const model = ctx.model || (ctx.provider === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5');
 
   let res;
   try {
-    res = ctx.provider === 'openai' ? await chamarGPT(ctx, sistema, dinamico, msgs) : await chamarClaude(ctx, sistema, dinamico, msgs);
+    res = ctx.provider === 'openai' ? await chamarGPT(ctx, sistema, dinamico, msgs, schema) : await chamarClaude(ctx, sistema, dinamico, msgs, schema);
   } catch (e) {
     console.error('IA falhou', e);
     await rpc('ai_bot_error', { p_org: ctx.org_id, p_kind: tipoDeErro(e), p_msg: String(e.message || e) }).catch(() => {});
@@ -182,7 +189,7 @@ export async function responder({ rpc, waha, conv, waId }) {
   }
 
   const j = res.json || {};
-  const baloes = (j.mensagens || []).map(limpar).filter(Boolean).slice(0, 2);
+  const baloes = (roteiro ? renderizar(j) : (j.mensagens || [])).map(limpar).filter(Boolean).slice(0, 2);
   const proibido = (ctx.blocked_terms || []).find((t) => baloes.some((b) => b.toLowerCase().includes(String(t).toLowerCase())));
   if (proibido || !baloes.length) {
     if (baloes.length) await rpc('ai_bot_suggest', { p_conv: conv, p_text: baloes.join('\n\n'), p_reason: `não enviada: tinha a palavra proibida "${proibido}"` });

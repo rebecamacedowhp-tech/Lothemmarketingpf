@@ -103,6 +103,9 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 **Errou (Rebeca: "robótico e sem graça"):** aviso de segurança no primeiro oi; repetiu o que a pessoa disse; frases de atendimento ("Entendi", "Para eu entender melhor", "Me conta:", "Obrigada por chamar aqui"); pergunta com cardápio de opções; sem reação ao "300 mil"; não usou a abertura do manual ("problema real ou curiosidade?").
 **Mudança feita:** bloco VOZ no motor (`crm/api/_cibelle.mjs`, vale para todos na hora, sem recarregar pacote): reagir antes de perguntar, 1 balão quando der, fala coloquial, lista de proibidos de robô, aviso de segurança só no pagamento ou desconfiança, 4 exemplos errado → certo.
 
+**Fim do teste 3 (02:14):** a pessoa pediu CNPJ e site; a busca na base só usou a palavra "Sim" e não achou os dados; a Cibelle passou para a equipe ("travou"). Continuou robótica.
+**Mudança (14/10, pedido da Rebeca: "rodar exatamente um script, bem humanizado, bem despojado"):** **modo roteiro fixo** para a Lothem Crédito PJ (`crm/api/_roteiro-credito.mjs`). 34 falas escritas no tom leve; a IA só escolhe a fala e preenche {nome}, {objetivo}, {valor}, {para_que}, {consequencia}. CNPJ, site, Instagram (@lothem.credito), link, preço e garantia dentro das falas: não depende mais de busca na base. Fala livre só quando nenhuma serve, uma frase. PDF: `docs/treinamento/Roteiro-Fixo-Cibelle.pdf`.
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
