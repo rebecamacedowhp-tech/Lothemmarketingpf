@@ -117,7 +117,7 @@ function miaDetail(id) {
       <div class="field"><label for="miaPrompt">Instruções da ${esc(x.ia_name)} (prompt de sistema)</label><textarea class="ta" id="miaPrompt" rows="9" placeholder="Quem ela é, como fala, o que vende, o que nunca diz e quando passa para uma pessoa.">${esc(C.system_prompt || '')}</textarea><span class="hint">Cada vez que o texto muda, a versão sobe e a mudança fica na auditoria.</span></div>
       <div class="form-g"><div class="field"><label for="miaBlocked">Palavras e frases proibidas</label><textarea class="ta" id="miaBlocked" rows="4" placeholder="uma por linha">${esc((C.blocked_terms || []).join('\n'))}</textarea></div>
       <div class="field"><label for="miaHandoff">Passa para uma pessoa quando aparecer</label><textarea class="ta" id="miaHandoff" rows="4" placeholder="uma por linha">${esc((C.handoff_terms || []).join('\n'))}</textarea></div></div>
-      <div class="row wrap" style="gap:8px"><button class="btn pri" type="submit">${ic('Check', 'sm')}Salvar treinamento</button><button class="btn" type="button" data-act="miaPacote">${ic('PackageCheck', 'sm')}Carregar pacote oficial da Lothem Crédito</button></div>
+      <div class="row wrap" style="gap:8px"><button class="btn pri" type="submit">${ic('Check', 'sm')}Salvar treinamento</button><button class="btn" type="button" data-act="miaPacote">${ic('PackageCheck', 'sm')}Carregar pacote oficial da Lothem Crédito</button><button class="btn danger" type="button" data-act="miaZerar">${ic('Eraser', 'sm')}Zerar treinamento</button></div>
       <span class="hint">O pacote coloca as instruções da Cibelle, a base dividida em trechos, as 18 respostas de objeção aprovadas, o roteiro, as palavras proibidas e quando passar para a Rebeca. Não duplica o que já existe.</span></form>`)}
     ${sec('mia-rag', ic('Library', 'sm cy') + 'Base de conhecimento (RAG)', pill((D.kb || []).length + ' documentos', 'line mono'), `<div class="col" style="gap:14px">
       <p class="dim" style="font-size:12.5px">Cada documento é dividido em trechos. Em cada conversa, a ${esc(x.ia_name)} busca os trechos que respondem à pergunta e usa só eles, em vez de ler a base inteira. Isso deixa a resposta mais certa e mais barata.</p>
@@ -290,6 +290,25 @@ MÉTODO HORMOZI NÍVEL MÁXIMO (aplique no raciocínio; nunca diga o nome do mé
 - Um passo de cada vez: termine com uma pergunta fácil de dizer sim ("Faz sentido descobrir isso antes do próximo pedido?"). Depois do sim, o link.
 - Firmeza sem pressão: fale com segurança, não peça desculpa pelo preço, não ofereça desconto. Se a pessoa disser não, respeite e deixe a porta aberta.
 - Proibido mesmo no nível máximo: escassez ou prazo inventado, valores fictícios para ancorar, prometer aprovação, valor ou prazo de crédito, humilhar ("seria burrice", "você não quer crescer?").`;
+/* Zerar o treinamento: tira instruções e toda a base. A IA para de responder até receber instruções novas.
+   As palavras proibidas ficam, como proteção. */
+ACT.miaZerar = () => {
+  const x = MIA.list.find((o) => o.org_id === S.miaOrg), D = MIA.detail[S.miaOrg];
+  openModal(modalHead('Zerar o treinamento da ' + esc(x.ia_name) + '?', esc(x.org_name)) + `<div class="modal-b col" style="gap:10px"><p style="font-size:14px">Sai tudo o que ela sabe: as instruções e os <b>${(D.kb || []).length} documentos</b> da base. Ela <b>para de responder</b> até receber o treinamento novo.</p>
+    <p class="dim" style="font-size:13px">Continuam: a chave de IA, o modelo, o gasto e as palavras proibidas (proteção). A memória dos clientes de teste é zerada pelo botão "Recomeçar conversas de teste", no CRM.</p></div>
+    <div class="modal-f"><button class="btn ghost" data-act="close">Cancelar</button><button class="btn danger" data-act="miaZerarOk">Zerar treinamento</button></div>`);
+};
+ACT.miaZerarOk = async () => {
+  const id = S.miaOrg, D = MIA.detail[id], x = MIA.list.find((o) => o.org_id === id);
+  const kb = (D.kb || []).slice();
+  if (isRealM()) {
+    for (const k of kb) { const r = await REAL.sb.rpc('admin_kb_delete', { p_kb: k.id }); if (r.error) { toast('Parou no meio', k.title + ': ' + r.error.message, 'bad', 'CircleAlert'); return; } }
+    const s = await REAL.sb.rpc('admin_ai_save', { p_org: id, p_cfg: { system_prompt: '', handoff_terms: [] } }); if (s.error) { toast('Não consegui zerar as instruções', s.error.message, 'bad', 'CircleAlert'); return; }
+    await miaGet(id);
+  } else { D.kb = []; Object.assign(D.config, { system_prompt: '', handoff_terms: [] }); }
+  x.kb_docs = 0; closeOverlay();
+  toast('Treinamento zerado', x.ia_name + ' parou de responder até receber o treinamento novo.', '', 'Eraser'); rerender();
+};
 ACT.miaPacote = async () => {
   const id = S.miaOrg, D = MIA.detail[id], x = MIA.list.find((o) => o.org_id === id);
   if (typeof SDR_BASE_CREDITO === 'undefined') return;
