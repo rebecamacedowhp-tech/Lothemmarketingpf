@@ -14,8 +14,8 @@ VIEWS.sdr = {
   crumb: 'Inteligência',
   render() {
     const o = O(), tab = S.tabs.sdr || 'geral', mode = MODES.find((m) => m.id === o.ia.mode);
-    const tabs = [['geral', 'Visão geral', 'Gauge'], ['kb', 'Base de conhecimento', 'BookOpen', o.kb.length], ['play', 'Playbook e oferta', 'ListChecks'], ['regras', 'Regras', 'ShieldCheck'], ['af', 'Preenchimento do CRM', 'Sparkles'], ['rev', 'Revisões', 'GraduationCap', o.reviews.length], ['test', 'Testar', 'FlaskConical']];
-    const body = { geral: sdrGeral, kb: sdrKb, play: sdrPlay, regras: sdrRegras, af: sdrAf, rev: sdrRev, test: sdrTest }[tab]();
+    const tabs = [['geral', 'Visão geral', 'Gauge'], ['ia', 'IA e custos', 'Coins'], ['kb', 'Base de conhecimento', 'BookOpen', o.kb.length], ['play', 'Playbook e oferta', 'ListChecks'], ['regras', 'Regras', 'ShieldCheck'], ['af', 'Preenchimento do CRM', 'Sparkles'], ['rev', 'Revisões', 'GraduationCap', o.reviews.length], ['test', 'Testar', 'FlaskConical']];
+    const body = { geral: sdrGeral, ia: sdrIA, kb: sdrKb, play: sdrPlay, regras: sdrRegras, af: sdrAf, rev: sdrRev, test: sdrTest }[tab]();
     return `
     <div class="page-h"><div class="row" style="gap:14px">${av('ia', 'xl')}<div><h2>${esc(o.ia.name)} · ${esc(o.ia.role)}</h2>
       <p>${esc(kitText(o, o.play.desc))}</p>

@@ -222,12 +222,11 @@ async function myKeyLoad() {
 }
 const sdrGeralBase = sdrGeral;
 sdrGeral = function () {
-  const o = O(), admin = ['Proprietária', 'Gestor'].includes((ME() || {}).role);
+  const o = O();
   if (!MY_KEY[o.id]) myKeyLoad();
   const K = MY_KEY[o.id];
-  const card = !K || K.loading ? '' : `<section class="pn ${K.key_hint ? '' : 'gold-edge'}" style="margin-bottom:16px"><div class="pn-h"><span class="pn-t">${ic('KeyRound')}Chave de IA da ${esc(o.ia.name)}</span>${K.key_hint ? pill((K.provider === 'openai' ? 'OpenAI' : 'Anthropic') + ' ••••' + esc(K.key_hint), 'ok', 'Lock') : pill('Falta cadastrar', 'warn')}</div>
-    <div class="pn-b col" style="gap:10px"><p class="dim" style="font-size:13px">A ${esc(o.ia.name)} usa a <b>sua própria chave de IA</b>: da Anthropic (Claude, começa com sk-ant-) ou da OpenAI (GPT, começa com sk-). Você paga direto a eles, pelo uso, sem limite de conversas no plano.${K.key_hint ? ' Modelo: <b>' + esc(AIM(K.model).nm) + '</b>.' : ''}${K.key_hint ? '' : ' Sem a chave, ela não responde.'}</p>
-    ${admin ? `<form class="row wrap" style="gap:8px;align-items:flex-end" data-sub="myKey"><div class="field grow" style="min-width:240px"><label for="myKeyIn">${K.key_hint ? 'Trocar a chave' : 'Cole aqui a chave de API'}</label><input class="in" id="myKeyIn" type="password" autocomplete="off" placeholder="sk-ant-… ou sk-…"></div><button class="btn pri" type="submit">${ic('Lock', 'sm')}Salvar cifrada</button></form><span class="hint">Fica guardada com criptografia e nunca aparece de novo. Só o servidor da IA usa.</span>` : '<span class="hint">Só a proprietária ou a gestão cadastram a chave.</span>'}</div></section>`;
+  // chave, modelo e custos ficam em SDR IA › IA e custos (ia-cliente.js); aqui só o aviso quando falta a chave
+  const card = !K || K.loading || K.key_hint ? '' : `<section class="pn gold-edge" style="margin-bottom:16px"><div class="pn-b row wrap" style="gap:12px">${ic('KeyRound', 'gold')}<div class="grow"><b>A ${esc(o.ia.name)} ainda não tem chave de IA</b><div class="dim" style="font-size:13px">Sem a chave, ela não responde ninguém. Cole a chave da Anthropic (Claude) ou da OpenAI (GPT).</div></div><button class="btn pri sm" data-act="iacGo">Configurar a IA</button></div></section>`;
   return card + sdrGeralBase();
 };
 SUB.myKey = async () => {

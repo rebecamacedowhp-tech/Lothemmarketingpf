@@ -81,7 +81,7 @@ async function chamarClaude(ctx, sistema, dinamico, msgs) {
     }),
   });
   const out = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error('Claude: ' + ((out.error && out.error.message) || r.status));
+  if (!r.ok) throw Object.assign(new Error('Claude: ' + ((out.error && out.error.message) || r.status)), { status: r.status, tipo: out.error && out.error.type });
   const u = out.usage || {};
   const uso = { in: (u.input_tokens || 0) + (u.cache_creation_input_tokens || 0), out: u.output_tokens || 0, cache: u.cache_read_input_tokens || 0, creation: u.cache_creation_input_tokens || 0 };
   if (out.stop_reason === 'refusal') return { recusa: true, uso };
@@ -100,7 +100,7 @@ async function chamarGPT(ctx, sistema, dinamico, msgs) {
     }),
   });
   const out = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error('OpenAI: ' + ((out.error && out.error.message) || r.status));
+  if (!r.ok) throw Object.assign(new Error('OpenAI: ' + ((out.error && out.error.message) || r.status)), { status: r.status, tipo: out.error && (out.error.code || out.error.type) });
   const u = out.usage || {}, cached = (u.prompt_tokens_details && u.prompt_tokens_details.cached_tokens) || 0;
   const uso = { in: (u.prompt_tokens || 0) - cached, out: u.completion_tokens || 0, cache: cached, creation: 0 };
   const msg = out.choices && out.choices[0] && out.choices[0].message;
@@ -112,6 +112,15 @@ function custo(model, uso) {
   const [pi, po] = PRICE[model] || [4, 20];
   // cache: leitura sai a 10% da entrada; gravação no cache da Anthropic sai a 125%
   return ((uso.in - uso.creation) * pi + uso.creation * pi * 1.25 + uso.cache * pi * 0.1 + uso.out * po) / 1e6;
+}
+
+// por que a IA falhou, em linguagem de cliente: créditos, chave, limite de uso ou outro
+export function tipoDeErro(e) {
+  const t = (String(e.message || '') + ' ' + String(e.tipo || '')).toLowerCase();
+  if (/credit balance|insufficient_quota|billing|quota|saldo|payment/.test(t)) return 'creditos';
+  if (e.status === 401 || e.status === 403 || /api.key|api_key|authentication|invalid x-api-key|permission/.test(t)) return 'chave';
+  if (e.status === 429 || /rate.limit|overloaded/.test(t)) return 'limite';
+  return 'outro';
 }
 
 // limpa o que não pode ir para o cliente
@@ -142,6 +151,7 @@ export async function responder({ rpc, waha, conv, waId }) {
     res = ctx.provider === 'openai' ? await chamarGPT(ctx, sistema, dinamico, msgs) : await chamarClaude(ctx, sistema, dinamico, msgs);
   } catch (e) {
     console.error('IA falhou', e);
+    await rpc('ai_bot_error', { p_org: ctx.org_id, p_kind: tipoDeErro(e), p_msg: String(e.message || e) }).catch(() => {});
     await rpc('ai_bot_apply', { p_conv: conv, p_fields: {}, p_memory: null, p_handoff: true, p_reason: 'a IA não conseguiu responder (' + String(e.message || e).slice(0, 120) + ')' });
     return { respondeu: false, motivo: 'erro na IA' };
   }
