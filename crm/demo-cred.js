@@ -1,4 +1,4 @@
-/* LOTHEM Vendas — demonstração da Lothem Crédito (Diagnóstico Completo).
+/* LOTHEM Vendas — demonstração da Lothem Crédito (Diagnóstico com Rota de Crédito).
    Clientes já atendidos pela Cibelle, preenchimento automático ligado, campanhas com métricas
    e uma simulação ao vivo: um lead chega, a Cibelle atende, qualifica, vende e preenche o CRM sozinha.
    Tudo fictício. */
@@ -9,7 +9,7 @@
   o.name = 'LOTHEM — Inteligência em Crédito'; o.short = 'Lothem Crédito';
   o.ia = Object.assign(o.ia, { mode: 'sup' });
 
-  o.pipelines = [{ id: 'diag', nm: 'Diagnóstico Completo', desc: 'Do teste no site à consultoria', stages: [
+  o.pipelines = [{ id: 'diag', nm: 'Diagnóstico com Rota de Crédito', desc: 'Do teste no site à consultoria', stages: [
     { id: 'novo', nm: 'Novo contato', p: 5 }, { id: 'conversa', nm: 'Em conversa com a Cibelle', p: 10 }, { id: 'qualificado', nm: 'Qualificado', p: 20 },
     { id: 'link', nm: 'Link enviado', p: 30 }, { id: 'pago', nm: 'Diagnóstico pago', p: 45 }, { id: 'autorizado', nm: 'Autorização assinada', p: 55 },
     { id: 'relatorio', nm: 'Relatório entregue', p: 65 }, { id: 'rebeca', nm: 'Conversa com a Rebeca', p: 75 }, { id: 'consultoria', nm: 'Consultoria fechada', p: 100, won: true },
@@ -17,29 +17,29 @@
 
   /* nome, empresa, segmento, cidade, etapa, valor, produto, status da conversa, problema, decisor, momento, faturamento, hora, campanha, mensagens */
   const P = [
-    ['Roberto Nunes', 'Nunes Auto Peças', 'Autopeças', 'Sumaré/SP', 'conversa', 97, 'Diagnóstico Completo', 'ia', null, null, null, null, '10:21', 'Teste do site', [
+    ['Roberto Nunes', 'Nunes Auto Peças', 'Autopeças', 'Sumaré/SP', 'conversa', 149, 'Diagnóstico com Rota de Crédito', 'ia', null, null, null, null, '10:21', 'Teste do site', [
       ['lead', 'Oi, fiz o teste no site. O banco negou meu capital de giro'], ['ia', 'Oi, Roberto! Aqui é a Cibelle, da equipe da Rebeca, da Lothem. Você fez o teste de crédito da Nunes Auto Peças no nosso site.'], ['ia', 'Não peço senha nem dado de banco, e nada aqui é cobrado sem você pedir. A Lothem não empresta dinheiro nem cobra para liberar empréstimo.'], ['ia', 'Me conta: o dinheiro das vendas entra numa conta PJ ou parte cai no seu CPF?']]],
-    ['Juliana Prado', 'Doce Prado Confeitaria', 'Confeitaria', 'Campinas/SP', 'qualificado', 97, 'Diagnóstico Completo', 'aguardando', 'Aprovaram menos do que pediu: R$ 15 mil de R$ 60 mil.', 'Juliana decide sozinha.', 'Quer pedir de novo em novembro.', 'R$ 30 a 100 mil por mês · metade no Pix pessoal.', '10:12', 'Vídeo Rebeca · Aprovaram menos', [
+    ['Juliana Prado', 'Doce Prado Confeitaria', 'Confeitaria', 'Campinas/SP', 'qualificado', 149, 'Diagnóstico com Rota de Crédito', 'aguardando', 'Aprovaram menos do que pediu: R$ 15 mil de R$ 60 mil.', 'Juliana decide sozinha.', 'Quer pedir de novo em novembro.', 'R$ 30 a 100 mil por mês · metade no Pix pessoal.', '10:12', 'Vídeo Rebeca · Aprovaram menos', [
       ['lead', 'Pedi 60 mil e aprovaram 15. Não entendi nada'], ['ia', 'Oi, Juliana! Aqui é a Cibelle, da equipe da Rebeca, da Lothem. Pelo que você respondeu no teste, metade das vendas cai no seu Pix pessoal.'], ['ia', 'O mais provável é isso: o banco calcula o limite com o faturamento que ele enxerga na conta da empresa. Ele está vendo uma confeitaria menor do que ela é.'], ['lead', 'Faz sentido demais'], ['ia', 'Quer que eu te mande um áudio rapidinho da Rebeca explicando esse ponto no seu caso?']]],
-    ['Carlos Mendes', 'Mendes Transportes', 'Transporte', 'Hortolândia/SP', 'link', 149, 'Diagnóstico + Rota de Crédito', 'aguardando', 'Negado no Pronampe com cadastro limpo.', 'Carlos e o sócio, Paulo.', 'Agora: quer trocar dívida cara.', 'R$ 100 a 400 mil por mês.', '09:58', 'Carrossel Pronampe', [
+    ['Carlos Mendes', 'Mendes Transportes', 'Transporte', 'Hortolândia/SP', 'link', 149, 'Diagnóstico com Rota de Crédito', 'aguardando', 'Negado no Pronampe com cadastro limpo.', 'Carlos e o sócio, Paulo.', 'Agora: quer trocar dívida cara.', 'R$ 100 a 400 mil por mês.', '09:58', 'Carrossel Pronampe', [
       ['lead', 'Quero saber o que faço depois do relatório'], ['ia', 'Para isso existe o combo com a Rota de Crédito, Carlos: além do Diagnóstico, a Rebeca monta o passo a passo, qual linha pedir, em qual banco e com quais documentos.'], ['ia', 'O combo é R$ 149. Quer que eu te mande o link?'], ['lead', 'Manda'], ['ia', 'Aqui está: pay.cakto.com.br/n2qt6u5_1160897. Dá para pagar no Pix, no cartão ou no boleto.']]],
-    ['Fernanda Lopes', 'Lopes Estética', 'Estética', 'Americana/SP', 'pago', 164, 'Diagnóstico + PF do sócio', 'aguardando', 'Restrição no CPF e crédito negado.', 'Fernanda decide sozinha.', 'Agora: quer comprar equipamento.', 'R$ 10 a 30 mil por mês.', '09:41', 'Teste do site', [
+    ['Fernanda Lopes', 'Lopes Estética', 'Estética', 'Americana/SP', 'pago', 149, 'Diagnóstico com Rota de Crédito', 'aguardando', 'Restrição no CPF e crédito negado.', 'Fernanda decide sozinha.', 'Agora: quer comprar equipamento.', 'R$ 10 a 30 mil por mês.', '09:41', 'Teste do site', [
       ['ia', 'Recebi aqui, Fernanda. Obrigada pela confiança!'], ['ia', 'Falta só um passo: assinar a autorização para as consultas aos birôs e ao SCR do Banco Central. Sem ela, ninguém consulta nada. Te mando agora.'], ['sys', 'Termo de autorização enviado'], ['lead', 'Vou assinar no almoço']]],
-    ['Marcos Ribeiro', 'Ribeiro Materiais de Construção', 'Materiais de construção', 'Sumaré/SP', 'autorizado', 97, 'Diagnóstico Completo', 'aguardando', 'Pediu em 3 bancos na mesma semana e levou não.', 'Marcos e a esposa, Sandra.', 'Antes do fim do ano.', 'R$ 100 a 400 mil por mês.', '09:20', 'Vídeo Rebeca · O que o banco olha', [
+    ['Marcos Ribeiro', 'Ribeiro Materiais de Construção', 'Materiais de construção', 'Sumaré/SP', 'autorizado', 149, 'Diagnóstico com Rota de Crédito', 'aguardando', 'Pediu em 3 bancos na mesma semana e levou não.', 'Marcos e a esposa, Sandra.', 'Antes do fim do ano.', 'R$ 100 a 400 mil por mês.', '09:20', 'Vídeo Rebeca · O que o banco olha', [
       ['lead', 'Assinei'], ['ia', 'Autorização recebida, Marcos! A Rebeca já começou o seu relatório.'], ['ia', 'Vamos deixar a conversa de 30 minutos marcada: prefere hoje ou amanhã? Manhã ou tarde?'], ['lead', 'Amanhã de manhã'], ['ia', 'Amanhã, 10h, com a Rebeca. Te lembro pela manhã.']]],
-    ['Patrícia Alves', 'Alves Pet Shop', 'Pet shop', 'Paulínia/SP', 'relatorio', 97, 'Diagnóstico Completo', 'humano', 'MEI faturando acima do teto.', 'Patrícia decide sozinha.', 'Agora.', 'R$ 10 a 30 mil por mês.', '08:55', 'Teste do site', [
+    ['Patrícia Alves', 'Alves Pet Shop', 'Pet shop', 'Paulínia/SP', 'relatorio', 149, 'Diagnóstico com Rota de Crédito', 'humano', 'MEI faturando acima do teto.', 'Patrícia decide sozinha.', 'Agora.', 'R$ 10 a 30 mil por mês.', '08:55', 'Teste do site', [
       ['sys', 'Relatório entregue em PDF · rating estimado C'], ['lead', 'Recebi! Quero falar com a Rebeca sobre a parte do MEI'], ['ia', 'Vou chamar a Rebeca aqui, ela te responde pessoalmente. Qual o melhor horário para você, hoje ou amanhã?'], ['sys', 'Conversa passada para Rebeca', 'gold']]],
-    ['André Costa', 'Costa Usinagem', 'Indústria', 'Nova Odessa/SP', 'rebeca', 97, 'Diagnóstico Completo', 'humano', 'Restrição no CNPJ por protesto antigo.', 'André e o sócio.', 'Quer o Finame para uma máquina.', 'R$ 100 a 400 mil por mês.', 'ontem', 'Carrossel Pronampe', [
+    ['André Costa', 'Costa Usinagem', 'Indústria', 'Nova Odessa/SP', 'rebeca', 149, 'Diagnóstico com Rota de Crédito', 'humano', 'Restrição no CNPJ por protesto antigo.', 'André e o sócio.', 'Quer o Finame para uma máquina.', 'R$ 100 a 400 mil por mês.', 'ontem', 'Carrossel Pronampe', [
       ['user', 'André, vi seu relatório. O protesto é de 2022 e dá para cancelar direto no cartório. Amanhã te mostro a ordem certa.'], ['lead', 'Combinado, Rebeca']]],
     ['Luciana Freitas', 'Freitas Contabilidade', 'Contabilidade', 'Campinas/SP', 'consultoria', 3897, 'Consultoria', 'encerrada', 'Faturamento em várias contas.', 'Luciana decide sozinha.', 'Agora.', 'R$ 30 a 100 mil por mês.', '02/10', 'Vídeo Rebeca · Aprovaram menos', [
       ['sys', 'Consultoria fechada · R$ 3.897', 'ok'], ['lead', 'Obrigada, Rebeca! Já concentrei tudo na conta principal']]],
-    ['Eduardo Lima', 'Lima Hamburgueria', 'Alimentação', 'Sumaré/SP', 'conversa', 97, 'Diagnóstico Completo', 'ia', 'Queria empréstimo, achou que a Lothem emprestava.', null, null, null, '10:17', 'Teste do site', [
+    ['Eduardo Lima', 'Lima Hamburgueria', 'Alimentação', 'Sumaré/SP', 'conversa', 149, 'Diagnóstico com Rota de Crédito', 'ia', 'Queria empréstimo, achou que a Lothem emprestava.', null, null, null, '10:17', 'Teste do site', [
       ['lead', 'Quanto vocês liberam?'], ['ia', 'A Lothem não empresta dinheiro, Eduardo. Quem empresta é o banco. O que a gente faz é te mostrar como o banco enxerga a sua empresa antes de você pedir.'], ['ia', 'E fica o alerta: se alguém disser que vai te emprestar e pedir pagamento antes de liberar, é golpe.'], ['lead', 'Ah entendi. E como sei o que o banco vê?']]],
-    ['Sônia Barros', 'Barros Moda', 'Varejo de moda', 'Indaiatuba/SP', 'perdido', 97, 'Diagnóstico Completo', 'encerrada', 'CNPJ inapto na Receita.', null, null, null, '01/10', 'Teste do site', [
+    ['Sônia Barros', 'Barros Moda', 'Varejo de moda', 'Indaiatuba/SP', 'perdido', 149, 'Diagnóstico com Rota de Crédito', 'encerrada', 'CNPJ inapto na Receita.', null, null, null, '01/10', 'Teste do site', [
       ['ia', 'Sônia, com o CNPJ inapto o banco barra o pedido antes de qualquer análise. O primeiro passo é um contador ver as declarações em atraso.'], ['lead', 'Vou resolver com o contador primeiro'], ['sys', 'Encerrada · CNPJ inapto, retomar depois de regularizar']]],
-    ['Gustavo Pires', 'Pires Climatização', 'Serviços', 'Valinhos/SP', 'qualificado', 97, 'Diagnóstico Completo', 'espera', 'Negado com cadastro limpo.', 'Gustavo decide sozinho.', 'Este mês.', 'R$ 30 a 100 mil por mês.', '10:09', 'Vídeo Rebeca · O que o banco olha', [
+    ['Gustavo Pires', 'Pires Climatização', 'Serviços', 'Valinhos/SP', 'qualificado', 149, 'Diagnóstico com Rota de Crédito', 'espera', 'Negado com cadastro limpo.', 'Gustavo decide sozinho.', 'Este mês.', 'R$ 30 a 100 mil por mês.', '10:09', 'Vídeo Rebeca · O que o banco olha', [
       ['lead', 'Prefiro falar por vídeo antes de pagar'], ['ia', 'Claro! A Rebeca faz uma chamada de vídeo rápida com você. Qual o melhor horário, hoje ou amanhã?'], ['sys', 'Pediu chamada de vídeo · passando para a Rebeca', 'gold']]],
-    ['Renata Souza', 'Souza Odontologia', 'Saúde', 'Campinas/SP', 'link', 97, 'Diagnóstico Completo', 'aguardando', 'Pouco tempo de CNPJ (8 meses).', 'Renata decide sozinha.', 'Quer se preparar para 2027.', 'R$ 30 a 100 mil por mês.', '09:33', 'Carrossel Pronampe', [
+    ['Renata Souza', 'Souza Odontologia', 'Saúde', 'Campinas/SP', 'link', 149, 'Diagnóstico com Rota de Crédito', 'aguardando', 'Pouco tempo de CNPJ (8 meses).', 'Renata decide sozinha.', 'Quer se preparar para 2027.', 'R$ 30 a 100 mil por mês.', '09:33', 'Carrossel Pronampe', [
       ['lead', 'Isso é golpe?'], ['ia', 'Faz muito bem em perguntar, Renata. Tem muito golpe de crédito por aí, e o roteiro deles é sempre o mesmo: prometem dinheiro e pedem um pagamento antes de liberar.'], ['ia', 'A gente não faz nada disso. CNPJ 42.367.944/0001-41, site lothem.com.br. Se quiser, a Rebeca faz uma chamada de vídeo com você.'], ['lead', 'Ok, me manda o link então'], ['ia', 'Aqui está: pay.cakto.com.br/gqg3w2t_1164272. Assim que pagar, te mando a autorização das consultas.']]],
   ];
 
@@ -125,7 +125,7 @@
     steps: [
       { k: 'leads', nm: 'Leads do teste e do Meta', ic: 'Megaphone', who: ['u4'], mtd: 214, r: 0.472, verb: 'viram qualificados' },
       { k: 'qual', nm: 'Qualificados pela Cibelle', one: 'lead qualificado', ic: 'ListChecks', who: ['ia', 'u3'], mtd: 101, r: 0.406, verb: 'compram o diagnóstico' },
-      { k: 'diag', nm: 'Diagnósticos vendidos', one: 'diagnóstico vendido', ic: 'CircleDollarSign', who: ['ia', 'u3'], mtd: 41, r: 0.83, value: 97, verb: 'fazem a conversa com a Rebeca' },
+      { k: 'diag', nm: 'Diagnósticos vendidos', one: 'diagnóstico vendido', ic: 'CircleDollarSign', who: ['ia', 'u3'], mtd: 41, r: 0.83, value: 149, verb: 'fazem a conversa com a Rebeca' },
       { k: 'reun', nm: 'Conversas com a Rebeca', ic: 'Video', who: ['u1'], mtd: 34, r: 0.088, verb: 'fecham a consultoria' },
       { k: 'cons', nm: 'Consultorias fechadas', one: 'consultoria fechada', ic: 'BadgeCheck', who: ['u1'], mtd: 3, value: 3897 },
     ],
@@ -137,7 +137,7 @@
     const clk = [1420, 760, 390][i], imp = [61200, 33800, 18900][i], checkout = i === 2;
     return { id: 'cred-cp' + i, nm: x.nm, spend: x.inv, clk, imp, pleads: x.leads, status: 'ativa',
       m: { video: i === 0, checkout, reach: Math.round(imp / [1.8, 1.6, 1.4][i]), thruplays: i === 0 ? 9800 : 0, landing_views: Math.round(clk * 0.81), engagement: [2140, 1310, 420][i],
-        purchases: checkout ? 6 : 0, purchase_value: checkout ? 6 * 97 : 0, checkouts: checkout ? 19 : 0 },
+        purchases: checkout ? 6 : 0, purchase_value: checkout ? 6 * 149 : 0, checkouts: checkout ? 19 : 0 },
       demo: { leads: x.leads, sales: x.c, revenue: x.c * 3897 + x.d * 97 } };
   });
 })();
@@ -173,7 +173,7 @@ ACT.simLead = () => {
   const Pp = people[(n - 1) % people.length], first = Pp.nm.split(' ')[0], fem = Pp.fem;
   const cid = 'k' + uid(), did = 'x' + uid(), cvid = 'cx' + uid();
   o.contacts.unshift({ id: cid, nm: Pp.nm, co: 'Empresa não informada', seg: '—', city: '—', ph: '—', em: '—', src: 'Meta · Teste do site · Vídeo Rebeca 40s', owner: 'u3', life: 'Lead', score: 20, last: 'agora' });
-  o.deals.unshift({ id: did, c: cid, p: 'diag', s: 'novo', v: 97, temp: 'frio', owner: 'u3', next: 'Cibelle está atendendo', age: 'agora', moved: true, product: 'Diagnóstico Completo' });
+  o.deals.unshift({ id: did, c: cid, p: 'diag', s: 'novo', v: 149, temp: 'frio', owner: 'u3', next: 'Cibelle está atendendo', age: 'agora', moved: true, product: 'Diagnóstico com Rota de Crédito' });
   const cv = { id: cvid, c: cid, inst: 'j1', st: 'ia', unread: 0, t: nowT(), conf: 95, q: {}, af: {}, sugg: [], isNew: true, msgs: [{ f: 'sys', x: 'Lead do teste em diagnostico.lothem.com.br · anúncio "[CAPT] Teste do site · Vídeo Rebeca 40s"', t: nowT() }] };
   o.conversations.unshift(cv);
   o.metrics.ticker.unshift({ t: cv.t, x: 'Lead novo do teste do site: <b>' + esc(Pp.nm) + '</b>' });
@@ -218,20 +218,20 @@ ACT.simLead = () => {
     [300, Q('decisor', first + ' decide ' + (fem ? 'sozinha' : 'sozinho') + '.', 74, 'Eu decido tudo ' + (fem ? 'sozinha' : 'sozinho'))],
     [300, Q('momento', 'Quer pedir crédito de novo no mês que vem.', 86, 'queria pedir de novo mês que vem')],
     [300, () => { stage('qualificado', 'Ofertar o Diagnóstico', 'Problema, decisor e momento confirmados')(); cv.msgs.push({ f: 'sys', x: 'Lead qualificado · problema, decisor e momento confirmados', t: nowT(), cls: 'ok' }); o.metrics.ticker.unshift({ t: nowT(), x: 'Cibelle qualificou <b>' + esc(Pp.nm) + '</b>' }); squadXP(25, 'Lead qualificado pela Cibelle · ' + Pp.nm); }],
-    [600, T('ia')], [1500, Msg('ia', 'Então antes de pedir de novo vale ver o que o banco está vendo. A Rebeca faz o Diagnóstico Completo do seu CNPJ: cruza Serasa, Boa Vista e o SCR do Banco Central e mostra a nota estimada da empresa e o que ajustar primeiro.')],
-    [400, T('ia')], [1200, Msg('ia', 'O relatório chega em PDF em até 1 hora e depois você conversa 30 minutos com ela. O valor é R$ 97, com garantia: se não te mostrar nada novo, a Rebeca devolve.')],
+    [600, T('ia')], [1500, Msg('ia', 'Então antes de pedir de novo vale ver o que o banco está vendo. A Rebeca faz o Diagnóstico com Rota de Crédito do seu CNPJ: cruza Serasa, Boa Vista e o SCR do Banco Central e mostra a nota estimada da empresa e o que ajustar primeiro.')],
+    [400, T('ia')], [1200, Msg('ia', 'O relatório chega em PDF em até 1 hora e depois você conversa 30 minutos com ela. O valor é R$ 149, com garantia: se não te mostrar nada novo, a Rebeca devolve.')],
     [400, T('ia')], [900, Msg('ia', 'Como tem a restrição no CPF, dá para incluir o seu CPF por mais R$ 67. Quer que eu te mande o link?')],
     [700, T('lead')], [900, Msg('lead', 'Quero! Só o da empresa por enquanto')],
     [500, T('ia')], [1100, Msg('ia', 'Aqui está, ' + first + '. O pagamento é pela Cakto e dá para pagar no Pix, no cartão ou no boleto. A gente nunca pede Pix para conta de pessoa física.', { pay: true })],
     [300, stage('link', 'Aguardando pagamento', 'Link do Diagnóstico enviado a pedido')],
     [2200, () => {
       const pm = [...cv.msgs].reverse().find((m) => m.pay); if (pm) pm.paid = true;
-      cv.msgs.push({ f: 'sys', x: 'Pagamento confirmado · R$ 97 pela Cakto', t: nowT(), cls: 'ok' });
+      cv.msgs.push({ f: 'sys', x: 'Pagamento confirmado · R$ 149 pela Cakto', t: nowT(), cls: 'ok' });
       const d = deal(); d.s = 'pago'; d.next = 'Aguardando autorização assinada'; d.moved = true; d.age = 'agora';
-      ct().life = 'Cliente diagnóstico'; o.metrics.done += 97;
+      ct().life = 'Cliente diagnóstico'; o.metrics.done += 149;
       const k = o.metrics.kpis.find((x) => x.k === 'Diagnósticos vendidos'); if (k) k.v = String(parseInt(k.v, 10) + 1);
-      o.metrics.ticker.unshift({ t: nowT(), x: 'Pagamento confirmado: <b>' + esc(Pp.nm) + '</b> · R$ 97', cls: 'ok' });
-      toast('Pagamento confirmado · R$ 97', Pp.nm + ' comprou o Diagnóstico Completo.', '', 'CircleDollarSign');
+      o.metrics.ticker.unshift({ t: nowT(), x: 'Pagamento confirmado: <b>' + esc(Pp.nm) + '</b> · R$ 149', cls: 'ok' });
+      toast('Pagamento confirmado · R$ 149', Pp.nm + ' comprou o Diagnóstico com Rota de Crédito.', '', 'CircleDollarSign');
       squadXP(80, 'Diagnóstico vendido · ' + Pp.nm);
     }],
     [500, T('ia')], [1100, Msg('ia', 'Recebi aqui, ' + first + '. Obrigada pela confiança! Falta só assinar a autorização para as consultas aos birôs e ao SCR. Te mando agora.')],

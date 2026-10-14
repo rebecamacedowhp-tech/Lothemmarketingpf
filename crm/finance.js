@@ -46,8 +46,8 @@ function finMsg(o, s, p) {
     mk(cr, 'k21', 'Consultoria', 3897, 'cartao', 'parcelado', 10, '2026-09-15', '2026-09-30');
     mk(cr, 'k3', 'Diagnóstico + Rota de Crédito', 149, 'cartao', 'parcelado', 3, '2026-10-07', t);
     mk(cr, 'k4', 'Diagnóstico + PF do sócio', 164, 'pix', 'avista', 1, t, t);
-    mk(cr, 'k5', 'Diagnóstico Completo', 97, 'pix', 'avista', 1, '2026-10-06', t);
-    mk(cr, 'k6', 'Diagnóstico Completo', 97, 'boleto', 'avista', 1, '2026-10-05', t);
+    mk(cr, 'k5', 'Diagnóstico com Rota de Crédito', 149, 'pix', 'avista', 1, '2026-10-06', t);
+    mk(cr, 'k6', 'Diagnóstico com Rota de Crédito', 149, 'boleto', 'avista', 1, '2026-10-05', t);
     mk(cr, 'k7', 'Consultoria', 3897, 'boleto', 'parcelado', 3, '2026-10-08', '2000-01-01', { notes: 'Entrada no fechamento, depois todo dia 8.' });
     cr.sales.find((s) => s.c === 'k8').inst.find((p) => p.n === 2).remindAt = null;
     cr.finance = { remind: true, hour: '09:00', tpl: FIN_TPL };
