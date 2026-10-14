@@ -113,6 +113,11 @@ O funil manda uma mensagem pronta quando a pessoa não compra: "Olá, Rebeca! Fi
 **Feito:** o motor (`crm/api/_roteiro-credito.mjs` → `lerQuiz`, `crm/api/_cibelle.mjs`) reconhece essa mensagem, guarda nome, empresa, CNPJ (cifrado), objetivo e notas na ficha, marca a entrada "Fez o quiz e não comprou" e abre direto com "oi" + "direta", sem perguntar nome, objetivo nem faturamento. Migração `20261014010000_quiz_whatsapp.sql` (função `ai_bot_quiz`). Funil: linha nova "Crédito para: ..." na mensagem (`lothem-funil/fonte/app.js`, ainda NÃO publicado).
 Também: conversa de teste zerada (a anterior voltou de onde parou porque a ficha antiga era reaproveitada; agora conversa nova começa do zero).
 
+### Teste 5 · 14/10/2026 02:27 · quiz chegou no meio da conversa
+**Conversa:** "Olá quero capital de giro" → Cibelle pergunta o nome → "Oi Pamela" → Cibelle chama de Pamela → só depois chega a mensagem do quiz (Ronie) → Cibelle: "Recebi sua pré-análise, Pamela!".
+**Errou (Rebeca: "ela precisa olhar o nome do cliente que está na mensagem"):** manteve o nome dito antes em vez do nome do quiz; não gravou a ficha nem marcou "quiz" porque o motor só lia o quiz na primeira mensagem; comentou o recebimento e repetiu a pergunta.
+**Mudança:** o nome do quiz é o nome do cliente, mesmo quando a mensagem chega no meio (só troca se ele corrigir com clareza; "oi" não é nome); a ficha é gravada sempre que chega a mensagem do quiz e o contato ainda não está marcado; não comenta o recebimento nem repete perguntas.
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)

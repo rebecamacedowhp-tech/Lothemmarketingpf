@@ -176,14 +176,14 @@ export async function responder({ rpc, waha, conv, waId }) {
   if (roteiro) {
     const q = (ctx.messages || []).find((x) => x.de === 'lead' && lerQuiz(x.texto));
     quiz = q ? lerQuiz(q.texto) : null;
-    if (quiz && ctx.first_reply) {
+    if (quiz && (ctx.first_reply || !(ctx.contact || {}).entrada)) { // também quando o quiz chega no meio da conversa
       const notas = ['Veio do quiz do site.', quiz.faturamento && 'Faturamento: ' + quiz.faturamento + '.', quiz.prontidao && 'Prontidão: ' + quiz.prontidao + '.', quiz.credito && 'Crédito para: ' + quiz.credito + '.', quiz.empresa && 'Empresa: ' + quiz.empresa + '.'].filter(Boolean).join('\n');
       await rpc('ai_bot_quiz', { p_conv: conv, p_nome: quiz.nome, p_empresa: quiz.empresa, p_cnpj: quiz.cnpj, p_credito: quiz.credito, p_notes: notas }).catch((e) => console.error('ai_bot_quiz', e));
     }
   }
   const base = doZero ? Object.assign({}, ctx, { contact: { entrada: quiz ? 'quiz' : (ctx.contact || {}).entrada } }) : ctx;
   let dinamico = roteiro ? contexto(base, []).split('TRECHOS DA BASE')[0].trim() : contexto(base, trechos || []);
-  if (quiz) dinamico += '\n\nQUIZ DO SITE (a pessoa chegou pelo botão do funil; não pergunte nada disto de novo)\n' +
+  if (quiz) dinamico += '\n\nQUIZ DO SITE (a pessoa chegou pelo botão do funil; não pergunte nada disto de novo). Chame pelo primeiro nome do quiz, e só troque se ela corrigir com clareza ("meu nome é…", "pode me chamar de…").\n' +
     [quiz.primeiro && 'Primeiro nome: ' + quiz.primeiro, quiz.nome && 'Nome completo: ' + quiz.nome, quiz.empresa && 'Empresa: ' + quiz.empresa, quiz.faturamento && 'Faturamento: ' + quiz.faturamento + ' por mês', quiz.prontidao && 'Prontidão: ' + quiz.prontidao, quiz.credito && 'Crédito para: ' + quiz.credito].filter(Boolean).join('\n');
   const schema = roteiro ? ROTEIRO_SCHEMA : SCHEMA;
   const model = ctx.model || (ctx.provider === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5');
