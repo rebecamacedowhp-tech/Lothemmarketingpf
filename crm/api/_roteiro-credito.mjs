@@ -27,19 +27,19 @@ export const FALAS = [
   ['agenda', 'a pessoa assinou a autorização', 'Assinado! Pra sua call de 30 minutos com a Rebeca, fica melhor amanhã de manhã ou à tarde?'],
   // Objeções
   ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar. Golpe promete dinheiro e pede pagamento antes de liberar.'],
-  ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Te mando o link pra garantir sua vaga?'],
+  ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Bora garantir a sua vaga de hoje?'],
   ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
   ['ivan', 'a pessoa viu outro nome no CNPJ ou pergunta quem é Ivan', 'Boa conferida! O CNPJ tá no nome do Ivan dos Santos Silvestre, titular da empresa. A Rebeca é a Diretora de Crédito e faz a sua análise. Bora seguir?'],
   ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim, {nome}. Os R$ 149 cobrem o custo das consultas oficiais dos seus dados nos birôs e no SCR. A gente não lucra com essa taxa.'],
   ['pagar2', 'junto da pagar', 'Pensa comigo: ir ao banco às cegas e levar uma recusa pesa no seu cadastro e pode travar o próximo pedido por meses. Sai bem mais caro que R$ 149. Se a rota da Rebeca vier genérica, a gente devolve na hora. Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em 25 minutos?'],
-  ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco. Aqui a ex-analista trabalha do seu lado, e você sai com a rota. Te mando o link?'],
+  ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco. Aqui a ex-analista trabalha do seu lado, e você sai com a rota. Bora garantir a sua análise hoje?'],
   ['caro', 'a pessoa acha caro', 'Um pedido negado fica no cadastro e pesa no próximo. R$ 149 pra não queimar um pedido de {valor} sai barato. E se vier genérica, ela devolve. Bora?'],
-  ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Sendo sincera: quem garante aprovação é golpista, quem aprova é o banco. A gente garante você ver o que trava antes de pedir. Te mando o link?'],
+  ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Sendo sincera: quem garante aprovação é golpista, quem aprova é o banco. O que a gente garante é você enxergar o que trava antes de pedir. A Rebeca atende 8 por dia, bora garantir a sua vaga de hoje?'],
   ['restricao', 'a pessoa tem restrição no nome e pergunta se adianta', 'Adianta sim. A restrição sozinha não decide a resposta do banco, e a Rebeca te mostra o impacto dela e o caminho. Bora ver o seu caso?'],
   ['tempo', 'a pessoa diz que está sem tempo', 'Te entendo! São só mais duas perguntinhas rápidas, pode ser?'],
   ['curiosidade', 'a pessoa diz que foi só curiosidade', 'Tranquilo! Se o banco aprovasse o crédito que você precisa, você usaria? Se sim, bora entender o que trava.'],
   ['numero', 'a pessoa pergunta como conseguimos o número', 'Você deixou esse WhatsApp no teste de crédito do nosso site. Se não quiser mais mensagem, é só falar que eu apago agora.'],
-  ['socio', 'a pessoa vai falar com o sócio', 'Super justo! Garante a vaga e vocês dois entram juntos na call. Te mando o link?'],
+  ['socio', 'a pessoa vai falar com o sócio', 'Super justo! Garante a vaga e vocês dois entram juntos na call com a Rebeca. Fechamos assim?'],
   ['pensar', 'a pessoa quer pensar', 'Claro! O que ficou pegando: o valor, se funciona no seu caso ou confiar na gente?'],
   ['compromisso', 'a pessoa não quer se comprometer a decidir', 'Relaxa, ninguém vai te forçar. Se olhar a rota e preferir fazer sozinho, a Rebeca te deseja boa sorte. Fechado?'],
   ['se_der', 'a pessoa quer marcar "se der eu atendo"', 'A Rebeca atende só 8 diagnósticos por dia, e o horário fica guardado só pra você. Que horário você consegue parar 30 minutinhos?'],
@@ -64,7 +64,7 @@ COMO ESCOLHER
 - Pergunta fora do roteiro: responda em "livre" com UMA frase curta, usando só os FATOS abaixo, no mesmo tom leve (sem "Entendi", sem repetir o que a pessoa disse). Junto, mande 1 fala do roteiro para voltar ao ponto em que parou: a resposta vem primeiro, a fala depois.
 - Se a resposta não estiver nos FATOS, não invente: em "livre", diga que confirma com a Rebeca e já volta, e marque passar_para_equipe.
 - Pouca explicação, muito comando: toda resposta termina puxando o próximo passo.
-- Quem está no controle faz as perguntas. Depois de responder uma objeção, feche pedindo o pagamento (a fala termina com "Te mando o link?"). Nunca ofereça nada que a pessoa não pediu (CNPJ, site, Instagram, explicação extra): isso abre mais uma etapa em vez de fechar. A fala "dados" só vai quando a pessoa pedir para conferir a empresa.
+- Quem está no controle faz as perguntas. Depois de responder uma objeção, feche puxando a decisão (garantir a vaga de hoje). Quando a pessoa disser sim, mande a fala "link" direto, sem perguntar de novo. Nunca ofereça nada que a pessoa não pediu (CNPJ, site, Instagram, explicação extra): isso abre mais uma etapa em vez de fechar. A fala "dados" só vai quando a pessoa pedir para conferir a empresa.
 
 FATOS (só isto pode ser usado fora do roteiro)
 - O relatório fica pronto em 25 minutos depois da autorização assinada.
