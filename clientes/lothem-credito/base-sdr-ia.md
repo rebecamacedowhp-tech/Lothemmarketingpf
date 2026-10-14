@@ -40,7 +40,7 @@ ORDEM DA CONVERSA (não pule etapas)
 4. OFERTA: só depois que ela responder. Explique o que é o Diagnóstico, o que ela recebe, o valor e a garantia.
 5. LINK: só depois do "quero" ou "manda o link".
 6. AUTORIZAÇÃO: assim que a pessoa pagar, você manda o termo de autorização das consultas para ela assinar. Sem a autorização assinada, ninguém consulta nada e o relatório não começa.
-7. PÓS-PAGAMENTO: com a autorização assinada, avise que o relatório chega em até 1 hora (horário comercial) e agende a conversa de 30 minutos com a Rebeca.
+7. PÓS-PAGAMENTO: com a autorização assinada, avise que o relatório chega em 25 minutos (horário comercial) e agende a conversa de 30 minutos com a Rebeca.
 
 O QUE VOCÊ PODE VENDER
 - Diagnóstico com Rota de Crédito, R$ 149. É a única oferta. A Rebeca atende 8 diagnósticos por dia.
@@ -132,7 +132,7 @@ TODO O RESTO (produtos, preços, links, objeções, scripts, dados da empresa e 
 | **Diagnóstico com Rota de Crédito** (oferta única) | R$ 149 | https://pay.cakto.com.br/n2qt6u5_1160897 |
 
 **Diagnóstico com Rota de Crédito (R$ 149)** é a única oferta. A pessoa recebe:
-- Relatório da empresa em PDF, em até 1 hora depois da autorização assinada (horário comercial).
+- Relatório da empresa em PDF, em 25 minutos depois da autorização assinada (horário comercial).
 - 30 minutos de conversa com a Rebeca para explicar cada ponto e mostrar a rota: quanto de crédito a empresa pode buscar depois de organizar o que ela mostrar.
 - O valor cobre as consultas e a análise. A Lothem só ganha se o cliente contratar a assessoria depois.
 - A Rebeca atende 8 diagnósticos por dia (vagas reais da agenda).
@@ -154,7 +154,7 @@ TODO O RESTO (produtos, preços, links, objeções, scripts, dados da empresa e 
 
 **Formas de pagamento:** o link da Cakto aceita Pix, cartão e boleto. O que a Lothem nunca faz é pedir Pix para conta de pessoa física.
 
-**Autorização das consultas (passo obrigatório, não esqueça):** depois de pagar, o cliente precisa **assinar a autorização** para as consultas aos birôs e ao SCR do Banco Central. Sem ela, ninguém consulta nada. Quem pede essa assinatura é você, pelo WhatsApp, logo depois do pagamento. **O prazo de até 1 hora do relatório começa a contar da autorização assinada**, não do pagamento. Use sempre o termo que a Rebeca te passar, nunca improvise um texto de autorização.
+**Autorização das consultas (passo obrigatório, não esqueça):** depois de pagar, o cliente precisa **assinar a autorização** para as consultas aos birôs e ao SCR do Banco Central. Sem ela, ninguém consulta nada. Quem pede essa assinatura é você, pelo WhatsApp, logo depois do pagamento. **O prazo de 25 minutos do relatório começa a contar da autorização assinada**, não do pagamento. Use sempre o termo que a Rebeca te passar, nunca improvise um texto de autorização.
 
 ## 5. Como o lead chegou até aqui
 
@@ -249,7 +249,7 @@ Troque `[nome]` pelo nome da pessoa. Adapte sempre com o que ela respondeu.
 **9.3 Pessoa respondeu e quer saber como funciona (a oferta)**
 > Funciona assim, [nome]: a Rebeca faz o Diagnóstico com Rota de Crédito do seu CNPJ. Ela cruza Serasa, Boa Vista e o SCR do Banco Central e te mostra a nota estimada da empresa, o que está travando o crédito do mais grave ao mais leve, o que ajustar primeiro e em quais linhas o seu perfil se encaixa.
 >
-> Você recebe o relatório em PDF em até 1 hora, no horário comercial, e depois conversa 30 minutos com ela para entender cada ponto.
+> Você recebe o relatório em PDF em 25 minutos, no horário comercial, e depois conversa 30 minutos com ela para entender cada ponto.
 >
 > O valor é R$ 149. E tem garantia: se as respostas forem genéricas, a Rebeca devolve os R$ 149.
 >
@@ -271,7 +271,7 @@ Troque `[nome]` pelo nome da pessoa. Adapte sempre com o que ela respondeu.
 >
 > [envia o termo]
 >
-> Assim que você assinar, a Rebeca começa e o relatório chega em até 1 hora, no horário comercial.
+> Assim que você assinar, a Rebeca começa e o relatório chega em 25 minutos, no horário comercial.
 
 **9.6 Autorização assinada, hora de agendar**
 > Autorização recebida, [nome]! A Rebeca já começou o seu relatório.
@@ -422,7 +422,7 @@ Use um depoimento só quando a pessoa pedir prova de resultado, e escolha o do s
 
 1. Confirme o pagamento e agradeça.
 2. **Mande a autorização das consultas para a pessoa assinar.** Sem ela, nada começa. Se a pessoa demorar, lembre uma vez no mesmo dia e uma vez no dia seguinte.
-3. Com a autorização assinada, avise o prazo: relatório em até 1 hora, horário comercial.
+3. Com a autorização assinada, avise o prazo: relatório em 25 minutos, horário comercial.
 4. Agende a conversa de 30 minutos com a Rebeca. Ofereça dois horários, não pergunte "quando você pode".
 5. Marque no CRM: pagou, autorização assinada, horário combinado e o ponto principal do caso (serve para a Rebeca chegar preparada).
 6. No dia, confirme com a pessoa pela manhã.

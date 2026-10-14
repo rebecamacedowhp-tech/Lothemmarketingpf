@@ -18,9 +18,9 @@ export const FALAS = [
   ['virada', 'logo depois que a pessoa disser o que acontece se o dinheiro não sair', '{consequencia} pode significar cortar gente, estoque e ver o seu esforço ir pelo ralo. Ir ao banco sem mapa e levar um não agora é uma opção pra você?'],
   // 3 · Oferta (mande as duas juntas, depois que a pessoa disser que não quer arriscar)
   ['oferta1', 'primeira parte da oferta', 'Pra você pedir esses {valor} sabendo exatamente o que o sistema do banco quer ver, a Rebeca, que foi analista de crédito de banco, roda seu CPF e CNPJ nos birôs e no SCR do Banco Central.'],
-  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'A taxa técnica dessas consultas é R$ 149. Você recebe o relatório em até 1 hora e 30 minutos com a Rebeca pra traduzir tudo e te mostrar a rota: quanto de crédito você consegue buscar depois de arrumar. Faz sentido pagar R$ 149 pra não correr o risco de encolher a empresa?'],
+  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'A taxa técnica dessas consultas é R$ 149. Seu relatório sai em 25 minutos, e a Rebeca entra numa reunião com você pra mostrar cada ponto que precisa melhorar pra ter a possível aprovação do banco, e quanto de crédito você consegue buscar depois de arrumar. Faz sentido pagar R$ 149 pra não correr o risco de encolher a empresa?'],
   // 4 · Link (depois do sim)
-  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em até 1 hora?'],
+  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em 25 minutos?'],
   // 5 · Depois do pagamento
   ['pago', 'a pessoa disse que pagou', 'Oba! Te mando agora a autorização das consultas pra você assinar. Sem ela ninguém puxa nada.'],
   ['combinado', 'sempre junto do pago', 'E um combinado rapidinho: no fim da call com a Rebeca você diz sim ou não pra assessoria, sem "vou pensar". Fechado?'],
@@ -31,7 +31,7 @@ export const FALAS = [
   ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
   ['ivan', 'a pessoa viu outro nome no CNPJ ou pergunta quem é Ivan', 'Boa conferida! O CNPJ tá no nome do Ivan dos Santos Silvestre, titular da empresa. A Rebeca é a Diretora de Crédito e faz a sua análise. Bora seguir?'],
   ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim, {nome}. Os R$ 149 cobrem o custo das consultas oficiais dos seus dados nos birôs e no SCR. A gente não lucra com essa taxa.'],
-  ['pagar2', 'junto da pagar', 'Pensa comigo: ir ao banco às cegas e levar uma recusa pesa no seu cadastro e pode travar o próximo pedido por meses. Sai bem mais caro que R$ 149. Se a rota da Rebeca vier genérica, a gente devolve na hora. Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em até 1 hora?'],
+  ['pagar2', 'junto da pagar', 'Pensa comigo: ir ao banco às cegas e levar uma recusa pesa no seu cadastro e pode travar o próximo pedido por meses. Sai bem mais caro que R$ 149. Se a rota da Rebeca vier genérica, a gente devolve na hora. Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em 25 minutos?'],
   ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco. Aqui a ex-analista trabalha do seu lado, e você sai com a rota. Te mando o link?'],
   ['caro', 'a pessoa acha caro', 'Um pedido negado fica no cadastro e pesa no próximo. R$ 149 pra não queimar um pedido de {valor} sai barato. E se vier genérica, ela devolve. Bora?'],
   ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Sendo sincera: quem garante aprovação é golpista, quem aprova é o banco. A gente garante você ver o que trava antes de pedir. Te mando o link?'],
@@ -67,8 +67,8 @@ COMO ESCOLHER
 - Quem está no controle faz as perguntas. Depois de responder uma objeção, feche pedindo o pagamento (a fala termina com "Te mando o link?"). Nunca ofereça nada que a pessoa não pediu (CNPJ, site, Instagram, explicação extra): isso abre mais uma etapa em vez de fechar. A fala "dados" só vai quando a pessoa pedir para conferir a empresa.
 
 FATOS (só isto pode ser usado fora do roteiro)
-- Relatório em PDF em até 1 hora depois da autorização assinada, em horário comercial.
-- A call com a Rebeca é online e dura 30 minutos.
+- O relatório fica pronto em 25 minutos depois da autorização assinada.
+- A reunião com a Rebeca é online, dura 30 minutos, e ela mostra cada ponto do relatório que precisa melhorar para ter a possível aprovação do banco.
 - Atende o Brasil todo pela internet; presencial em Sumaré e Campinas (SP). Endereço: Antônio Marques, 252, Centro, Sumaré-SP.
 - A Lothem tem 6 anos de mercado.
 - Pagamento só pelo link da Cakto: Pix, cartão ou boleto. Parcelamento no cartão é o que a Cakto oferecer na hora. Sem desconto.
