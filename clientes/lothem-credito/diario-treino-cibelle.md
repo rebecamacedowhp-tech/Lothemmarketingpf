@@ -43,6 +43,45 @@ Aqui fica tudo o que decidimos sobre a Cibelle e cada teste de atendimento, para
 
 ## Testes de atendimento
 
+### Teste 1 · 13/10/2026 23:03 · trilha quiz (lead sem quiz no CRM) · modo Autônomo · Claude Sonnet 5.5
+Custo da conversa inteira: US$ 0,10 (6 respostas).
+
+**Conversa**
+- Lead: Oi fiz o teste no site o banco negou meu capital de giro / Oi quero capital de giro
+- Cibelle: Oi, Re! Aqui é a Cibelle, da equipe da Rebeca, da Lothem. Vi que você fez o teste… / Não peço senha nem dado de banco… / o que você sabe sobre o motivo que o banco deu para negar?
+- Lead: não me disse nada, apenas que não tinha sido aprovado
+- Cibelle: isso é comum… / o motivo costuma estar em restrição, dívida no Banco Central ou faturamento que o banco não enxerga / as vendas entram na conta PJ ou parte cai na pessoal?
+- Lead: Na conta pj
+- Cibelle: isso ajuda… / motivo provável: restrição ou dívida (palpite) / ação de hoje: Registrato + "você sabe se tem restrição?"
+- Lead: acho que não, mas não tenho certeza
+- Cibelle: muita gente não tem certeza / o Registrato ajuda / "esse palpite faz sentido? Se quiser, a Rebeca pode gravar um áudio curtinho"
+- Lead: Não entendi
+- Cibelle: explica de outro jeito / "faz sentido até aqui?"
+- Lead: Sim
+- Cibelle: próximo passo é confirmar com dados / "a Rebeca grava um áudio curto… Quer ouvir?"
+- Lead: Sim
+- Cibelle: vou pedir para a Rebeca gravar / oferta completa do Diagnóstico (consultas, PDF em 1 h, nota, 30 min) / R$ 97 + garantia + "isso te parece útil?" → **passou para a equipe** (precisa gravar o áudio)
+- Lead: Nossa, tem que pagar? Não é golpe? → **ficou sem resposta**
+
+**Bom:** transparência na abertura (não pede senha, não empresta); uma pergunta por vez; usou a resposta da pessoa (conta PJ) para mudar o palpite; deu ação útil (Registrato); quando a pessoa não entendeu, explicou de novo mais simples; oferta com garantia e "quem aprova é o banco".
+
+**Errou (método Hormozi + Script):**
+1. **Prometeu um áudio que não existe.** Ofereceu "a Rebeca grava um áudio sobre o seu caso"; os áudios A0–A8 não estão no sistema e ela não grava sob demanda. Criou espera e passou a conversa para a equipe por isso.
+2. **A passagem para a equipe veio na pior hora.** Logo depois do preço, a pessoa trouxe a maior objeção ("tem que pagar? não é golpe?") e ninguém respondeu. [GARANTIA GOD-MODE] o risco ficou com o cliente.
+3. **Não perguntou quanto e para quê.** Nunca perguntou o valor do capital de giro nem a finalidade, então a oferta não ligou o Diagnóstico ao resultado que ela quer. [DREAM OUTCOME]
+4. **Oferta em lista de funcionalidades.** Serasa, Boa Vista, SCR, PDF, nota… num balão longo, antes de construir confiança. "Isso ainda é um produto, não uma oferta." [TRIM & STACK]
+5. **Nome "Re".** Usou o nome do perfil do WhatsApp sem confirmar. Deveria perguntar "como posso te chamar?".
+6. **Balões demais por vez** (3 a cada resposta, alguns longos, com ação e pergunta no mesmo balão).
+
+**Mudanças propostas (aguardando o "pode aplicar" da Rebeca):**
+- Instrução: não oferecer áudio enquanto os áudios não estiverem no sistema; explicar por texto.
+- Instrução: antes da oferta, perguntar valor e finalidade do crédito e usar a resposta na oferta.
+- Instrução: oferta em no máximo 2 balões, começando pelo objetivo da pessoa; o balão do preço já leva a frase anti-golpe.
+- Instrução: se o nome do WhatsApp parecer apelido ou abreviação, perguntar como chamar.
+- Instrução: no máximo 2 balões por resposta.
+- Resposta aprovada nova para "tem que pagar? não é golpe?" logo depois do preço.
+- Passagem para a equipe: só nos casos da regra; nunca por causa de áudio.
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
