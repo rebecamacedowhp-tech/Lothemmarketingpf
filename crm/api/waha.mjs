@@ -39,6 +39,15 @@ function validHmac(raw, header) {
 
 const digitsOf = (jid) => (/@(c\.us|s\.whatsapp\.net)$/.test(jid || '') ? String(jid).split('@')[0].replace(/\D/g, '') : '');
 
+async function lidParaNumero(session, lid) {
+  try {
+    const r = await fetch(`${env('WAHA_URL').replace(/\/$/, '')}/api/${encodeURIComponent(session)}/lids/${encodeURIComponent(lid)}`, { headers: { 'x-api-key': env('WAHA_API_KEY') } });
+    if (!r.ok) { console.log('lid sem resposta', r.status); return ''; }
+    const out = await r.json().catch(() => ({}));
+    return digitsOf(out && (out.pn || out.phone || out.jid)) || String((out && out.pn) || '').replace(/\D/g, '');
+  } catch (e) { console.log('lid erro', String(e.message || e)); return ''; }
+}
+
 async function webhook(request) {
   const raw = await request.text();
   if (!validHmac(raw, request.headers.get('x-webhook-hmac'))) return json(401, { ok: false, erro: 'assinatura inválida' });
@@ -48,8 +57,13 @@ async function webhook(request) {
   const chat = fromMe ? p.to : p.from;
   if (!chat || /@g\.us$|@newsletter$|status@broadcast/.test(chat)) return json(200, { ok: true, ignorado: 'grupo ou status' });
   const info = (p._data && (p._data.Info || p._data)) || {};
-  const alt = info.SenderAlt || info.RecipientAlt || info.senderPn || '';
-  const phone = digitsOf(chat) || digitsOf(alt);
+  const alt = info.SenderAlt || info.RecipientAlt || info.senderPn || info.SenderPN || info.senderAlt || p.senderPn || '';
+  let phone = digitsOf(chat) || digitsOf(alt);
+  // o WhatsApp às vezes manda só o código da conversa (@lid), sem o número: pergunta à WAHA qual é o número
+  if (!phone && /@lid$/.test(chat || '')) {
+    phone = await lidParaNumero(ev.session || 'default', chat);
+    if (!phone) console.log('sem número', JSON.stringify({ chat, campos: Object.keys(info) }));
+  }
   const name = fromMe ? '' : (p.notifyName || info.PushName || info.notifyName || info.pushName || '');
   const ts = p.timestamp ? new Date(Number(p.timestamp) * 1000).toISOString() : new Date().toISOString();
   const waId = typeof p.id === 'object' && p.id ? p.id._serialized || p.id.id : p.id;
