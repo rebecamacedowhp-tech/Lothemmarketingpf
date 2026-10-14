@@ -58,8 +58,9 @@ async function webhook(request) {
   // mensagem nova de lead: a IA decide se responde (modo de teste, equipe atendendo etc. ficam no banco)
   let ia = null;
   if (conv && !fromMe && p.body) {
-    try { ia = await responder({ rpc, waha, conv, waId }); } catch (e) { console.error('motor da IA', e); ia = { respondeu: false, motivo: 'erro' }; }
+    try { ia = await responder({ rpc, waha, conv, waId }); } catch (e) { console.error('motor da IA', e); ia = { respondeu: false, motivo: 'erro: ' + String(e.message || e).slice(0, 200) }; }
   }
+  console.log('webhook', JSON.stringify({ conversa: conv, deMim: fromMe, temTexto: !!p.body, ia }));
   return json(200, { ok: true, conversa: conv, ia });
 }
 
