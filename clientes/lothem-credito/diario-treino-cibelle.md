@@ -73,7 +73,7 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 5. **Nome "Re".** Usou o nome do perfil do WhatsApp sem confirmar. Deveria perguntar "como posso te chamar?".
 6. **Balões demais por vez** (3 a cada resposta, alguns longos, com ação e pergunta no mesmo balão).
 
-**Mudanças propostas (aguardando o "pode aplicar" da Rebeca):**
+**Mudanças aplicadas em 13/10 (Rebeca: "pode aplicar"):**
 - Instrução: não oferecer áudio enquanto os áudios não estiverem no sistema; explicar por texto.
 - Instrução: antes da oferta, perguntar valor e finalidade do crédito e usar a resposta na oferta.
 - Instrução: oferta em no máximo 2 balões, começando pelo objetivo da pessoa; o balão do preço já leva a frase anti-golpe.
@@ -81,6 +81,8 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 - Instrução: no máximo 2 balões por resposta.
 - Resposta aprovada nova para "tem que pagar? não é golpe?" logo depois do preço.
 - Passagem para a equipe: só nos casos da regra; nunca por causa de áudio.
+- Pedido da Rebeca: "entender a dor do cliente e usar o método Hormozi nível hard". Entrou nas instruções a fase obrigatória **Entender a dor** (situação, objetivo, implicação "e se esse capital não sair nos próximos meses?", tentativas, urgência 0 a 10, repetir a dor com as palavras dela) e o bloco **Hormozi nível máximo** (resultado dos sonhos, equação de valor, custo de não agir com os números dela, garantia colada no preço, pergunta de sim fácil, firmeza sem desconto). Continua proibido: escassez inventada, valores fictícios, prometer crédito, humilhar.
+- Onde: `crm/mestre-ia.js` (TRILHAS_PROMPT), `crm/sdr-kit.js` (CRED_OBJ), `crm/api/_cibelle.mjs` (máx. 2 balões, nada de promessa impossível), treinamento 3.3/3.4. Para valer em produção: Painel Mestre › IA dos clientes › PJ › Carregar pacote oficial (agora substitui os documentos antigos).
 
 Formato de cada teste:
 

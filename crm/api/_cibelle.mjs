@@ -14,7 +14,7 @@ const SCHEMA = {
   type: 'object', additionalProperties: false,
   required: ['mensagens', 'ficha', 'memoria', 'passar_para_equipe', 'motivo'],
   properties: {
-    mensagens: { type: 'array', items: { type: 'string' }, description: 'De 1 a 3 baloes de WhatsApp, na ordem de envio.' },
+    mensagens: { type: 'array', items: { type: 'string' }, description: '1 ou 2 balões de WhatsApp, na ordem de envio.' },
     ficha: {
       type: 'object', additionalProperties: false,
       required: ['nome', 'empresa', 'segmento', 'cidade', 'credito_pretendido'],
@@ -33,7 +33,8 @@ const FORMATO = `
 
 COMO DEVOLVER A RESPOSTA (o sistema lê isto, o cliente não vê)
 Responda só com o JSON pedido:
-- mensagens: de 1 a 3 baloes curtos, prontos para enviar no WhatsApp. Sem rótulos, sem colchetes, sem campos para preencher.
+- mensagens: 1 ou 2 balões curtos (no máximo 3 linhas cada), prontos para enviar no WhatsApp. Uma pergunta só, no último balão. Sem rótulos, sem colchetes, sem campos para preencher.
+- Nunca prometa algo que não dá para entregar por esta conversa (áudio, ligação, arquivo, retorno de outra pessoa). Se a pessoa precisar disso, passe para a equipe e avise.
 - ficha: preencha só o que a pessoa disse nesta conversa (nome, empresa, segmento, cidade, crédito pretendido com valor e finalidade). O que ela não disse fica "".
 - memoria: o que você precisa lembrar desta pessoa na próxima conversa, em linhas curtas: problema, crédito pretendido, faturamento, quem decide, momento, objeções, o que foi combinado. Reescreva a memória inteira, juntando a anterior com o que mudou.
 - passar_para_equipe: true quando a regra mandar chamar a Rebeca ou a equipe, ou quando você não souber responder. Nesse caso, avise a pessoa nas mensagens.
@@ -162,7 +163,7 @@ export async function responder({ rpc, waha, conv, waId }) {
   }
 
   const j = res.json || {};
-  const baloes = (j.mensagens || []).map(limpar).filter(Boolean).slice(0, 3);
+  const baloes = (j.mensagens || []).map(limpar).filter(Boolean).slice(0, 2);
   const proibido = (ctx.blocked_terms || []).find((t) => baloes.some((b) => b.toLowerCase().includes(String(t).toLowerCase())));
   if (proibido || !baloes.length) {
     if (baloes.length) await rpc('ai_bot_suggest', { p_conv: conv, p_text: baloes.join('\n\n'), p_reason: `não enviada: tinha a palavra proibida "${proibido}"` });

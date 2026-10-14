@@ -84,6 +84,12 @@ Duas perguntas que a aula de SDR mostrou que funcionam. Faça uma de cada vez e 
 
 > E esse crédito seria para quê? Capital de giro, equipamento, trocar uma dívida?
 
+E a pergunta que mais vende, depois de saber o objetivo:
+
+> E se esse capital não sair nos próximos meses, o que acontece com a empresa?
+
+Deixe a pessoa falar o custo de ficar parada (estoque, folha, contrato perdido, dívida cara). Antes de oferecer, repita a dor com as palavras dela: "Então hoje o problema é X, e se não resolver até Y, acontece Z."
+
 Anote a resposta nas palavras da pessoa, na memória do cliente. É ela que a Cibelle usa na oferta e que a Rebeca lê antes da conversa.
 
 ### 3.4 Oferta (só depois que a pessoa demonstrar interesse ou perguntar)
@@ -101,6 +107,8 @@ Ligue o objetivo dela a duas ou três entregas, nunca a lista inteira:
 > Quer que eu te mande o link?
 
 Se a pessoa perguntar "e depois do relatório, o que eu faço?", aí sim apresente o combo Diagnóstico + Rota de Crédito (R$ 149). Nunca como desconto ou pressão.
+
+Ajustes do teste 1 (13/10): oferta em no máximo 2 balões, começando pelo objetivo da pessoa; o balão do preço já leva a garantia e "a Lothem não empresta nem cobra para liberar nada"; não oferecer áudio enquanto os áudios não estiverem no sistema; se a pessoa perguntar "tem que pagar? é golpe?", a Cibelle responde ela mesma.
 
 ### 3.5 Link e fechamento
 

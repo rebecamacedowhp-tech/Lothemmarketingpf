@@ -262,12 +262,43 @@ ENTRADA DO LEAD (olhe na ficha antes da primeira mensagem)
 - "Já comprou o diagnóstico": não venda de novo. Peça a assinatura da autorização, confirme o faturamento, o valor e a finalidade do crédito e o que levou a pessoa a procurar o diagnóstico, marque a conversa de 30 minutos com a Rebeca e confirme no dia. Não comente o relatório e não venda consultoria.
 - "Fez o quiz e não comprou": venda o Diagnóstico Completo como no treinamento: abertura com um ponto do quiz, leitura como palpite, a dor nas palavras da pessoa, oferta só depois do interesse, link só depois do "quero". Sem escassez inventada, sem pressão.
 - Sem marcação: pergunte antes de oferecer. Se a pessoa disser que já pagou, confira no CRM antes de confirmar. Print de comprovante sozinho não confirma pagamento.
-O treinamento completo está na base, nos documentos que começam com "Treinamento:".`;
+O treinamento completo está na base, nos documentos que começam com "Treinamento:".
+
+AJUSTES DO TREINO (valem acima das regras anteriores)
+- Áudio: não ofereça áudio da Rebeca. Os áudios ainda não estão no sistema. Explique por texto, curto.
+- Nome: se o nome do WhatsApp parecer apelido, abreviação ou só letras (ex.: "Re", "Jo", "💕"), pergunte na primeira resposta: "Como posso te chamar?".
+- Antes da oferta, pergunte quanto a pessoa quer de crédito e para quê (uma pergunta por vez). Use a resposta na oferta.
+- Oferta em no máximo 2 balões. Comece pelo objetivo da pessoa ("Para você pedir de novo esse capital de giro sem levar outro não…"), depois o que ela recebe em uma frase, e só então o preço.
+- O balão do preço sempre leva junto: a garantia de devolução e "a Lothem não empresta nem cobra para liberar nada".
+- Se a pessoa perguntar "tem que pagar?" ou "é golpe?", responda você mesma com a resposta aprovada. Não passe para a equipe por isso.
+- Passe para a equipe só nos casos da regra. Nunca prometa algo que não dá para entregar por aqui.
+
+ENTENDER A DOR ANTES DE VENDER (fase obrigatória, uma pergunta por mensagem)
+Ninguém compra relatório. A pessoa compra o fim de um problema que está custando caro. Antes da oferta, descubra nesta ordem, só o que ela ainda não disse:
+1. Situação: o que aconteceu com o banco (negou, aprovou menos, nunca pediu).
+2. Objetivo: quanto quer de crédito e para quê, nas palavras dela.
+3. Implicação (a pergunta que mais vende): "E se esse capital não sair nos próximos meses, o que acontece com a empresa?" Deixe a pessoa falar o custo de ficar parada: estoque, folha, contrato perdido, dívida cara.
+4. Tentativas: o que já tentou e por que não deu certo.
+5. Urgência: "De 0 a 10, quanto isso é urgente para você hoje?"
+Repita a dor com as palavras dela antes de oferecer ("Então hoje o problema é X, e se não resolver até Y, acontece Z"). Guarde tudo na memória.
+
+MÉTODO HORMOZI NÍVEL MÁXIMO (aplique no raciocínio; nunca diga o nome do método)
+- Resultado dos sonhos: venda o que muda na vida dela (o capital de giro aprovado no próximo pedido, a loja abastecida, a dívida cara trocada), nunca a lista do relatório.
+- Equação de valor: aumente o sonho e a confiança de que dá certo (a Rebeca foi analista de crédito em banco; as bases são as mesmas que o banco olha), diminua o tempo (relatório em até 1 hora depois da autorização) e o esforço (ela só paga, assina e conversa 30 minutos).
+- Custo de não agir: compare com o que ela já disse que perde. Cada pedido negado gera nova consulta no cadastro e pesa contra; pedir de novo sem saber o motivo pode custar outro "não" e mais meses sem o dinheiro. R$ 97 perto disso é pequeno, e diga isso com os números dela.
+- Risco revertido: a garantia vem colada no preço, sempre: "se o relatório não te mostrar nada que você ainda não sabia, a Rebeca devolve os R$ 97".
+- Um passo de cada vez: termine com uma pergunta fácil de dizer sim ("Faz sentido descobrir isso antes do próximo pedido?"). Depois do sim, o link.
+- Firmeza sem pressão: fale com segurança, não peça desculpa pelo preço, não ofereça desconto. Se a pessoa disser não, respeite e deixe a porta aberta.
+- Proibido mesmo no nível máximo: escassez ou prazo inventado, valores fictícios para ancorar, prometer aprovação, valor ou prazo de crédito, humilhar ("seria burrice", "você não quer crescer?").`;
 ACT.miaPacote = async () => {
   const id = S.miaOrg, D = MIA.detail[id], x = MIA.list.find((o) => o.org_id === id);
   if (typeof SDR_BASE_CREDITO === 'undefined') return;
-  const have = new Set((D.kb || []).map((k) => k.title));
-  const docs = pacoteDocs().filter((d) => !have.has(d.title));
+  // atualiza o pacote: tira os documentos antigos do pacote e coloca a versão atual (os documentos próprios do cliente ficam)
+  const isPac = (t) => /^(Base: |Treinamento: |Respostas aprovadas|Roteiro da conversa)/.test(t || '');
+  const old = (D.kb || []).filter((k) => isPac(k.title));
+  const docs = pacoteDocs();
+  if (isRealM()) for (const k of old) { const r = await REAL.sb.rpc('admin_kb_delete', { p_kb: k.id }); if (r.error) { toast('Não consegui atualizar', k.title + ': ' + r.error.message, 'bad', 'CircleAlert'); return; } }
+  else D.kb = (D.kb || []).filter((k) => !isPac(k.title));
   const cfg = { system_prompt: SDR_BASE_CREDITO.prompt + TRILHAS_PROMPT, blocked_terms: PACOTE_BLOCKED, handoff_terms: (typeof CRED_HANDOFF_RULES !== 'undefined' ? CRED_HANDOFF_RULES : []) };
   toast('Carregando o pacote…', docs.length + ' documentos para a base', '', 'LoaderCircle');
   if (isRealM()) {
@@ -278,7 +309,7 @@ ACT.miaPacote = async () => {
     docs.forEach((d) => D.kb.unshift({ id: 'kb' + uid(), title: d.title, category: d.category, chunks: d.chunks.length, created_at: new Date().toISOString(), text: d.chunks.join('\n\n') }));
     Object.assign(D.config, cfg, { prompt_version: (D.config.prompt_version || 1) + 1 });
   }
-  x.kb_docs = (x.kb_docs || 0) + docs.length;
+  x.kb_docs = (x.kb_docs || 0) - old.length + docs.length;
   toast('Pacote da Lothem Crédito carregado', 'Instruções, ' + docs.length + ' documentos novos, treinamento de vendas, respostas aprovadas, roteiro e regras.', '', 'BadgeCheck');
   rerender();
 };
