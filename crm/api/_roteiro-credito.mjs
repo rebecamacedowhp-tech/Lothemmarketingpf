@@ -29,6 +29,7 @@ export const FALAS = [
   ['nao_libera', 'a pessoa pergunta se paga para liberar empréstimo ou quanto a Lothem libera/empresta', 'Não, {nome}! A Lothem não empresta e não libera dinheiro nenhum. Os R$ 149 pagam a análise do seu CPF e CNPJ, e quem decide o crédito é sempre o banco.'],
   ['golpe_sofrido', 'a pessoa conta que já caiu num golpe', 'Poxa, sinto muito mesmo. É por isso que a gente não pede Pix pra conta de ninguém e não promete dinheiro. Quer que a Rebeca te chame num vídeo rapidinho, pra você ver quem está do outro lado antes de decidir?'],
   ['aguardo', 'o link já foi mandado e a pessoa disse que vai pagar', 'Perfeito! Assim que pagar, me avisa aqui que eu te mando a autorização das consultas.'],
+  ['golpe_cedo', 'junto da golpe1 quando a desconfiança aparece ANTES da oferta (ainda não falamos de preço)', 'A gente faz o contrário: não empresta, não promete dinheiro e não cobra pra liberar nada. E nada aqui é cobrado sem você decidir. Me conta: de quanto você precisa?'],
   ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar. Golpe promete dinheiro e pede pagamento antes de liberar.'],
   ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Bora garantir a sua vaga de hoje?'],
   ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
@@ -66,6 +67,7 @@ COMO ESCOLHER
 - Nunca repita uma fala que já foi mandada na conversa, a não ser que a pessoa peça de novo. Se o link já foi mandado e a pessoa diz que vai pagar, use "aguardo".
 - Se a pessoa perguntar se paga para liberar empréstimo ou quanto vocês liberam, use "nao_libera". Nunca comece uma resposta com "Paga sim" para essa pergunta.
 - Não feche duas vezes seguidas do mesmo jeito. Depois de duas objeções seguidas, pare de empurrar: pergunte o que falta para ela decidir.
+- Desconfiança antes da oferta (ainda não falamos de preço): "golpe1" + "golpe_cedo", e siga o roteiro. Depois da oferta: "golpe1" + "golpe2".
 - Se a pessoa contar que já caiu em golpe, use "golpe_sofrido". Se ela aceitar o vídeo, marque passar_para_equipe com o motivo "quer vídeo com a Rebeca antes de pagar".
 - Pergunta fora do roteiro: responda em "livre" com UMA frase curta, usando só os FATOS abaixo, no mesmo tom leve (sem "Entendi", sem repetir o que a pessoa disse). Junto, mande 1 fala do roteiro para voltar ao ponto em que parou: a resposta vem primeiro, a fala depois.
 - Se a resposta não estiver nos FATOS, não invente: em "livre", diga que confirma com a Rebeca e já volta, e marque passar_para_equipe.
