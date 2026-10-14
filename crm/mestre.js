@@ -50,12 +50,14 @@ VIEWS.mestre = {
   crumb: 'Lothem',
   render() {
     if (isReal() && !MESTRE.loaded) { mestreLoad(); return `<div class="pn"><div class="empty">${ic('LoaderCircle')}<div>Carregando as contas…</div></div></div>`; }
-    const T = (MESTRE.tenants || []).filter((t) => t.plan !== 'interno'), tab = S.tabs.mestre || 'resumo';
+    const me = (typeof REAL !== 'undefined' && REAL.user && REAL.user.email) || '';
+    const ALL = (MESTRE.tenants || []).filter((t) => !me || t.email !== me); // a própria administração não é cliente
+    const T = ALL.filter((t) => t.plan !== 'interno'), tab = S.tabs.mestre || 'resumo';
     const active = T.filter((t) => t.status === 'active'), trial = T.filter((t) => t.status === 'trial' && new Date(t.trial_ends_at) > new Date()), expired = T.filter((t) => t.status === 'trial' && new Date(t.trial_ends_at) <= new Date());
     const late = T.filter((t) => t.status === 'past_due'), reqs = (MESTRE.tenants || []).filter((t) => t.requested_plan);
     const price = (t) => { const p = DB.plans.find((x) => x.id === t.plan); return p ? (t.cycle === 'anual' ? (p.price * 10) / 12 : p.price) : 0; };
     const mrr = active.concat(late).reduce((a, t) => a + price(t), 0);
-    const tabs = [['resumo', 'Resumo', 'Gauge'], ['contas', 'Contas', 'Building2', T.length], ['pedidos', 'Pedidos', 'Inbox', reqs.length], ['ia', 'IA dos clientes', 'Bot'], ['planos', 'Planos e preços', 'Tags']];
+    const tabs = [['resumo', 'Resumo', 'Gauge'], ['contas', 'Contas', 'Building2', ALL.length], ['pedidos', 'Pedidos', 'Inbox', reqs.length], ['ia', 'IA dos clientes', 'Bot'], ['planos', 'Planos e preços', 'Tags']];
     const kpi = (k, v, sub, icn, cls) => `<div class="pn kpi" style="cursor:default"><span class="lbl">${k}</span><div class="row between"><span class="v num">${v}</span><span class="ico-box ${cls || 'cy'}">${ic(icn, 'sm')}</span></div><div class="ft"><span>${sub}</span></div></div>`;
     let body = '';
     if (tab === 'resumo') body = `<div class="kpis" style="margin-bottom:18px">
@@ -71,12 +73,12 @@ VIEWS.mestre = {
         ${!reqs.length && !expired.length && !late.length ? `<div class="empty">${ic('CircleCheck')}<div>Nada pendente.</div></div>` : ''}
       </div></section>`;
     else if (tab === 'contas' || tab === 'pedidos') {
-      const rows = tab === 'pedidos' ? reqs : T;
+      const rows = tab === 'pedidos' ? reqs : ALL;
       body = rows.length ? `<div class="pn"><div class="tbl-w"><table class="tbl"><thead><tr><th>Conta</th><th>Empresas</th><th>Plano</th><th>Situação</th><th>${tab === 'pedidos' ? 'Pedido' : 'Vence'}</th><th class="r">Uso</th><th></th></tr></thead><tbody>
         ${rows.map((t) => { const [snm, scls] = tState(t); return `<tr><td><b style="font-size:13.5px">${esc(t.full_name || '—')}</b><div class="dim" style="font-size:12px">${esc(t.email)}</div></td><td style="max-width:240px">${esc(t.orgs || 'Sem empresa ainda')}</td><td class="nowrap">${esc(PLAN_NM[t.plan] || t.plan)}${t.cycle ? `<div class="dim" style="font-size:12px">${t.cycle}</div>` : ''}</td><td class="nowrap">${pill(snm, scls)}</td>
           <td class="nowrap">${tab === 'pedidos' ? `${esc(PLAN_NM[t.requested_plan] || t.requested_plan)}<div class="dim" style="font-size:12px">${t.requested_cycle || ''} · ${t.requested_method || ''} · ${dmyT(t.requested_at)}</div>` : dmyT(t.status === 'trial' ? t.trial_ends_at : t.current_period_end)}</td>
           <td class="r num nowrap" style="font-size:12.5px">${t.members} pessoas<br><span class="dim">${fmt(t.contacts)} contatos</span></td>
-          <td class="r nowrap">${t.plan === 'interno' ? '' : `<button class="btn xs pri" data-act="mtActivate" data-id="${t.user_id}">${t.status === 'active' ? 'Renovar' : 'Liberar plano'}</button> <button class="btn xs" data-act="mtTrial" data-id="${t.user_id}">+7 dias</button> ${t.status !== 'canceled' ? `<button class="btn xs ghost" data-act="mtSuspend" data-id="${t.user_id}">Suspender</button>` : ''}`}</td></tr>`; }).join('')}
+          <td class="r nowrap">${`<button class="btn xs pri" data-act="mtActivate" data-id="${t.user_id}">${t.status === 'active' && t.plan !== 'interno' ? 'Renovar' : 'Liberar plano'}</button> <button class="btn xs" data-act="mtTrial" data-id="${t.user_id}">+7 dias</button> ${t.status !== 'canceled' ? `<button class="btn xs ghost" data-act="mtSuspend" data-id="${t.user_id}">Suspender</button>` : ''}`}</td></tr>`; }).join('')}
       </tbody></table></div></div>` : `<div class="pn"><div class="empty">${ic('CircleCheck')}<div>${tab === 'pedidos' ? 'Nenhum pedido esperando.' : 'Nenhuma conta ainda.'}</div></div></div>`;
     } else if (tab === 'ia') body = mestreIA();
     else body = mestrePlanos();
