@@ -169,7 +169,10 @@ export async function responder({ rpc, waha, conv, waId }) {
   const trechos = palavras.length ? await rpc('ai_kb_find', { p_org: ctx.org_id, p_q: palavras.join(' or ') }).catch(() => []) : [];
 
   const sistema = roteiro ? ROTEIRO_PROMPT : ctx.system_prompt + FORMATO;
-  const dinamico = roteiro ? contexto(ctx, []).split('TRECHOS DA BASE')[0].trim() : contexto(ctx, trechos || []);
+  // conversa nova sem memória (lead novo ou teste recomeçado): não reaproveita a ficha antiga, começa do zero
+  const doZero = ctx.first_reply && !ctx.memory;
+  const base = doZero ? Object.assign({}, ctx, { contact: { entrada: (ctx.contact || {}).entrada } }) : ctx;
+  const dinamico = roteiro ? contexto(base, []).split('TRECHOS DA BASE')[0].trim() : contexto(base, trechos || []);
   const schema = roteiro ? ROTEIRO_SCHEMA : SCHEMA;
   const model = ctx.model || (ctx.provider === 'openai' ? 'gpt-6.1-sol' : 'claude-sonnet-5-5');
 

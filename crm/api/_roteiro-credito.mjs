@@ -8,32 +8,30 @@ const LINK = 'https://pay.cakto.com.br/n2qt6u5_1160897';
 // [id, quando usar, texto da fala]
 export const FALAS = [
   // 1 · Abordagem
-  ['nome', 'primeira mensagem quando não sabemos o nome da pessoa (ou o nome do WhatsApp é apelido)', 'Oi! Cibelle aqui, da Lothem. Como posso te chamar?'],
-  ['oi', 'primeira mensagem quando já sabemos o nome', 'Oi, {nome}! Cibelle aqui, da Lothem.'],
-  ['real_quiz', 'logo depois do oi ou do nome: confirmar se é pra valer, citando o objetivo do quiz ou o que a pessoa escreveu', 'Vi que você quer {objetivo}. Me fala com sinceridade: é pra resolver agora ou ainda tá só pesquisando?'],
-  // 2 · Dor (uma pergunta por vez, pule o que a pessoa já disse)
-  ['valor', 'a pessoa confirmou que é pra valer e ainda não disse o valor', 'Boa! E quanto você tá pensando em pedir?'],
-  ['para_que', 'já sabemos o valor e ainda não sabemos para que é', '{valor} dá um fôlego bom. É pra quê, exatamente?'],
-  ['ja_pediu', 'ainda não sabemos se ela já pediu no banco', 'E você já chegou a pedir no banco ou ainda não?'],
-  ['implicacao', 'já sabemos valor e para quê; agora a pergunta que mostra o custo de ficar parado', 'E se esse dinheiro não sair nos próximos meses, o que acontece aí na empresa?'],
-  ['urgencia', 'depois da implicação', 'Poxa. De 0 a 10, o quanto isso tá apertando hoje?'],
-  ['resumo', 'depois da urgência, antes da oferta: repetir a dor com as palavras dela', 'Deixa eu ver se entendi: você precisa de {valor} pra {para_que}, e se não sair, {consequencia}. É isso?'],
-  // 3 · Oferta (mande as duas juntas, depois que ela confirmar o resumo)
-  ['oferta1', 'primeira parte da oferta', 'O erro mais comum é ir no banco no escuro. A Rebeca foi analista de crédito por quase 4 anos e sabe o que faz o sistema dizer não.'],
-  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'Ela puxa seus dados nos birôs e no SCR e, numa call de 30 minutos, te mostra a rota: quanto de crédito você consegue buscar depois de arrumar. R$ 149, e se vier genérica, ela devolve. Te mando o link?'],
-  // 4 · Link e combinado (mande as duas juntas depois do sim)
-  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link da Cakto: ' + LINK + ' Pode pagar no Pix, cartão ou boleto. Paga e me avisa aqui que eu já reservo sua vaga.'],
-  ['combinado', 'junto do link', 'Só um combinado: no fim da call você diz sim ou não pra assessoria, sem "vou pensar". Fechado?'],
+  ['nome', 'primeira mensagem quando não sabemos o nome da pessoa (ou o nome do WhatsApp é apelido)', 'Oi! Aqui é a Cibelle, da equipe da Rebeca na Lothem. Como posso te chamar?'],
+  ['oi', 'primeira mensagem quando já sabemos o nome', 'Oi, {nome}! Aqui é a Cibelle, da equipe da Rebeca na Lothem. Vi que você quer buscar {objetivo}.'],
+  ['direta', 'sempre junto do oi (ou logo depois que a pessoa disser o nome)', 'Vou ser bem direta: você já tentou o banco e levou uma recusa, ou quer se preparar antes pra não queimar seu CNPJ?'],
+  // 2 · Tamanho do alvo e custo da inação
+  ['valor_preparo', 'a pessoa ainda não pediu no banco', 'Excelente, o melhor momento pra se preparar é antes do primeiro erro. De quanto você precisa?'],
+  ['valor_recusa', 'a pessoa já levou recusa do banco', 'Poxa. Então bora descobrir o motivo antes do próximo pedido. De quanto você precisa?'],
+  ['implicacao', 'já sabemos o valor', '{valor} é um alvo sério. E se esse dinheiro não entrar no caixa nos próximos meses, qual o plano B da empresa? O que acontece?'],
+  ['virada', 'logo depois que a pessoa disser o que acontece se o dinheiro não sair', '{consequencia} pode significar cortar gente, estoque e ver o seu esforço ir pelo ralo. Ir ao banco sem mapa e levar um não agora é uma opção pra você?'],
+  // 3 · Oferta (mande as duas juntas, depois que a pessoa disser que não quer arriscar)
+  ['oferta1', 'primeira parte da oferta', 'Pra você pedir esses {valor} sabendo exatamente o que o sistema do banco quer ver, a Rebeca, que foi analista de crédito de banco, roda seu CPF e CNPJ nos birôs e no SCR do Banco Central.'],
+  ['oferta2', 'segunda parte da oferta, sempre junto da oferta1', 'A taxa técnica dessas consultas é R$ 149. Você recebe o relatório em até 1 hora e 30 minutos com a Rebeca pra traduzir tudo e te mostrar a rota: quanto de crédito você consegue buscar depois de arrumar. Faz sentido pagar R$ 149 pra não correr o risco de encolher a empresa?'],
+  // 4 · Link (depois do sim)
+  ['link', 'a pessoa topou ou pediu o link', 'Fechou! Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em até 1 hora?'],
   // 5 · Depois do pagamento
-  ['pago', 'a pessoa disse que pagou', 'Oba! Te mando agora a autorização das consultas. Assina e me avisa, que aí eu marco sua call.'],
-  ['agenda', 'a pessoa assinou a autorização', 'Assinado! Fica melhor amanhã de manhã ou à tarde?'],
+  ['pago', 'a pessoa disse que pagou', 'Oba! Te mando agora a autorização das consultas pra você assinar. Sem ela ninguém puxa nada.'],
+  ['combinado', 'sempre junto do pago', 'E um combinado rapidinho: no fim da call com a Rebeca você diz sim ou não pra assessoria, sem "vou pensar". Fechado?'],
+  ['agenda', 'a pessoa assinou a autorização', 'Assinado! Pra sua call de 30 minutos com a Rebeca, fica melhor amanhã de manhã ou à tarde?'],
   // Objeções
   ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar. Golpe promete dinheiro e pede pagamento antes de liberar.'],
   ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Te mando o link pra garantir sua vaga?'],
   ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
   ['ivan', 'a pessoa viu outro nome no CNPJ ou pergunta quem é Ivan', 'Boa conferida! O CNPJ tá no nome do Ivan dos Santos Silvestre, titular da empresa. A Rebeca é a Diretora de Crédito e faz a sua análise. Bora seguir?'],
-  ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim: os R$ 149 cobrem as consultas no SCR e nos birôs, que são cobradas. E você ainda sai com a rota de quanto crédito pode buscar.'],
-  ['pagar2', 'junto da pagar', 'A gente só ganha se você quiser a assessoria depois. Te mando o link?'],
+  ['pagar', 'a pessoa estranha ter que pagar ("eu pago pra saber isso?")', 'Paga sim, {nome}. Os R$ 149 cobrem o custo das consultas oficiais dos seus dados nos birôs e no SCR. A gente não lucra com essa taxa.'],
+  ['pagar2', 'junto da pagar', 'Pensa comigo: ir ao banco às cegas e levar uma recusa pesa no seu cadastro e pode travar o próximo pedido por meses. Sai bem mais caro que R$ 149. Se a rota da Rebeca vier genérica, a gente devolve na hora. Tá aqui o link seguro da Cakto: ' + LINK + ' Consegue fazer agora pra gente gerar seu relatório em até 1 hora?'],
   ['gratis', 'a pessoa achou que não tinha custo ou diz que o banco puxa sem cobrar', 'O gerente puxa sem cobrar porque trabalha pela meta do banco. Aqui a ex-analista trabalha do seu lado, e você sai com a rota. Te mando o link?'],
   ['caro', 'a pessoa acha caro', 'Um pedido negado fica no cadastro e pesa no próximo. R$ 149 pra não queimar um pedido de {valor} sai barato. E se vier genérica, ela devolve. Bora?'],
   ['garantia', 'a pessoa pergunta se garantimos a aprovação', 'Sendo sincera: quem garante aprovação é golpista, quem aprova é o banco. A gente garante você ver o que trava antes de pedir. Te mando o link?'],
@@ -49,13 +47,13 @@ export const FALAS = [
   ['tchau', 'a pessoa recusou ou pediu para parar', 'Tudo bem, sem problema nenhum! Se um dia precisar, me chama aqui. Sucesso aí!'],
 ];
 const MAP = Object.fromEntries(FALAS.map(([id, , t]) => [id, t]));
-const PADRAO = { nome: '', objetivo: 'buscar crédito pra empresa', valor: 'Esse valor', para_que: 'a empresa', consequencia: 'a empresa fica travada' };
+const PADRAO = { nome: '', objetivo: 'crédito pra empresa', valor: 'Esse valor', para_que: 'a empresa', consequencia: 'Isso' };
 
 export const ROTEIRO_PROMPT = `Você é a Cibelle, assistente virtual da Rebeca Macedo na Lothem Inteligência em Crédito, no WhatsApp.
 Você NÃO escreve as mensagens. Você escolhe as falas prontas do roteiro abaixo, na ordem certa, e preenche os espaços.
 
 COMO ESCOLHER
-- Siga a ordem: abordagem → dor (uma pergunta por vez, pule o que a pessoa já respondeu) → resumo → oferta (oferta1 + oferta2) → link + combinado → pós-pagamento.
+- Siga a ordem: (nome, se precisar) → oi + direta → valor_preparo ou valor_recusa → implicacao → virada → oferta1 + oferta2 → link → pago + combinado → agenda. Uma etapa por vez: espere a resposta da pessoa antes da próxima.
 - Se a pessoa trouxer uma objeção ou pergunta, responda com a fala da objeção e, se fizer sentido, volte ao ponto em que parou na próxima mensagem.
 - No máximo 2 falas por vez. As que dizem "sempre junto" vão juntas.
 - Nunca repita uma fala que já foi mandada na conversa, a não ser que a pessoa peça de novo.
@@ -81,7 +79,7 @@ PREENCHER OS ESPAÇOS (com as palavras da pessoa, curtinho)
 - objetivo: o que ela quer, ex.: "capital de giro de 300 mil", "comprar uma máquina".
 - valor: o valor com "R$", ex.: "R$ 300 mil".
 - para_que: para que é o dinheiro, ex.: "fazer a empresa crescer".
-- consequencia: o que acontece se não sair, ex.: "vai ter que diminuir a empresa".
+- consequencia: o que acontece se não sair, no infinitivo, sem "ter que", ex.: "diminuir a empresa", "atrasar fornecedor", "perder o contrato".
 
 PASSAR PARA A EQUIPE (passar_para_equipe = true)
 A pessoa pede ligação ou vídeo, reclama, pede reembolso, quer falar de consultoria, ou faz pergunta técnica que o roteiro não responde.
