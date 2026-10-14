@@ -155,9 +155,18 @@ export async function responder({ rpc, waha, conv, waId }) {
   const baloes = (j.mensagens || []).map(limpar).filter(Boolean).slice(0, 3);
   const proibido = (ctx.blocked_terms || []).find((t) => baloes.some((b) => b.toLowerCase().includes(String(t).toLowerCase())));
   if (proibido || !baloes.length) {
+    if (baloes.length) await rpc('ai_bot_suggest', { p_conv: conv, p_text: baloes.join('\n\n'), p_reason: `não enviada: tinha a palavra proibida "${proibido}"` });
     await rpc('ai_bot_apply', { p_conv: conv, p_fields: j.ficha || {}, p_memory: j.memoria || null, p_handoff: true,
       p_reason: proibido ? `a resposta tinha a palavra proibida "${proibido}" e não foi enviada` : 'a IA não gerou resposta' });
     return { respondeu: false, motivo: proibido ? 'termo proibido' : 'resposta vazia' };
+  }
+
+  // Copiloto: só sugere. Supervisionado: segura a mensagem quando quer passar para a equipe. Autônomo: envia sempre.
+  const modo = ctx.op_mode || 'sup';
+  if (modo === 'cop' || (modo === 'sup' && j.passar_para_equipe)) {
+    await rpc('ai_bot_suggest', { p_conv: conv, p_text: baloes.join('\n\n'), p_reason: modo === 'cop' ? 'copiloto: revise e envie' : 'segurada para revisão: ' + (j.motivo || 'passar para a equipe') });
+    await rpc('ai_bot_apply', { p_conv: conv, p_fields: j.ficha || {}, p_memory: j.memoria || null, p_handoff: modo === 'sup', p_reason: j.motivo || '' });
+    return { respondeu: false, sugeriu: true, motivo: modo === 'cop' ? 'copiloto' : 'segurada para revisão' };
   }
 
   for (let i = 0; i < baloes.length; i++) {
