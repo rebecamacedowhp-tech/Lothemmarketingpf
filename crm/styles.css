@@ -1168,3 +1168,10 @@ html.real .demo-tag, html.real #guide { display: none !important; }
 
 .mia-bars { display: flex; align-items: flex-end; gap: 3px; height: 90px; margin-top: 8px; }
 .mia-bars span { flex: 1; min-width: 4px; background: var(--cy); border-radius: 3px 3px 0 0; opacity: .8; }
+
+/* Administração da plataforma e faixa da demonstração (admin.js) */
+.app.adm-app { grid-template-columns: minmax(0, 1fr); }
+.adm-brand { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; white-space: nowrap; padding-right: 14px; border-right: 1px solid var(--line); }
+.adm-main .top-title { min-width: 0; }
+.demo-strip { flex: none; display: flex; align-items: center; gap: 10px; padding: 8px 22px; font-size: 13px; background: var(--gold-soft); border-bottom: 1px solid var(--line); color: var(--fg); }
+@media (max-width: 640px) { .adm-brand .dim { display: none; } .demo-strip { padding: 8px 16px; flex-wrap: wrap; } }
