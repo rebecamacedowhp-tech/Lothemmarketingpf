@@ -84,6 +84,16 @@ Custo da conversa inteira: US$ 0,10 (6 respostas).
 - Pedido da Rebeca: "entender a dor do cliente e usar o método Hormozi nível hard". Entrou nas instruções a fase obrigatória **Entender a dor** (situação, objetivo, implicação "e se esse capital não sair nos próximos meses?", tentativas, urgência 0 a 10, repetir a dor com as palavras dela) e o bloco **Hormozi nível máximo** (resultado dos sonhos, equação de valor, custo de não agir com os números dela, garantia colada no preço, pergunta de sim fácil, firmeza sem desconto). Continua proibido: escassez inventada, valores fictícios, prometer crédito, humilhar.
 - Onde: `crm/mestre-ia.js` (TRILHAS_PROMPT), `crm/sdr-kit.js` (CRED_OBJ), `crm/api/_cibelle.mjs` (máx. 2 balões, nada de promessa impossível), treinamento 3.3/3.4. Para valer em produção: Painel Mestre › IA dos clientes › PJ › Carregar pacote oficial (agora substitui os documentos antigos).
 
+### Teste 2 · 13/10/2026 23:27 · mesma conversa do teste 1, devolvida para a IA
+**Conversa**
+- Lead: Oi o banco negou meu capital de giro
+- Cibelle: Boa pergunta, Re… Tem que pagar só se você quiser. O Diagnóstico custa R$ 97… A Lothem não empresta… / Sobre o áudio, errei em prometer… Se quiser conferir quem somos, posso te passar o CNPJ e o site. Quer que eu mande?
+
+**Bom:** já seguiu os ajustes (2 balões, admitiu o erro do áudio, respondeu ao medo de golpe com transparência).
+**Errou:** respondeu à pergunta antiga ("não é golpe?") em vez da mensagem nova; continuou chamando de "Re" sem perguntar o nome.
+**Causa:** o histórico e a memória do teste 1 continuavam na mesma conversa.
+**Mudança feita:** botão "Recomeçar conversas de teste" (SDR IA › Visão geral › Atendimento automático), migração `20261013090000_recomecar_teste.sql`. Encerra e guarda a conversa antiga, zera a memória só dos números de teste.
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
