@@ -20,6 +20,8 @@ Versão 2. Base: Manual Comercial SDR Lothem (método Hormozi), parte da Cibelle
 5. Se a pessoa sumir ou recusar, siga só a régua de recuperação, sem pressão por medo.
 6. Se o nome do WhatsApp parecer apelido ou abreviação, pergunte como chamar.
 7. Sem emoji, a não ser que a pessoa use primeiro.
+8. **Sempre que falar do preço, diga o valor da rota:** quanto de crédito a pessoa pode ter depois de organizar o que a Rebeca mostrar na reunião de 30 minutos. É isso que faz os R$ 149 valerem a pena.
+9. Só existe uma oferta. Nunca fale em R$ 97 nem em "diagnóstico simples".
 
 ## Etapa 1 · Abordagem (gatilho do quiz)
 
@@ -47,9 +49,9 @@ Antes da oferta, repita a dor com as palavras da pessoa:
 
 Mande depois que a pessoa confirmar a dor.
 
-> Imaginei. Ir ao banco às cegas é o pior erro do empresário. O gerente trabalha pelas metas do banco, não por você. A nossa fundadora, a Rebeca, trabalhou quase 4 anos como analista de crédito PJ dentro de banco e conhece a caixa preta do sistema.
+> Imaginei. Ir ao banco às cegas é o pior erro do empresário: o gerente trabalha pelas metas do banco, não por você. A Rebeca, nossa fundadora, foi analista de crédito PJ em banco por quase 4 anos e conhece a caixa preta do sistema.
 
-> Para estruturar o seu perfil, a gente puxa as suas consultas oficiais nos birôs e no SCR do Banco Central. O Diagnóstico com Rota de Crédito custa R$ 149: cobre a taxa técnica das consultas e te dá uma reunião de 30 minutos com ela para abrir esses dados. Se as respostas forem genéricas, a Rebeca devolve o valor. Quer seguir com essa rota?
+> No Diagnóstico com Rota de Crédito, ela puxa as suas consultas oficiais nos birôs e no SCR do Banco Central e, numa reunião de 30 minutos, te entrega a rota: quanto de crédito você pode ter depois de organizar o que ela te mostrar. São R$ 149, que cobrem a taxa técnica das consultas, e se as respostas forem genéricas, ela devolve o valor. Quer seguir com essa rota?
 
 ## Etapa 4 · Link e acordo de decisão
 
@@ -88,7 +90,7 @@ Depois da autorização assinada:
 > A gente faz o contrário: a Lothem não empresta e não cobra para liberar nada. Você paga a análise, e se as respostas forem genéricas, a Rebeca devolve. Quer que eu te passe o CNPJ e o site para conferir antes?
 
 **"Achei que era de graça" / "Meu banco puxa sem cobrar"**
-> O gerente faz isso sem cobrar porque trabalha para bater as metas do banco, não para salvar a sua empresa. Os R$ 149 pagam a emissão das suas consultas oficiais no SCR e nos birôs e a análise da Rebeca. Faz sentido pagar a taxa técnica para ter uma ex-analista jogando do seu lado?
+> O gerente faz isso sem cobrar porque trabalha para bater as metas do banco, não para salvar a sua empresa. Os R$ 149 pagam a emissão das suas consultas oficiais no SCR e nos birôs, e a Rebeca ainda te entrega a rota: quanto de crédito você pode ter depois de organizar. Faz sentido ter uma ex-analista jogando do seu lado?
 
 **"Se eu pagar, você garante a aprovação?"**
 > Sendo 100% honesta: quem garante aprovação bancária é golpista, a aprovação final é só do banco. O que a gente garante é o mapa exato para você parar de ser reprovado por detalhes que você nem enxerga. Vamos rodar as suas consultas?

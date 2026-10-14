@@ -16,7 +16,7 @@ const TEMPLATES = {
   credito_pj: {
     funnel: 'Funil PJ',
     stages: [['Novo contato', 5, 'open'], ['Qualificado', 15, 'open'], ['Diagnóstico pago', 40, 'open'], ['Autorização assinada', 50, 'open'], ['Relatório entregue', 60, 'open'], ['Reunião feita', 70, 'open'], ['Proposta enviada', 80, 'open'], ['Fechado', 100, 'won'], ['Perdido', 0, 'lost']],
-    products: [{ nm: 'Diagnóstico Completo', price: 97 }, { nm: 'Diagnóstico + Rota de Crédito', price: 149 }, { nm: 'Diagnóstico PF (CPF do sócio)', price: 67 }, { nm: 'Rating PJ', price: 0 }, { nm: 'Consultoria', price: 3897 }],
+    products: [{ nm: 'Diagnóstico com Rota de Crédito', price: 149 }, { nm: 'Consultoria de crédito', price: 0 }],
     services: ['Contabilidade: balanço e DRE', 'Contabilidade: regularização fiscal', 'Contabilidade: organização do faturamento', 'Rating PJ', 'Limpa nome (CNPJ)', 'Limpa nome (CPF do sócio)', 'Consultoria de crédito'],
   },
   credito_pf: {

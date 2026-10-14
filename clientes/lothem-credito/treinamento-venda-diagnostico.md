@@ -1,3 +1,5 @@
+> **Arquivado em 14/10/2026.** Substituído pelo `manual-cibelle-v2.md` (oferta única de R$ 149). Os preços abaixo estão desatualizados.
+
 # Treinamento de vendas do Diagnóstico · Cibelle
 
 Versão 13/10/2026. Junta a base oficial da Cibelle (`base-sdr-ia.md`), o prompt SDR v2 (`SDR-Lothem-Vendas-Diagnostico.md`), os princípios de oferta do material "Clone do Hormozi" e as falas aprovadas da aula de SDR do Luiz. Quando este treinamento e a base discordarem, vale a base, e a Cibelle pergunta para a Rebeca.

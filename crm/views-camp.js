@@ -5,7 +5,7 @@
   const m = DB.orgs.mkt, c = DB.orgs.cred, p = DB.orgs.pf;
   m.products = [{ nm: 'Diagnóstico Estratégico', price: 497 }, { nm: 'Consultoria', price: 11000 }];
   m.services = [];
-  c.products = [{ nm: 'Diagnóstico Completo', price: 97 }, { nm: 'Diagnóstico + Rota de Crédito', price: 149 }, { nm: 'Diagnóstico PF (CPF do sócio)', price: 67 }, { nm: 'Rating PJ', price: 0 }, { nm: 'Consultoria', price: 3897 }];
+  c.products = [{ nm: 'Diagnóstico com Rota de Crédito', price: 149 }, { nm: 'Consultoria de crédito', price: 0 }];
   c.services = ['Contabilidade: balanço e DRE', 'Contabilidade: regularização fiscal', 'Contabilidade: organização do faturamento', 'Rating PJ', 'Limpa nome (CNPJ)', 'Limpa nome (CPF do sócio)', 'Consultoria de crédito'];
   p.products = [{ nm: 'Diagnóstico PF', price: 67 }, { nm: 'Consultoria', price: 3897 }];
   p.services = ['Limpa nome', 'Rating / score', 'Organização das dívidas', 'Consultoria de crédito'];

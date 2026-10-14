@@ -10,7 +10,7 @@
 
 ## Oferta atual (base oficial da SDR, 2026-10-09)
 **Fonte oficial:** `base-sdr-ia.md` (prompt e base de conhecimento da SDR IA Cibelle). Ela substitui o Raio-X abaixo.
-- Diagnóstico Completo R$ 97 (cheio R$ 149) · Diagnóstico + Rota de Crédito R$ 149 (cheio R$ 297) · Diagnóstico PF do sócio R$ 67 (cheio R$ 97), todos pelo link da Cakto (Pix, cartão ou boleto).
+- Oferta única (desde 14/10/2026): Diagnóstico com Rota de Crédito, R$ 149 (Cakto n2qt6u5_1160897). A rota mostra quanto de crédito a empresa pode ter depois de organizar o que a Rebeca apontar na reunião de 30 minutos.
 - Relatório em PDF em até 1 hora depois da autorização assinada (horário comercial) + 30 min com a Rebeca. Garantia de devolução se o relatório não mostrar nada novo.
 - Rebeca Macedo: Diretora de Crédito (nunca "CEO"), quase 4 anos como analista de crédito em banco. Empresa com 6 anos de mercado, Sumaré/Campinas e remoto.
 - SDR IA: **Cibelle**, "da equipe da Rebeca, da Lothem".
