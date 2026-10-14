@@ -72,6 +72,8 @@ Cada especialista tem 5 referências mundiais e 5 brasileiras nas seções "Refe
 | 16 | Operações & QA | `ops-qa` | **sempre**, como último filtro de qualquer entrega importante |
 | 17 | SDR (pré-vendas outbound) | `sdr` | transformar leads do Prospector em reunião: cadência, abordagem, cold call, qualificação, handoff |
 | 18 | Closer | `closer` | reunião de venda, conta de valor, preço, objeções, fechamento, follow-up pós-reunião, indicações |
+| 19 | Arquiteto de Ofertas (método Hormozi) | `hormozi-ofertas` | construir ou revisar oferta, valor percebido, garantia, bônus, nome da oferta; treinar a Cibelle |
+| 20 | Script Persuasivo | `script-persuasivo` | falas de venda prontas (WhatsApp, ligação, áudio), objeções, respostas aprovadas da Cibelle; trabalha junto com o 19 |
 
 ### Equipes típicas (referência, não regra fixa)
 
@@ -88,6 +90,7 @@ Cada especialista tem 5 referências mundiais e 5 brasileiras nas seções "Refe
 - **Reunião de venda / fechar cliente** → 18 + 12 + 15 + 16
 - **Máquina outbound completa** → 10 → 17 → 18 → 15 + 16
 - **Relatório mensal** → 14 + 09 + 02 + 16
+- **Treinar a SDR IA (Cibelle)** → 19 + 20 + 17 + 16 (registrar no `diario-treino-cibelle.md`)
 
 ---
 
