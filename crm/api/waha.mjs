@@ -37,7 +37,8 @@ function validHmac(raw, header) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-const digitsOf = (jid) => (/@(c\.us|s\.whatsapp\.net)$/.test(jid || '') ? String(jid).split('@')[0].replace(/\D/g, '') : '');
+// número do WhatsApp sem o código do aparelho: "5519999990000:10@s.whatsapp.net" vira "5519999990000"
+const digitsOf = (jid) => (/@(c\.us|s\.whatsapp\.net)$/.test(jid || '') ? String(jid).split('@')[0].split(':')[0].replace(/\D/g, '') : '');
 
 async function lidParaNumero(session, lid) {
   try {
@@ -74,7 +75,7 @@ async function webhook(request) {
   if (conv && !fromMe && p.body) {
     try { ia = await responder({ rpc, waha, conv, waId }); } catch (e) { console.error('motor da IA', e); ia = { respondeu: false, motivo: 'erro: ' + String(e.message || e).slice(0, 200) }; }
   }
-  console.log('webhook', JSON.stringify({ conversa: conv, deMim: fromMe, temTexto: !!p.body, ia }));
+  console.log('webhook', JSON.stringify({ conversa: conv, deMim: fromMe, temTexto: !!p.body, tipoChat: String(chat).split('@')[1], final: phone ? phone.slice(-4) : '', digitos: phone ? phone.length : 0, altTipo: String(alt).split('@')[1] || '', ia }));
   return json(200, { ok: true, conversa: conv, ia });
 }
 
