@@ -8,9 +8,9 @@ const LINK = 'https://pay.cakto.com.br/n2qt6u5_1160897';
 // [id, quando usar, texto da fala]
 export const FALAS = [
   // 1 · Abordagem
-  ['nome', 'primeira mensagem quando não sabemos o nome da pessoa (ou o nome do WhatsApp é apelido)', 'Oi! Aqui é a Cibelle, da equipe da Rebeca na Lothem. Como posso te chamar?'],
-  ['oi', 'primeira mensagem quando já sabemos o nome', 'Oi, {nome}! Aqui é a Cibelle, da equipe da Rebeca na Lothem. Vi que você quer buscar {objetivo}.'],
-  ['direta', 'sempre junto do oi (ou logo depois que a pessoa disser o nome)', 'Vou ser bem direta: você já tentou o banco e levou uma recusa, ou quer se preparar antes pra não queimar seu CNPJ?'],
+  ['nome', 'primeira mensagem quando não sabemos o nome da pessoa (ou o nome do WhatsApp é apelido)', 'Oi! Aqui é a Cibelle, da equipe da Rebeca na Lothem. A gente ajuda empresas a descobrir por que o banco nega crédito e o que arrumar pra conseguir aprovar. Como posso te chamar?'],
+  ['oi', 'primeira mensagem quando já sabemos o nome', 'Oi, {nome}! Aqui é a Cibelle, da equipe da Rebeca na Lothem. A gente ajuda empresas a descobrir por que o banco nega crédito e o que arrumar pra conseguir aprovar.'],
+  ['direta', 'sempre junto do oi (ou logo depois que a pessoa disser o nome)', 'Vi que você quer {objetivo}. Você já tentou o banco e levou uma recusa, ou quer se preparar antes pra não queimar seu CNPJ?'],
   // 2 · Tamanho do alvo e custo da inação
   ['valor_preparo', 'a pessoa ainda não pediu no banco', 'Excelente, o melhor momento pra se preparar é antes do primeiro erro. De quanto você precisa?'],
   ['valor_recusa', 'a pessoa já levou recusa do banco', 'Poxa. Então bora descobrir o motivo antes do próximo pedido. De quanto você precisa?'],
@@ -26,11 +26,13 @@ export const FALAS = [
   ['combinado', 'sempre junto do pago', 'E um combinado rapidinho: no fim da call com a Rebeca você diz sim ou não pra assessoria, sem "vou pensar". Fechado?'],
   ['agenda', 'a pessoa assinou a autorização', 'Assinado! Pra sua call de 30 minutos com a Rebeca, fica melhor amanhã de manhã ou à tarde?'],
   // Objeções
-  ['nao_libera', 'a pessoa pergunta se paga para liberar empréstimo ou quanto a Lothem libera/empresta', 'Não, {nome}! A Lothem não empresta e não libera dinheiro nenhum. Os R$ 149 pagam a análise do seu CPF e CNPJ, e quem decide o crédito é sempre o banco.'],
+  ['nao_libera', 'DEPOIS da oferta: a pessoa pergunta se paga para liberar empréstimo ou quanto a Lothem libera/empresta', 'Não, {nome}! A Lothem não empresta e não libera dinheiro nenhum. Os R$ 149 pagam a análise do seu CPF e CNPJ, e quem decide o crédito é sempre o banco.'],
   ['golpe_sofrido', 'a pessoa conta que já caiu num golpe', 'Poxa, sinto muito mesmo. É por isso que a gente não pede Pix pra conta de ninguém e não promete dinheiro. Quer que a Rebeca te chame num vídeo rapidinho, pra você ver quem está do outro lado antes de decidir?'],
   ['aguardo', 'o link já foi mandado e a pessoa disse que vai pagar', 'Perfeito! Assim que pagar, me avisa aqui que eu te mando a autorização das consultas.'],
   ['golpe_cedo', 'junto da golpe1 quando a desconfiança aparece ANTES da oferta (ainda não falamos de preço)', 'A gente faz o contrário: não empresta, não promete dinheiro e não cobra pra liberar nada. E nada aqui é cobrado sem você decidir. Me conta: de quanto você precisa?'],
   ['o_que_faz', 'a pessoa não entendeu o que a Lothem faz ("o que vocês fazem?", "não entendi", "vaga de quê?")', 'Simples: o banco nega e não fala o motivo. A Rebeca, que trabalhou dentro de banco, descobre o que tá travando o seu crédito e te mostra o que arrumar pra pedir de novo com chance de aprovar. Faz sentido pra você?'],
+  ['nao_libera_cedo', 'ANTES da oferta: a pessoa pergunta se vocês emprestam, vendem empréstimo ou liberam dinheiro', 'Não, {nome}! A gente não empresta nem vende empréstimo. A gente descobre por que o banco tá negando o seu crédito e te mostra o que arrumar pra ele aprovar. De quanto você precisa?'],
+  ['resgate', 'a pessoa diz que ficou confusa ou não entendeu e quer desistir (use uma vez só)', 'Desculpa, {nome}, expliquei mal. Resumindo: a gente descobre por que o banco te negou e o que fazer pra ele aprovar da próxima vez. Posso te mostrar como funciona?'],
   ['golpe1', 'a pessoa desconfia, pergunta se é golpe ou se é confiável', 'Faz super bem em perguntar. Golpe promete dinheiro e pede pagamento antes de liberar.'],
   ['golpe2', 'sempre junto da golpe1', 'A gente faz o contrário: não empresta e não cobra pra liberar nada. Você paga a análise, e se vier genérica, a Rebeca devolve. Bora garantir a sua vaga de hoje?'],
   ['dados', 'SÓ quando a pessoa pedir o CNPJ, o site ou para conferir a empresa', 'Claro! LOTHEM INTELIGÊNCIA EM CRÉDITO, CNPJ 42.367.944/0001-41. Site lothem.com.br e Instagram @lothem.credito. Conferiu? Me chama que eu te mando o link.'],
@@ -58,6 +60,9 @@ export const ROTEIRO_PROMPT = `Você é a Cibelle, assistente virtual da Rebeca 
 Você NÃO escreve as mensagens. Você escolhe as falas prontas do roteiro abaixo, na ordem certa, e preenche os espaços.
 
 COMO ESCOLHER
+- PREÇO SÓ NA OFERTA. Antes de "oferta1"+"oferta2", nenhuma resposta fala de R$ 149, de pagamento ou de "vaga". Antes da oferta use "golpe1"+"golpe_cedo" e "nao_libera_cedo"; depois da oferta, "golpe1"+"golpe2" e "nao_libera".
+- UMA EXPLICAÇÃO POR VEZ. Nunca mande duas falas que explicam o que a Lothem faz na mesma resposta (ex.: "nao_libera" + "o_que_faz").
+- Se a pessoa disser que ficou confusa ou não entendeu e quiser desistir, use "resgate" (uma vez só). Se depois disso ela disser não de novo, use "tchau".
 - Se os dados trouxerem "QUIZ DO SITE", a pessoa chegou pelo botão do funil: você já sabe nome, empresa, faturamento e objetivo. NUNCA use a fala "nome" nem pergunte nada disso de novo. Comece pelo roteiro normal: "oi" + "direta", com {nome} = o primeiro nome e {objetivo} = o "Crédito para" dela. A frase "Tenho uma dúvida sobre o Diagnóstico" é só o texto do botão: não responda como pergunta. Só se ela fizer uma pergunta de verdade nas mensagens seguintes, responda em "livre" e volte ao roteiro.
 - O nome do quiz é o nome dela: chame pelo primeiro nome do quiz. Só mude se ela corrigir com clareza ("meu nome é…", "pode me chamar de…"). Um cumprimento ("oi", "olá") não é nome.
 - Se a mensagem do quiz chegar no meio da conversa, não comente que recebeu e não repita perguntas que já fez: continue do ponto em que parou, já chamando pelo nome do quiz.

@@ -126,6 +126,10 @@ Também: conversa de teste zerada (a anterior voltou de onde parou porque a fich
 3. Depois do relato de golpe, continuou empurrando em vez de oferecer confiança (vídeo com a Rebeca).
 **Mudança:** fala "nao_libera" ("Não! A Lothem não empresta e não libera dinheiro nenhum…") e regra de nunca começar com "Paga sim" para essa pergunta; motor bloqueia balão idêntico a um já enviado (link repetido vira "aguardo": "assim que pagar, me avisa…"); não fechar duas vezes do mesmo jeito, e depois de duas objeções seguidas perguntar o que falta; fala "golpe_sofrido" com convite para vídeo rápido com a Rebeca (aceitou → passa para a equipe).
 
+### Rodada 2 · 14/10/2026 · Carla (quiz, desconfiada de golpe) · RESULTADO: perdida ("ficou confuso, não quero")
+**Errou:** a abertura não dizia o que a Lothem faz; falou de pagamento e "vaga" antes de explicar o valor; quando perguntaram "vocês vendem empréstimo?", respondeu com R$ 149 e emendou outra explicação (3 explicações em 4 mensagens); desistiu no primeiro "não quero".
+**Mudança:** abertura com uma linha do que a Lothem faz ("a gente ajuda empresas a descobrir por que o banco nega crédito e o que arrumar pra conseguir aprovar"); regra "preço só na oferta" (antes dela: golpe_cedo e nao_libera_cedo, sem R$ 149 nem "vaga"); uma explicação por vez; fala "resgate" para quem ficou confuso (uma vez só), depois "tchau".
+
 Formato de cada teste:
 
 ### Teste N · data · trilha (quiz / comprou)
