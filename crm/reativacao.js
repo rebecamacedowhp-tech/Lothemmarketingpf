@@ -71,7 +71,7 @@ VIEWS.reativacao = {
       const passo = reatPasso(r), dias = Math.max(2, Math.floor((Date.now() - new Date(r.parado_desde)) / 864e5));
       return `<section class="pn"><div class="pn-b col" style="gap:10px">
         <div class="row between" style="gap:10px;flex-wrap:wrap"><div><b>${esc(r.nome || 'Sem nome')}</b>${r.objetivo ? ` <span class="dim">· ${esc(r.objetivo)}</span>` : ''}</div>
-          <div class="row" style="gap:6px">${pill('Parado há ' + dias + ' dias', dias > 14 ? 'bad' : 'gold')}${pill('Passo ' + (passo + 1) + ' de 5 · ' + REAT_PASSOS[passo], 'cy')}</div></div>
+          <div class="row" style="gap:6px">${(r.reactivation || {}).etiqueta ? pill(r.reactivation.etiqueta.replace(/‎/g, ''), '', 'Tag') : ''}${pill('Parado há ' + dias + ' dias', dias > 14 ? 'bad' : 'gold')}${pill('Passo ' + (passo + 1) + ' de 5 · ' + REAT_PASSOS[passo], 'cy')}</div></div>
         ${r.ultima_lead ? `<div class="dim" style="font-size:12.5px">Última do lead: “${esc(r.ultima_lead)}”</div>` : ''}
         <textarea class="ta" id="reat-${r.conversation_id}" rows="3" aria-label="Mensagem para ${esc(r.nome || 'o lead')}">${esc(reatTexto(r))}</textarea>
         <div class="row between" style="gap:8px;flex-wrap:wrap">
@@ -82,7 +82,7 @@ VIEWS.reativacao = {
       </div></section>`;
     };
     return `<div class="page-h"><div><h2>Reativação</h2><p>Leads parados há 2 dias ou mais. A mensagem já vem pronta, e você pode editar antes de enviar.</p></div>
-        <div class="row" style="gap:8px">${pill(hoje + ' de ' + REAT_LIMITE + ' enviadas hoje', cheio ? 'bad' : 'ok', 'Send')}<button class="btn sm ghost" data-act="reatAtualizar">${ic('RefreshCw', 'xs')}Atualizar</button></div></div>
+        <div class="row" style="gap:8px">${pill(hoje + ' de ' + REAT_LIMITE + ' enviadas hoje', cheio ? 'bad' : 'ok', 'Send')}<button class="btn sm" data-act="reatImportar">${ic('Download', 'xs')}Importar do WhatsApp</button><button class="btn sm ghost" data-act="reatAtualizar">${ic('RefreshCw', 'xs')}Atualizar</button></div></div>
       ${REAT.err ? `<div class="row top-a" style="gap:8px;font-size:13px;padding:10px 12px;border-radius:9px;background:var(--warn-soft);margin-bottom:14px">${ic('TriangleAlert', 'sm')}<span>${esc(REAT.err)}</span></div>` : ''}
       <div class="tabs" role="tablist">${REAT_ABAS.map(([id, nm, icn]) => { const n = cont(id); return `<button class="${tab === id ? 'on' : ''}" data-act="tab" data-v="reativacao:${id}" role="tab" aria-selected="${tab === id}">${ic(icn, 'sm')}${nm}${n ? `<span class="n">${n}</span>` : ''}</button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin:4px 0 14px">${aba[3]} Quem responder sai da lista e volta para o atendimento normal.</p>
@@ -117,4 +117,51 @@ ACT.reatEnviar = async (el) => {
   await REAL.sb.rpc('reativacao_marcar', { p_conversation: id, p_dados: dados });
   REAT.rows = REAT.rows.filter((x) => x.conversation_id !== id); REAT.extra = (REAT.extra || 0) + 1;
   toast('Enviada', (row.nome || 'Lead') + ' · ' + REAT_PASSOS[dados.passo - 1] + '. A próxima aparece em 2 dias se não responder.', '', 'Send'); rerender();
+};
+
+/* ---------- importar as conversas antigas do WhatsApp, por etiqueta ---------- */
+const REAT_FORA = /favoritos|grupos|não lidas|meekah/i; // etiquetas que não são lead
+const REAT_IMP = { etiquetas: null, rodando: false };
+async function reatApi(op, dados) {
+  const { data } = await REAL.sb.auth.getSession();
+  const r = await fetch('/api/waha?op=' + op, { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + (data.session && data.session.access_token) }, body: JSON.stringify(Object.assign({ org: S.org }, dados)) });
+  const out = await r.json().catch(() => ({}));
+  if (!r.ok || !out.ok) throw new Error(out.erro || 'o servidor respondeu ' + r.status);
+  return out;
+}
+ACT.reatImportar = async () => {
+  openModal(modalHead('Trazer os leads do WhatsApp', 'Lendo as etiquetas do seu WhatsApp…') + '<div class="modal-b" id="reatImp"><div class="dim">Um instante.</div></div>');
+  try {
+    const out = await reatApi('etiquetas', {});
+    REAT_IMP.etiquetas = out.etiquetas.filter((e) => e.conversas > 0);
+  } catch (e) { $('#reatImp').innerHTML = `<div class="bad">${esc(e.message)}</div>`; return; }
+  $('#reatImp').outerHTML = `<div class="modal-b col" id="reatImp" style="gap:12px">
+      <p class="muted" style="font-size:13px">Marque as etiquetas com leads. A IA lê cada conversa, preenche a ficha e a conversa entra no CRM. Nenhuma mensagem é enviada.</p>
+      <div class="col" style="gap:8px">${REAT_IMP.etiquetas.map((e, i) => `<label class="row" style="gap:10px;font-size:14px"><input type="checkbox" id="ri-${i}" ${REAT_FORA.test(e.nome) ? '' : 'checked'}><span class="dot" style="background:${esc(e.cor || '#999')}"></span><span class="grow">${esc(e.nome.replace(/\u200e/g, ''))}</span><span class="dim num">${e.conversas}</span></label>`).join('')}</div>
+      <div id="reatProg" class="dim" style="font-size:13px"></div></div>
+    <div class="modal-f"><button class="btn ghost" data-act="close">Fechar</button><button class="btn pri" id="reatGo" data-act="reatImportarGo">${ic('Download', 'xs')}Importar</button></div>`;
+};
+ACT.reatImportarGo = async () => {
+  if (REAT_IMP.rodando) return;
+  const escolhidas = REAT_IMP.etiquetas.filter((e, i) => { const el = $('#ri-' + i); return el && el.checked; });
+  if (!escolhidas.length) return;
+  REAT_IMP.rodando = true; const btn = $('#reatGo'); if (btn) btn.disabled = true;
+  const total = escolhidas.reduce((a, e) => a + e.conversas, 0);
+  let feitas = 0, erros = 0;
+  const prog = (t) => { const el = $('#reatProg'); if (el) el.innerHTML = t; };
+  for (const e of escolhidas) {
+    let de = 0;
+    while (de !== null) {
+      prog(`Importando <b>${esc(e.nome)}</b> · ${feitas} de ${total} conversas${erros ? ' · ' + erros + ' com erro' : ''}`);
+      try {
+        const out = await reatApi('importar', { etiqueta: e.id, nome: e.nome.replace(/\u200e/g, ''), de, qtd: 5 });
+        feitas += out.resultados.length; erros += out.resultados.filter((r) => r.erro).length; de = out.proximo;
+      } catch (err) { erros += 5; feitas += 5; de = de + 5 < e.conversas ? de + 5 : null; }
+    }
+  }
+  REAT_IMP.rodando = false;
+  prog(`<span class="ok">${ic('CircleCheck', 'xs')} Pronto: ${feitas - erros} conversas no CRM.</span>${erros ? ' ' + erros + ' deram erro (pode importar de novo, nada se repete).' : ''}`);
+  if (btn) btn.disabled = false;
+  REAT.rows = null; reatCarregar();
+  if (typeof waLoad === 'function') waLoad(true);
 };

@@ -94,7 +94,7 @@ function historico(msgs) {
   return out;
 }
 
-async function chamarClaude(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
+export async function chamarClaude(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'x-api-key': ctx.api_key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -114,7 +114,7 @@ async function chamarClaude(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   return { json: JSON.parse(txt), uso };
 }
 
-async function chamarGPT(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
+export async function chamarGPT(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   const r = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { authorization: 'Bearer ' + ctx.api_key, 'content-type': 'application/json' },
@@ -133,7 +133,7 @@ async function chamarGPT(ctx, sistema, dinamico, msgs, schema = SCHEMA) {
   return { json: JSON.parse(msg.content), uso };
 }
 
-function custo(model, uso) {
+export function custo(model, uso) {
   const [pi, po] = PRICE[model] || [4, 20];
   // cache: leitura sai a 10% da entrada; gravação no cache da Anthropic sai a 125%
   return ((uso.in - uso.creation) * pi + uso.creation * pi * 1.25 + uso.cache * pi * 0.1 + uso.out * po) / 1e6;

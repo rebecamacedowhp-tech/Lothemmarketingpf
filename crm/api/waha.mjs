@@ -4,7 +4,7 @@
 // Segredos ficam nas variáveis da Vercel: WAHA_URL, WAHA_API_KEY, WAHA_WEBHOOK_HMAC, SUPABASE_SERVICE_ROLE_KEY.
 
 import crypto from 'node:crypto';
-import { responder } from './_cibelle.mjs';
+import { responder, chamarClaude, chamarGPT, custo } from './_cibelle.mjs';
 
 const SB_URL = 'https://djjodusiwteuembfvpvt.supabase.co';
 const SB_PUBLIC = 'sb_publishable_CO5CII13uu1sQ6kY2tjLuA_RO2RC2IO';
@@ -152,6 +152,65 @@ async function etiquetas(request) {
   return json(200, { ok: true, sessao: s, etiquetas: out, historico });
 }
 
+// importa um pedaço das conversas de uma etiqueta: histórico da WAHA → IA preenche a ficha → banco
+const FICHA_SCHEMA = {
+  type: 'object', additionalProperties: false,
+  required: ['nome', 'empresa', 'segmento', 'cidade', 'credito_pretendido', 'resumo', 'situacao'],
+  properties: {
+    nome: { type: 'string', description: 'Nome que a pessoa disse na conversa. Vazio se ela não disse.' },
+    empresa: { type: 'string' }, segmento: { type: 'string' }, cidade: { type: 'string' },
+    credito_pretendido: { type: 'string', description: 'Curto, ex.: "capital de giro" ou "R$ 80 mil · capital de giro". Vazio se não falou.' },
+    resumo: { type: 'string', description: 'Uma ou duas frases: o que a pessoa queria, onde a conversa parou e o que falta.' },
+    situacao: { type: 'string', enum: ['interessado', 'sem_interesse', 'comprou', 'sem_info'] },
+  },
+};
+const FICHA_PROMPT = `Você lê uma conversa antiga de WhatsApp entre a Lothem Crédito (consultoria que prepara empresas para conseguir crédito no banco) e um lead.
+Preencha a ficha só com o que está escrito na conversa. Não invente: campo sem informação fica vazio.
+"situacao": comprou = pagou o diagnóstico ou fechou a consultoria; sem_interesse = disse claramente que não quer; interessado = mostrou interesse e a conversa parou; sem_info = não dá para saber.`;
+
+async function importar(request) {
+  const token = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!token) return json(401, { ok: false, erro: 'faça login' });
+  let body; try { body = await request.json(); } catch { return json(400, { ok: false }); }
+  const s = await sessaoDaOrg(token, body.org);
+  if (!s) return json(400, { ok: false, erro: 'esta organização não tem WhatsApp conectado' });
+  const de = Math.max(0, Number(body.de) || 0), qtd = Math.min(8, Math.max(1, Number(body.qtd) || 5));
+  const chats = (await wahaGet(`${encodeURIComponent(s)}/labels/${encodeURIComponent(body.etiqueta)}/chats`)) || [];
+  const fatia = chats.slice(de, de + qtd);
+  const keyRows = await rpc('ai_key_for_server', { p_org: body.org }).catch(() => []);
+  const ia = Array.isArray(keyRows) ? keyRows[0] : keyRows;
+  const res = await Promise.all(fatia.map(async (c) => {
+    const chatId = (c && c.id && (c.id._serialized || c.id)) || c;
+    if (typeof chatId !== 'string' || /@g\.us$|@newsletter$|status@broadcast/.test(chatId)) return { pulado: true };
+    try {
+      const raw = (await wahaGet(`${encodeURIComponent(s)}/chats/${encodeURIComponent(chatId)}/messages?limit=100&downloadMedia=false`)) || [];
+      const msgs = raw.map((m) => ({
+        wa_id: typeof m.id === 'object' && m.id ? m.id._serialized || m.id.id : m.id,
+        from_me: !!m.fromMe, body: m.body || (m.hasMedia ? '[mídia]' : ''), ts: new Date(Number(m.timestamp || 0) * 1000).toISOString(),
+        nome: m.fromMe ? '' : (m._data && (m._data.Info && m._data.Info.PushName || m._data.notifyName)) || m.notifyName || '',
+      })).filter((m) => m.wa_id && m.body).sort((a, b) => (a.ts < b.ts ? -1 : 1));
+      if (!msgs.length) return { pulado: true };
+      let phone = digitsOf(chatId);
+      if (!phone && /@lid$/.test(chatId)) phone = await lidParaNumero(s, chatId);
+      const perfil = c.name || (msgs.find((m) => m.nome) || {}).nome || '';
+      let ficha = {};
+      if (ia && ia.api_key) {
+        const conversa = msgs.slice(-40).map((m) => (m.from_me ? 'Lothem: ' : 'Lead: ') + m.body.slice(0, 400)).join('\n').slice(-6000);
+        const ctx = { api_key: ia.api_key, model: ia.model };
+        const out = ia.provider === 'openai'
+          ? await chamarGPT(ctx, FICHA_PROMPT, 'Nome no perfil do WhatsApp: ' + (perfil || '—'), [{ role: 'user', content: conversa }], FICHA_SCHEMA)
+          : await chamarClaude(ctx, FICHA_PROMPT, 'Nome no perfil do WhatsApp: ' + (perfil || '—'), [{ role: 'user', content: conversa }], FICHA_SCHEMA);
+        if (out.json) ficha = out.json;
+        await rpc('ai_bot_usage', { p_org: body.org, p_model: ia.model, p_in: out.uso.in, p_out: out.uso.out, p_cache: out.uso.cache, p_cost: Number(custo(ia.model, out.uso).toFixed(4)), p_new_conv: false }).catch(() => {});
+      }
+      await rpc('wa_import_chat', { p_session: s, p_chat_id: chatId, p_phone: phone || null, p_name: perfil || null, p_label: body.nome || String(body.etiqueta),
+        p_msgs: msgs.map(({ nome, ...m }) => m), p_ficha: ficha });
+      return { ok: true, nome: ficha.nome || perfil || '', mensagens: msgs.length, situacao: ficha.situacao || '' };
+    } catch (e) { console.error('importar', chatId, e); return { erro: String(e.message || e).slice(0, 160) }; }
+  }));
+  return json(200, { ok: true, total: chats.length, de, proximo: de + fatia.length < chats.length ? de + fatia.length : null, resultados: res });
+}
+
 export default {
   async fetch(request) {
     if (request.method !== 'POST') return json(405, { ok: false });
@@ -160,6 +219,7 @@ export default {
       if (op === 'webhook') return await webhook(request);
       if (op === 'send') return await send(request);
       if (op === 'etiquetas') return await etiquetas(request);
+      if (op === 'importar') return await importar(request);
       return json(404, { ok: false });
     } catch (e) {
       console.error(e);
