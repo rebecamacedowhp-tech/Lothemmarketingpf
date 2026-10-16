@@ -111,6 +111,47 @@ async function send(request) {
   return json(200, { ok: true, wa_id: waId || null });
 }
 
+/* ---------- importar leads do WhatsApp (etiquetas) ---------- */
+async function wahaGet(path) {
+  const r = await fetch(`${env('WAHA_URL').replace(/\/$/, '')}/api/${path}`, { headers: { 'x-api-key': env('WAHA_API_KEY') } });
+  const out = await r.json().catch(() => null);
+  if (!r.ok) throw new Error('WAHA ' + path.split('?')[0] + ': ' + ((out && (out.message || out.error)) || r.status));
+  return out;
+}
+// sessão da WAHA da organização, conferindo pelo login da pessoa (o banco só devolve se ela for da organização)
+async function sessaoDaOrg(token, org) {
+  const r = await fetch(`${SB_URL}/rest/v1/whatsapp_instances?select=external_id&kind=eq.nao_oficial&org_id=eq.${encodeURIComponent(org)}&limit=1`, {
+    headers: { apikey: SB_PUBLIC, authorization: `Bearer ${token}` },
+  });
+  const rows = await r.json().catch(() => []);
+  return Array.isArray(rows) && rows[0] ? rows[0].external_id : null;
+}
+// lista as etiquetas do WhatsApp Business com quantas conversas cada uma tem, e testa se o histórico vem
+async function etiquetas(request) {
+  const token = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!token) return json(401, { ok: false, erro: 'faça login' });
+  let body; try { body = await request.json(); } catch { return json(400, { ok: false }); }
+  const s = await sessaoDaOrg(token, body.org);
+  if (!s) return json(400, { ok: false, erro: 'esta organização não tem WhatsApp conectado' });
+  let labels;
+  try { labels = await wahaGet(`${encodeURIComponent(s)}/labels`); } catch (e) { return json(200, { ok: false, erro: 'etiquetas: ' + e.message }); }
+  const out = [];
+  let historico = null;
+  for (const l of labels || []) {
+    let chats = [];
+    try { chats = await wahaGet(`${encodeURIComponent(s)}/labels/${encodeURIComponent(l.id)}/chats`); } catch (e) { chats = []; }
+    out.push({ id: l.id, nome: l.name, cor: l.colorHex || l.color, conversas: Array.isArray(chats) ? chats.length : 0 });
+    if (!historico && Array.isArray(chats) && chats[0]) {
+      const chatId = chats[0].id && (chats[0].id._serialized || chats[0].id) || chats[0];
+      try {
+        const msgs = await wahaGet(`${encodeURIComponent(s)}/chats/${encodeURIComponent(chatId)}/messages?limit=20&downloadMedia=false`);
+        historico = { mensagens: Array.isArray(msgs) ? msgs.length : 0, comTexto: Array.isArray(msgs) ? msgs.filter((m) => m.body).length : 0 };
+      } catch (e) { historico = { erro: e.message }; }
+    }
+  }
+  return json(200, { ok: true, sessao: s, etiquetas: out, historico });
+}
+
 export default {
   async fetch(request) {
     if (request.method !== 'POST') return json(405, { ok: false });
@@ -118,6 +159,7 @@ export default {
     try {
       if (op === 'webhook') return await webhook(request);
       if (op === 'send') return await send(request);
+      if (op === 'etiquetas') return await etiquetas(request);
       return json(404, { ok: false });
     } catch (e) {
       console.error(e);
