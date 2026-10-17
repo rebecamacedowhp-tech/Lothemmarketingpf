@@ -25,7 +25,7 @@ Só mande o balão 2 depois que o cliente responder.
 Mande só depois que o cliente disser que o problema é real.
 
 **Balão 1**
-> Imaginei. Ir ao banco às cegas é o pior erro do empresário. O gerente trabalha pelas metas do banco, não por você. A nossa fundadora, a Rebeca, trabalhou quase 4 anos como analista de crédito PJ dentro de banco e conhece a caixa preta do sistema.
+> Imaginei. Ir ao banco às cegas é o pior erro do empresário. O gerente trabalha pelas metas do banco, não por você. A nossa fundadora, a Rebeca, trabalhou 3 anos como analista de crédito PJ dentro de banco e conhece a caixa preta do sistema.
 
 **Balão 2**
 > Para estruturar o seu perfil, a gente puxa as suas consultas oficiais nos birôs e no SCR do Banco Central. O Diagnóstico com Rota de Crédito custa R$ 149: cobre a taxa técnica das consultas e te dá uma reunião de 30 minutos com ela para abrir esses dados. Se as respostas forem genéricas, a Rebeca devolve o valor. Quer seguir com essa rota?

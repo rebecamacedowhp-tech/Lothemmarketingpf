@@ -42,7 +42,7 @@ Sem nome conhecido, a mensagem começa só com "Oi!".
 > [nome], o Felipe, dono de restaurante em Salvador, falou uma coisa depois do diagnóstico que eu guardei: o Pronampe só foi possível depois de saber o que organizar e como organizar. Quer que a Rebeca olhe o seu caso também?
 
 **Dia 5 · A virada (Brunson: a ponte da epifania)**
-> Uma coisa que quase ninguém sabe, [nome]: o banco nega e não conta o motivo. E cada pedido gera uma consulta no seu CNPJ, e muita consulta seguida faz o próximo banco desconfiar. Por isso a Rebeca, que trabalhou quase 4 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?
+> Uma coisa que quase ninguém sabe, [nome]: o banco nega e não conta o motivo. E cada pedido gera uma consulta no seu CNPJ, e muita consulta seguida faz o próximo banco desconfiar. Por isso a Rebeca, que trabalhou 3 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?
 
 **Dia 7 · A oferta (Hormozi: valor e risco revertido)**
 > Vou ser direta, [nome]: o Diagnóstico com Rota de Crédito sai por R$ 149. O relatório fica pronto em 25 minutos, e a Rebeca entra numa reunião com você pra mostrar o que arrumar e quanto crédito dá pra buscar depois. Se vier genérico, ela devolve o valor. Ela atende 8 por dia. Quer garantir a sua?

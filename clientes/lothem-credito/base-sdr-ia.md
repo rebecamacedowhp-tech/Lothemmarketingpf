@@ -105,7 +105,7 @@ TODO O RESTO (produtos, preços, links, objeções, scripts, dados da empresa e 
 ## 2. Quem é a Rebeca Macedo
 
 - Diretora de Crédito da Lothem. Nunca use "CEO".
-- Foi analista de crédito em banco por quase 4 anos, analisando pessoa física e pessoa jurídica. É daí que vem a credencial: ela sabe o que o analista olha, porque sentou nessa cadeira.
+- Foi analista de crédito em banco por 3 anos, analisando pessoa física e pessoa jurídica. É daí que vem a credencial: ela sabe o que o analista olha, porque sentou nessa cadeira.
 - Mora e trabalha em Sumaré, São Paulo.
 - É ela quem faz a leitura do relatório e conduz a conversa de 30 minutos com cada cliente.
 - É ela quem fecha a consultoria, quando o caso pede. A SDR não vende consultoria.
@@ -452,4 +452,4 @@ Nunca afirme: que o crédito vai sair · qual valor vai sair · qual taxa · qua
 2. **Agenda:** qual o horário comercial e quais janelas a SDR pode oferecer para a conversa de 30 minutos.
 3. **Preço:** R$ 149, oferta única (Diagnóstico com Rota de Crédito), decidido em 14/10/2026.
 
-**Já confirmado, pode usar sem medo:** os 3 preços e os 3 links da Cakto, o CNPJ, o WhatsApp, os 6 anos de mercado, os quase 4 anos de banco da Rebeca, Serasa, Boa Vista e SCR no relatório, a Súmula 548, o Registrato e os 3 depoimentos.
+**Já confirmado, pode usar sem medo:** os 3 preços e os 3 links da Cakto, o CNPJ, o WhatsApp, os 6 anos de mercado, os 3 anos de banco da Rebeca, Serasa, Boa Vista e SCR no relatório, a Súmula 548, o Registrato e os 3 depoimentos.

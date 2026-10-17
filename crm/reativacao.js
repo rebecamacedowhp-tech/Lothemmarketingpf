@@ -55,7 +55,7 @@ function reatTexto(r) {
     return oi + (eu ? ' Você me chamou aqui e ficou sem resposta, falha minha.' : '') + ' Você ainda está buscando crédito pra sua empresa?';
   }
   if (passo === 1) return n + 'o Felipe, dono de restaurante em Salvador, falou uma coisa depois do diagnóstico que eu guardei: o Pronampe só foi possível depois de saber o que organizar e como organizar. Quer que a Rebeca olhe o seu caso também?';
-  if (passo === 2) return 'Uma coisa que quase ninguém sabe' + (p ? ', ' + p : '') + ': o banco nega e não conta o motivo. E cada pedido gera uma consulta no seu CNPJ, e muita consulta seguida faz o próximo banco desconfiar. Por isso a Rebeca, que trabalhou quase 4 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?';
+  if (passo === 2) return 'Uma coisa que quase ninguém sabe' + (p ? ', ' + p : '') + ': o banco nega e não conta o motivo. E cada pedido gera uma consulta no seu CNPJ, e muita consulta seguida faz o próximo banco desconfiar. Por isso a Rebeca, que trabalhou 3 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?';
   if (passo === 3) return 'Vou ser direta' + (p ? ', ' + p : '') + ': o Diagnóstico com Rota de Crédito sai por R$ 149. O relatório fica pronto em 25 minutos, e a Rebeca entra numa reunião com você pra mostrar o que arrumar e quanto crédito dá pra buscar depois. Se vier genérico, ela devolve o valor. Ela atende 8 por dia. Quer garantir a sua?';
   return n + 'vou parar por aqui pra não te incomodar. Se um dia quiser saber o que o banco vê na sua empresa, é só responder "quero" aqui.';
 }

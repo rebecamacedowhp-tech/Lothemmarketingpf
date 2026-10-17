@@ -20,3 +20,4 @@
 ## Campanhas e resultados
 | Período | Campanha | Objetivo | Investimento | Resultado | Aprendizado |
 |---|---|---|---|---|---|
+- 2026-10-17 · tempo de banco da Rebeca · decisão da Rebeca: vale **3 anos**, igual ao ebook "A Caixa-Preta dos Bancos". Trocado em toda a Cibelle, no script de reativação e nos manuais. Não usar mais "quase 4 anos".

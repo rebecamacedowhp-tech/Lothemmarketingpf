@@ -1,6 +1,6 @@
 # Manual da Cibelle v2 · WhatsApp
 
-Versão 2. Base: Manual Comercial SDR Lothem (método Hormozi), parte da Cibelle. Acrescentados do script v1: a etapa da dor, as objeções que faltavam e a frase anti-golpe. Decisões da Rebeca (14/10/2026): oferta única de R$ 149, só link da Cakto, garantia de devolução, 8 diagnósticos por dia, quase 4 anos de banco.
+Versão 2. Base: Manual Comercial SDR Lothem (método Hormozi), parte da Cibelle. Acrescentados do script v1: a etapa da dor, as objeções que faltavam e a frase anti-golpe. Decisões da Rebeca (14/10/2026): oferta única de R$ 149, só link da Cakto, garantia de devolução, 8 diagnósticos por dia, 3 anos de banco.
 
 ## A oferta (única)
 
@@ -49,7 +49,7 @@ Antes da oferta, repita a dor com as palavras da pessoa:
 
 Mande depois que a pessoa confirmar a dor.
 
-> Imaginei. Ir ao banco às cegas é o pior erro do empresário: o gerente trabalha pelas metas do banco, não por você. A Rebeca, nossa fundadora, foi analista de crédito PJ em banco por quase 4 anos e conhece a caixa preta do sistema.
+> Imaginei. Ir ao banco às cegas é o pior erro do empresário: o gerente trabalha pelas metas do banco, não por você. A Rebeca, nossa fundadora, foi analista de crédito PJ em banco por 3 anos e conhece a caixa preta do sistema.
 
 > No Diagnóstico com Rota de Crédito, ela puxa as suas consultas oficiais nos birôs e no SCR do Banco Central e, numa reunião de 30 minutos, te entrega a rota: quanto de crédito você pode ter depois de organizar o que ela te mostrar. São R$ 149, que cobrem a taxa técnica das consultas, e se as respostas forem genéricas, ela devolve o valor. Quer seguir com essa rota?
 

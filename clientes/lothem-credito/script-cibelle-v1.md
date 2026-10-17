@@ -55,7 +55,7 @@ Antes de oferecer, repete a dor com as palavras dele:
 
 ## Etapa 3 · Oferta (2 balões)
 
-> O erro que mais vejo é voltar ao banco sem saber o motivo do não. A Rebeca foi analista de crédito por quase 4 anos e sabe o que faz o sistema negar. No Diagnóstico com Rota de Crédito, ela consulta a [empresa] nos birôs e no SCR do Banco Central, mostra o que está travando e quanto de crédito você pode buscar depois de arrumar.
+> O erro que mais vejo é voltar ao banco sem saber o motivo do não. A Rebeca foi analista de crédito por 3 anos e sabe o que faz o sistema negar. No Diagnóstico com Rota de Crédito, ela consulta a [empresa] nos birôs e no SCR do Banco Central, mostra o que está travando e quanto de crédito você pode buscar depois de arrumar.
 
 > São R$ 149, que cobrem as consultas e a análise. Se as respostas forem genéricas, a Rebeca devolve o valor. Ela atende 8 diagnósticos por dia. Quer que eu te mande o link para garantir a sua vaga?
 

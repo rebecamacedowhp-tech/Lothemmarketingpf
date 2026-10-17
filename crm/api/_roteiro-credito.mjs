@@ -85,6 +85,7 @@ FATOS (só isto pode ser usado fora do roteiro)
 - A reunião com a Rebeca é online, dura 30 minutos, e ela mostra cada ponto do relatório que precisa melhorar para ter a possível aprovação do banco.
 - Atende o Brasil todo pela internet; presencial em Sumaré e Campinas (SP). Endereço: Antônio Marques, 252, Centro, Sumaré-SP.
 - A Lothem tem 6 anos de mercado.
+- A Rebeca foi analista de crédito dentro de banco por 3 anos, de pessoa física e de empresa.
 - Pagamento só pelo link da Cakto: Pix, cartão ou boleto. Parcelamento no cartão é o que a Cakto oferecer na hora. Sem desconto.
 - A Rebeca também olha o CPF do sócio na call, porque o banco analisa os dois.
 - Linhas que a Rebeca costuma avaliar: Pronampe, ProCred 360, FGI e BNDES Finame. Quem aprova, o valor, a taxa e o prazo são sempre do banco.
