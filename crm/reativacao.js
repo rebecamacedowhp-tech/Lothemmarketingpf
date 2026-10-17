@@ -25,17 +25,33 @@ function reatPasso(r) {
   if (!re.passo || (r.ultima_lead_em && re.em && r.ultima_lead_em > re.em)) return 0;
   return re.passo;
 }
+// o que o lead veio buscar, pela primeira e pela última mensagem dele: a abertura fala disso, não de algo genérico
+function reatMotivo(r) {
+  const t = ((r.primeira_lead || '') + ' ' + (r.ultima_lead || '')).toLowerCase();
+  if (r.cnpj) return ['cnpj', 'Mandou o CNPJ'];
+  if (r.agenda) return ['agenda', 'Estava marcando'];
+  if (/diagn/.test(t)) return ['diagnostico', 'Pediu o diagnóstico'];
+  if (/ebook|e-book/.test(t)) return ['ebook', 'Pediu o ebook'];
+  if (/analista/.test(t)) return ['analista', 'Pediu a Rebeca'];
+  if (/empr[eé]st|cr[eé]dito|quanto|como funciona|capital|financ/.test(t)) return ['pergunta', 'Perguntou sobre crédito'];
+  return ['geral', ''];
+}
 function reatTexto(r) {
   const p = reatPrimeiro(r.nome), oi = p ? 'Oi, ' + p + '!' : 'Oi!', n = p ? p + ', ' : '';
-  const obj = String(r.objetivo || '').trim(), quer = obj && obj.length <= 40 ? 'buscar ' + obj.toLowerCase().replace(/^r\$/, 'R$') : 'buscar crédito pra sua empresa';
-  const passo = reatPasso(r), aba = reatAba(r);
+  const passo = reatPasso(r), aba = reatAba(r), eu = aba === 'eu', m = reatMotivo(r)[0];
+  const desculpa = eu ? ' Desculpa a demora, falha minha.' : '';
   if (passo === 0) {
-    if (aba === 'eu') return oi + ' Te devo uma resposta, e vim pagar. Você ainda quer ' + quer + '?';
-    if (aba === 'link') return oi + ' Você chegou até o link do diagnóstico e parou. Foi o valor, a confiança ou o momento?';
-    return oi + ' Pergunta rápida: você desistiu de ' + quer + '?';
+    if (aba === 'link') return oi + ' Seu diagnóstico ficou parado só no pagamento. O que te segurou: o valor, a confiança ou o momento?';
+    if (m === 'cnpj') return oi + desculpa + ' Você chegou a me mandar seu CNPJ pra Rebeca olhar, e a conversa parou aí. Ainda quer que ela veja o que o banco enxerga na sua empresa?';
+    if (m === 'agenda') return oi + desculpa + ' A gente estava quase marcando sua conversa com a Rebeca e parou. Ainda quer que ela olhe sua empresa?';
+    if (m === 'diagnostico') return oi + ' Você pediu pra fazer o diagnóstico' + (eu ? ' e eu demorei pra te responder, falha minha.' : ' e a gente parou no meio do caminho.') + ' Ainda quer fazer?';
+    if (m === 'ebook') return eu ? oi + ' Você pediu o ebook e eu fiquei te devendo, desculpa! Ainda quer receber?' : oi + ' Te mandei o ebook uns dias atrás. Você ainda está buscando crédito pra sua empresa?';
+    if (m === 'analista') return oi + ' Você pediu pra falar com a Rebeca, a ex-analista de crédito PJ' + (eu ? ', e ficou sem resposta. Falha nossa!' : '.') + ' Ainda quer que ela olhe sua empresa?';
+    if (m === 'pergunta' && eu) return oi + ' Você me perguntou sobre crédito pra sua empresa e ficou sem resposta, desculpa. Ainda está buscando?';
+    return oi + (eu ? ' Você me chamou aqui e ficou sem resposta, falha minha.' : '') + ' Você ainda está buscando crédito pra sua empresa?';
   }
   if (passo === 1) return n + 'o Felipe, dono de restaurante em Salvador, falou uma coisa depois do diagnóstico que eu guardei: o Pronampe só foi possível depois de saber o que organizar e como organizar. Quer que a Rebeca olhe o seu caso também?';
-  if (passo === 2) return 'Uma coisa que quase ninguém sabe' + (p ? ', ' + p : '') + ': o banco nega e não conta o motivo. E cada pedido negado fica registrado e pesa no próximo. Por isso a Rebeca, que trabalhou quase 4 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?';
+  if (passo === 2) return 'Uma coisa que quase ninguém sabe' + (p ? ', ' + p : '') + ': o banco nega e não conta o motivo. E cada pedido gera uma consulta no seu CNPJ, e muita consulta seguida faz o próximo banco desconfiar. Por isso a Rebeca, que trabalhou quase 4 anos dentro de banco, olha antes de você pedir. Faz sentido pra você?';
   if (passo === 3) return 'Vou ser direta' + (p ? ', ' + p : '') + ': o Diagnóstico com Rota de Crédito sai por R$ 149. O relatório fica pronto em 25 minutos, e a Rebeca entra numa reunião com você pra mostrar o que arrumar e quanto crédito dá pra buscar depois. Se vier genérico, ela devolve o valor. Ela atende 8 por dia. Quer garantir a sua?';
   return n + 'vou parar por aqui pra não te incomodar. Se um dia quiser saber o que o banco vê na sua empresa, é só responder "quero" aqui.';
 }
@@ -71,7 +87,7 @@ VIEWS.reativacao = {
       const passo = reatPasso(r), dias = Math.max(2, Math.floor((Date.now() - new Date(r.parado_desde)) / 864e5));
       return `<section class="pn"><div class="pn-b col" style="gap:10px">
         <div class="row between" style="gap:10px;flex-wrap:wrap"><div><b>${esc(r.nome || 'Sem nome')}</b>${r.objetivo ? ` <span class="dim">· ${esc(r.objetivo)}</span>` : ''}</div>
-          <div class="row" style="gap:6px">${(r.reactivation || {}).etiqueta ? pill(r.reactivation.etiqueta.replace(/‎/g, ''), '', 'Tag') : ''}${pill('Parado há ' + dias + ' dias', dias > 14 ? 'bad' : 'gold')}${pill('Passo ' + (passo + 1) + ' de 5 · ' + REAT_PASSOS[passo], 'cy')}</div></div>
+          <div class="row" style="gap:6px">${reatMotivo(r)[1] ? pill(reatMotivo(r)[1], 'ok') : ''}${(r.reactivation || {}).etiqueta ? pill(r.reactivation.etiqueta.replace(/‎/g, ''), '', 'Tag') : ''}${pill('Parado há ' + dias + ' dias', dias > 14 ? 'bad' : 'gold')}${pill('Passo ' + (passo + 1) + ' de 5 · ' + REAT_PASSOS[passo], 'cy')}</div></div>
         ${r.ultima_lead ? `<div class="dim" style="font-size:12.5px">Última do lead: “${esc(r.ultima_lead)}”</div>` : ''}
         <textarea class="ta" id="reat-${r.conversation_id}" rows="3" aria-label="Mensagem para ${esc(r.nome || 'o lead')}">${esc(reatTexto(r))}</textarea>
         <div class="row between" style="gap:8px;flex-wrap:wrap">
