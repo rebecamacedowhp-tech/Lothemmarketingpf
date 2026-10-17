@@ -24,10 +24,12 @@ Revisei os 207 leads importados. Muitos pediram algo específico e ficaram sem r
 | Mandou o CNPJ | Oi, [nome]! Desculpa a demora, falha minha. Você chegou a me mandar seu CNPJ pra Rebeca olhar, e a conversa parou aí. Ainda quer que ela veja o que o banco enxerga na sua empresa? | A mesma, sem o pedido de desculpa |
 | Estava marcando horário | Oi, [nome]! Desculpa a demora, falha minha. A gente estava quase marcando sua conversa com a Rebeca e parou. Ainda quer que ela olhe sua empresa? | A mesma, sem o pedido de desculpa |
 | Pediu o diagnóstico | Oi, [nome]! Você pediu pra fazer o diagnóstico e eu demorei pra te responder, falha minha. Ainda quer fazer? | Oi, [nome]! Você pediu pra fazer o diagnóstico e a gente parou no meio do caminho. Ainda quer fazer? |
-| Pediu o ebook | Oi, [nome]! Você pediu o ebook e eu fiquei te devendo, desculpa! Ainda quer receber? | Oi, [nome]! Te mandei o ebook uns dias atrás. Você ainda está buscando crédito pra sua empresa? |
+| Pediu o ebook | Oi, [nome]! Você pediu o ebook e eu fiquei te devendo, desculpa! Tá aqui: crm.lothem.com.br/ebook.pdf Na página 10 tem um Termômetro de Crédito, 10 perguntas em 3 minutos. Faz e me conta quantos pontos deu? | Oi, [nome]! Chegou a fazer o Termômetro de Crédito da página 10 do ebook? São 3 minutos: crm.lothem.com.br/ebook.pdf Quantos pontos deu? |
 | Pediu a ex-analista | Oi, [nome]! Você pediu pra falar com a Rebeca, a ex-analista de crédito PJ, e ficou sem resposta. Falha nossa! Ainda quer que ela olhe sua empresa? | Oi, [nome]! Você pediu pra falar com a Rebeca, a ex-analista de crédito PJ. Ainda quer que ela olhe sua empresa? |
 | Perguntou sobre crédito | Oi, [nome]! Você me perguntou sobre crédito pra sua empresa e ficou sem resposta, desculpa. Ainda está buscando? | Oi, [nome]! Você ainda está buscando crédito pra sua empresa? |
 | Outro (oi, bom dia…) | Oi, [nome]! Você me chamou aqui e ficou sem resposta, falha minha. Você ainda está buscando crédito pra sua empresa? | Oi, [nome]! Você ainda está buscando crédito pra sua empresa? |
+
+**Quem responder com a pontuação do Termômetro:** abaixo de 8 pontos, o próprio ebook já diz para fazer o diagnóstico antes de pedir. Resposta: "Com [X] pontos, pedir agora pode virar mais um não e mais uma consulta no seu CNPJ. O diagnóstico mostra exatamente quais pontos estão travando. Quer que a Rebeca olhe o seu?"
 
 **Aba "Receberam o link e não pagaram":**
 > Oi, [nome]! Seu diagnóstico ficou parado só no pagamento. O que te segurou: o valor, a confiança ou o momento?

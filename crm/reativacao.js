@@ -4,6 +4,7 @@
    Quem responde sai da lista sozinho; a sequência anda um passo a cada envio, no mínimo 2 dias entre um e outro. */
 
 const REAT_ORGS = ['5a9f3318-59af-4384-b406-2d5f350fd5fc'];
+const REAT_EBOOK = 'https://crm.lothem.com.br/ebook.pdf';
 const REAT_LIMITE = 35; // por dia no número principal, para o WhatsApp não bloquear
 const REAT = { rows: null, org: null, loading: false, err: '' };
 const REAT_ABAS = [
@@ -45,7 +46,8 @@ function reatTexto(r) {
     if (m === 'cnpj') return oi + desculpa + ' Você chegou a me mandar seu CNPJ pra Rebeca olhar, e a conversa parou aí. Ainda quer que ela veja o que o banco enxerga na sua empresa?';
     if (m === 'agenda') return oi + desculpa + ' A gente estava quase marcando sua conversa com a Rebeca e parou. Ainda quer que ela olhe sua empresa?';
     if (m === 'diagnostico') return oi + ' Você pediu pra fazer o diagnóstico' + (eu ? ' e eu demorei pra te responder, falha minha.' : ' e a gente parou no meio do caminho.') + ' Ainda quer fazer?';
-    if (m === 'ebook') return eu ? oi + ' Você pediu o ebook e eu fiquei te devendo, desculpa! Ainda quer receber?' : oi + ' Te mandei o ebook uns dias atrás. Você ainda está buscando crédito pra sua empresa?';
+    if (m === 'ebook') return eu ? oi + ' Você pediu o ebook e eu fiquei te devendo, desculpa! Tá aqui: ' + REAT_EBOOK + ' Na página 10 tem um Termômetro de Crédito, 10 perguntas em 3 minutos. Faz e me conta quantos pontos deu?'
+      : oi + ' Chegou a fazer o Termômetro de Crédito da página 10 do ebook? São 3 minutos: ' + REAT_EBOOK + ' Quantos pontos deu?';
     if (m === 'analista') return oi + ' Você pediu pra falar com a Rebeca, a ex-analista de crédito PJ' + (eu ? ', e ficou sem resposta. Falha nossa!' : '.') + ' Ainda quer que ela olhe sua empresa?';
     if (m === 'pergunta' && eu) return oi + ' Você me perguntou sobre crédito pra sua empresa e ficou sem resposta, desculpa. Ainda está buscando?';
     return oi + (eu ? ' Você me chamou aqui e ficou sem resposta, falha minha.' : '') + ' Você ainda está buscando crédito pra sua empresa?';
