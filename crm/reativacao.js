@@ -12,6 +12,8 @@ const REAT_ABAS = [
   ['eles', 'Pararam de responder', 'MessageCircleOff', 'Você mandou a última mensagem e o lead sumiu.'],
   ['link', 'Receberam o link e não pagaram', 'Link', 'O link de pagamento foi enviado e a conversa parou.'],
 ];
+// mais perto de fechar primeiro
+const REAT_CALOR = ['cnpj', 'agenda', 'diagnostico', 'analista', 'pergunta', 'ebook', 'geral'];
 const REAT_PASSOS = ['Abertura', 'História', 'Virada', 'Oferta', 'Encerramento'];
 const reatOn = () => typeof REAL !== 'undefined' && REAL.on && REAT_ORGS.includes(S.org);
 const reatAba = (r) => (r.link ? 'link' : r.quem === 'lead' ? 'eu' : 'eles');
@@ -82,7 +84,7 @@ VIEWS.reativacao = {
   render() {
     if (!reatOn()) return `<div class="page-h"><div><h2>Reativação</h2><p>Disponível na conta da Lothem Crédito com o WhatsApp conectado.</p></div></div>`;
     if (REAT.org !== S.org || REAT.rows === null) { reatCarregar(); return `<div class="page-h"><div><h2>Reativação</h2><p>Procurando as conversas paradas…</p></div></div>`; }
-    const tab = S.tabs.reativacao || 'eu', rows = REAT.rows.filter((r) => reatAba(r) === tab && reatPasso(r) < REAT_PASSOS.length);
+    const tab = S.tabs.reativacao || 'eu', rows = REAT.rows.filter((r) => reatAba(r) === tab && reatPasso(r) < REAT_PASSOS.length).sort((a, b) => REAT_CALOR.indexOf(reatMotivo(a)[0]) - REAT_CALOR.indexOf(reatMotivo(b)[0]));
     const cont = (id) => REAT.rows.filter((r) => reatAba(r) === id && reatPasso(r) < REAT_PASSOS.length).length;
     const hoje = reatEnviadosHoje(), cheio = hoje >= REAT_LIMITE, aba = REAT_ABAS.find((a) => a[0] === tab);
     const card = (r) => {
@@ -99,7 +101,7 @@ VIEWS.reativacao = {
           <button class="btn xs pri" data-act="reatEnviar" data-id="${r.conversation_id}" ${cheio ? 'disabled title="Limite do dia atingido"' : ''}>${ic('Send', 'xs')}Enviar</button></div></div>
       </div></section>`;
     };
-    return `<div class="page-h"><div><h2>Reativação</h2><p>Leads parados há 2 dias ou mais. A mensagem já vem pronta, e você pode editar antes de enviar.</p></div>
+    return `<div class="page-h"><div><h2>Reativação</h2><p>Leads parados há 2 dias ou mais, do mais perto de fechar para o mais frio. A mensagem já vem pronta, e você pode editar antes de enviar.</p></div>
         <div class="row" style="gap:8px">${pill(hoje + ' de ' + REAT_LIMITE + ' enviadas hoje', cheio ? 'bad' : 'ok', 'Send')}<button class="btn sm" data-act="reatImportar">${ic('Download', 'xs')}Importar do WhatsApp</button><button class="btn sm ghost" data-act="reatAtualizar">${ic('RefreshCw', 'xs')}Atualizar</button></div></div>
       ${REAT.err ? `<div class="row top-a" style="gap:8px;font-size:13px;padding:10px 12px;border-radius:9px;background:var(--warn-soft);margin-bottom:14px">${ic('TriangleAlert', 'sm')}<span>${esc(REAT.err)}</span></div>` : ''}
       <div class="tabs" role="tablist">${REAT_ABAS.map(([id, nm, icn]) => { const n = cont(id); return `<button class="${tab === id ? 'on' : ''}" data-act="tab" data-v="reativacao:${id}" role="tab" aria-selected="${tab === id}">${ic(icn, 'sm')}${nm}${n ? `<span class="n">${n}</span>` : ''}</button>`; }).join('')}</div>
